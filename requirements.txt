@@ -21,6 +21,10 @@ scvi-tools>=0.20.0
 mudata>=0.1.0
 zarr>=2.10.0
 
+# Additional dependencies for clustering
+python-igraph>=0.10.0
+leidenalg>=0.10.0
+
 # Development dependencies
 pytest>=7.0.0
 black>=22.0.0
