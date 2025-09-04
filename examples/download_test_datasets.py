@@ -2,7 +2,7 @@
 Dataset downloader for PySEE performance testing.
 
 This script downloads real bioinformatics datasets for comprehensive
-performance testing of PySEE components.
+performance testing of PySEE components, following the curated dataset plan.
 """
 
 import os
@@ -16,6 +16,12 @@ import anndata as ad
 import pandas as pd
 import numpy as np
 import scanpy as sc
+
+# Add project root to path
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
+from tests.performance.fixtures.dataset_registry import DatasetRegistry
 
 
 class DatasetDownloader:
@@ -211,17 +217,44 @@ class DatasetDownloader:
 
 
 def main():
-    """Download all test datasets."""
-    downloader = DatasetDownloader()
+    """Download all test datasets using the registry system."""
+    print("🚀 PySEE Dataset Downloader")
+    print("=" * 50)
     
     try:
-        datasets = downloader.download_all_datasets()
+        # Initialize registry
+        registry = DatasetRegistry()
+        registry.print_summary()
         
-        print(f"\n✅ Successfully downloaded {len(datasets)} datasets")
-        print("📁 Datasets saved in: data/")
+        print("\n📥 Downloading datasets...")
+        
+        # Download datasets by category
+        categories = ['small', 'medium']
+        
+        for category in categories:
+            print(f"\n📊 Downloading {category} datasets...")
+            dataset_ids = registry.list_datasets(category)
+            
+            for dataset_id in dataset_ids:
+                try:
+                    print(f"\n📥 Processing {dataset_id}...")
+                    adata = registry.load_dataset(dataset_id)
+                    info = registry.get_dataset_info(dataset_id)
+                    
+                    print(f"✅ Loaded {dataset_id}: {adata.n_obs:,} cells, {adata.n_vars:,} genes")
+                    print(f"   Memory usage: {info['memory_mb']:.0f} MB")
+                    print(f"   Expected patterns: {', '.join(info['expected_patterns'])}")
+                    
+                except Exception as e:
+                    print(f"❌ Failed to load {dataset_id}: {e}")
+                    continue
+        
+        print(f"\n✅ Dataset download completed!")
+        print("📁 Datasets cached in: data/")
         print("\n💡 Next steps:")
-        print("   - Run performance tests: python tests/performance/run_performance_tests.py")
+        print("   - Run performance tests: python run_performance_tests.py")
         print("   - Use datasets in your PySEE analysis")
+        print("   - Check dataset registry: python tests/performance/fixtures/dataset_registry.py")
         
         return 0
         
