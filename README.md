@@ -1,5 +1,10 @@
 # 🔬 PySEE — Interactive, Reproducible Bioinformatics Visualization for Python
 
+[![Version](https://img.shields.io/badge/version-0.1.1-blue.svg)](https://github.com/Linnnnberg/PySEE)
+[![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![CI](https://github.com/Linnnnberg/PySEE/workflows/CI/badge.svg)](https://github.com/Linnnnberg/PySEE/actions)
+
 **PySEE** is an open-source project bringing **iSEE-style linked dashboards** to the **Python bioinformatics ecosystem**.
 
 If you use **AnnData / Scanpy / MuData / Zarr**, you know the struggle of wiring up UMAP plots, violin plots, QC panels, and genome browsers by hand. R has [Shiny](https://shiny.posit.co/) and [iSEE](https://bioconductor.org/packages/release/bioc/html/iSEE.html).
@@ -259,6 +264,8 @@ PySEE follows a **feature branch workflow** with protected main branch and autom
 6. Wait for approval and merge
 
 **Detailed Workflow:** See [GIT_WORKFLOW.md](GIT_WORKFLOW.md) for complete development guidelines.
+
+**Version Strategy:** See [VERSION_STRATEGY.md](VERSION_STRATEGY.md) for release and versioning guidelines.
 
 **Requirements:**
 - All PRs must pass CI checks before merging
