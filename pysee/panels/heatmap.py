@@ -165,18 +165,40 @@ class HeatmapPanel(BasePanel):
         cell_order = None
 
         if cluster_genes and expression_matrix.shape[0] > 1:
-            # Cluster genes (rows)
-            gene_distances = pdist(expression_matrix, metric='correlation')
-            gene_linkage = linkage(gene_distances, method=method)
-            gene_clusters = fcluster(gene_linkage, t=0.7, criterion='distance')
-            gene_order = np.argsort(gene_clusters)
+            try:
+                # Cluster genes (rows)
+                gene_distances = pdist(expression_matrix, metric='correlation')
+                # Check for infinite or NaN values
+                if np.isfinite(gene_distances).all():
+                    gene_linkage = linkage(gene_distances, method=method)
+                    gene_clusters = fcluster(gene_linkage, t=0.7, criterion='distance')
+                    gene_order = np.argsort(gene_clusters)
+                else:
+                    # Fallback: use variance-based ordering
+                    gene_variances = np.var(expression_matrix, axis=1)
+                    gene_order = np.argsort(gene_variances)[::-1]
+            except Exception:
+                # Fallback: use variance-based ordering
+                gene_variances = np.var(expression_matrix, axis=1)
+                gene_order = np.argsort(gene_variances)[::-1]
 
         if cluster_cells and expression_matrix.shape[1] > 1:
-            # Cluster cells (columns)
-            cell_distances = pdist(expression_matrix.T, metric='correlation')
-            cell_linkage = linkage(cell_distances, method=method)
-            cell_clusters = fcluster(cell_linkage, t=0.7, criterion='distance')
-            cell_order = np.argsort(cell_clusters)
+            try:
+                # Cluster cells (columns)
+                cell_distances = pdist(expression_matrix.T, metric='correlation')
+                # Check for infinite or NaN values
+                if np.isfinite(cell_distances).all():
+                    cell_linkage = linkage(cell_distances, method=method)
+                    cell_clusters = fcluster(cell_linkage, t=0.7, criterion='distance')
+                    cell_order = np.argsort(cell_clusters)
+                else:
+                    # Fallback: use variance-based ordering
+                    cell_variances = np.var(expression_matrix, axis=0)
+                    cell_order = np.argsort(cell_variances)[::-1]
+            except Exception:
+                # Fallback: use variance-based ordering
+                cell_variances = np.var(expression_matrix, axis=0)
+                cell_order = np.argsort(cell_variances)[::-1]
 
         return gene_linkage, cell_linkage, gene_order, cell_order
 
