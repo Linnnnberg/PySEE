@@ -104,13 +104,13 @@ def test_basic_functionality():
     # Test panel rendering
     print("\nTesting panel rendering...")
     try:
-        umap_fig = app.render_panel("umap")
+        app.render_panel("umap")
         print("  ✓ UMAP panel rendered successfully")
     except Exception as e:
         print(f"  ✗ UMAP panel rendering failed: {e}")
 
     try:
-        violin_fig = app.render_panel("violin")
+        app.render_panel("violin")
         print("  ✓ Violin panel rendered successfully")
     except Exception as e:
         print(f"  ✗ Violin panel rendering failed: {e}")

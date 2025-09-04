@@ -261,7 +261,7 @@ class ViolinPanel(BasePanel):
                     ),
                     name="Selected",
                     showlegend=True,
-                    hovertemplate=f"<b>Selected</b><br>"
+                    hovertemplate="<b>Selected</b><br>"
                     + f"{gene}: %{{y:.2f}}<br>"
                     + "<extra></extra>",
                 )
