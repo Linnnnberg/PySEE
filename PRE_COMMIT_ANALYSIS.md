@@ -9,7 +9,7 @@ This document analyzes the appropriateness of pre-commit checks for scientific b
 ### ✅ **ESSENTIAL CHECKS (Keep These)**
 
 #### 1. **Code Formatting (Black)**
-- **Why Essential**: 
+- **Why Essential**:
   - Scientific code must be readable and maintainable
   - Multiple researchers will collaborate on the codebase
   - Consistent formatting reduces cognitive load during code reviews
