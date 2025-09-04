@@ -139,19 +139,20 @@ Interactive, Reproducible Bioinformatics Visualization for Python - bringing iSE
 - **Effort**: 2-3 days
 - **Status**: ✅ **COMPLETED** - Ready for release!
 
-#### 5.2 QC Metrics Panel
+#### 5.2 QC Metrics Panel ✅ COMPLETED
 - **Description**: Quality control visualizations for data assessment
 - **Tasks**:
-  - [ ] Create QCPanel class with multiple QC plots
-  - [ ] Implement mitochondrial gene percentage plots
-  - [ ] Add gene count distributions (total, detected genes)
-  - [ ] Create cell filtering interfaces with thresholds
-  - [ ] Add doublet detection visualization
-  - [ ] Support batch effect visualization
+  - ✅ Create QCPanel class with multiple QC plots
+  - ✅ Implement mitochondrial gene percentage plots
+  - ✅ Add gene count distributions (total, detected genes)
+  - ✅ Create cell filtering interfaces with thresholds
+  - ✅ Add configurable filtering thresholds
+  - ✅ Support multiple QC metrics with subplot layout
+  - ✅ Add QC-based cell filtering code export
 - **Why Important**: Critical for data quality assessment and filtering
 - **Dependencies**: 1.1, 1.2
 - **Effort**: 2-3 days
-- **Status**: 🔄 Ready to start
+- **Status**: ✅ **COMPLETED** - Ready for release!
 
 #### 5.3 Dot Plot Panel
 - **Description**: Dot plots for marker gene expression analysis
@@ -249,11 +250,11 @@ Interactive, Reproducible Bioinformatics Visualization for Python - bringing iSE
    - **Impact**: High - most requested feature
    - **Status**: ✅ **COMPLETED** - Ready for release!
 
-2. **QC Metrics Panel** 📊 **CURRENT TASK**
-   - **Branch**: `feature/qc-metrics-panel` (active)
+2. **QC Metrics Panel** ✅ **COMPLETED**
+   - **Branch**: `feature/qc-metrics-panel` (completed and pushed)
    - **Effort**: 2-3 days
    - **Impact**: High - essential for data quality
-   - **Status**: 🔄 **IN PROGRESS** - Ready to start
+   - **Status**: ✅ **COMPLETED** - Ready for release!
 
 3. **Advanced Selection Tools** 🎯 **THEN**
    - **Branch**: `feature/advanced-selection`
@@ -446,12 +447,13 @@ Interactive, Reproducible Bioinformatics Visualization for Python - bringing iSE
 
 ### 📈 **CURRENT STATUS:**
 - **MVP v0.1**: 100% Complete ✅
+- **v0.2 Development**: 50% Complete (Heatmap + QC panels done) ✅
 - **Development Infrastructure**: 100% Complete ✅
 - **GitHub Repository**: Live with optimized CI/CD (3-minute builds)
 - **Documentation**: Comprehensive README, workflow guides, and examples
 - **Testing**: Working test suite with multi-Python support (3.9-3.12)
 - **Git Workflow**: Professional branch-based development process
-- **Ready for**: v0.2 development phase with feature branches
+- **Ready for**: v0.1.2 release with Heatmap + QC panels
 
 ---
 

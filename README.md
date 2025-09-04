@@ -17,18 +17,23 @@ If you use **AnnData / Scanpy / MuData / Zarr**, you know the struggle of wiring
 
 ### ✅ MVP (v0.1) - COMPLETED
 - **AnnData support** out of the box with comprehensive validation
-- **Two linked panels**:
+- **Four linked panels**:
   - UMAP/t-SNE/PCA embedding (interactive scatter plots)
   - Gene expression violin/box/strip plots with grouping
-- **Linked selection**: brushing on UMAP updates violin plots
+  - Gene expression heatmaps with hierarchical clustering
+  - Quality control metrics with filtering thresholds
+- **Linked selection**: brushing propagates across all panels
 - **Reproducible code export**: selections → Python snippet
 - **Notebook-first UX** (Jupyter/VS Code, no server setup needed)
 - **Interactive visualizations** with Plotly backend
 - **Data validation** and preprocessing utilities
 - **CLI interface** for command-line usage
 
-### Future Directions
-- 🔗 More panels: heatmaps, dotplots, QC metrics
+### 🚀 v0.2 - IN DEVELOPMENT
+- ✅ **Heatmap Panel**: Gene expression matrices with clustering
+- ✅ **QC Metrics Panel**: Data quality assessment and filtering
+- 🔄 **Dot Plot Panel**: Marker gene visualization (planned)
+- 🔄 **Advanced Selection Tools**: Lasso, polygon selection (planned)
 - 🧬 Genome browser panels (IGV / JBrowse)
 - 🧩 Spatial viewer (Vitessce) and imaging viewer (napari)
 - ☁️ Cloud-scale rendering (Datashader, Zarr-backed data)
@@ -70,7 +75,7 @@ pip install -e .
 
 ```python
 import scanpy as sc
-from pysee import PySEE, UMAPPanel, ViolinPanel
+from pysee import PySEE, UMAPPanel, ViolinPanel, HeatmapPanel, QCPanel
 
 # Load and preprocess data
 adata = sc.datasets.pbmc3k()
@@ -104,16 +109,39 @@ app.add_panel(
     )
 )
 
-# Link panels: UMAP selection filters violin
+# Add heatmap panel
+app.add_panel(
+    "heatmap",
+    HeatmapPanel(
+        panel_id="heatmap",
+        title="Gene Expression Heatmap"
+    )
+)
+
+# Add QC panel
+app.add_panel(
+    "qc",
+    QCPanel(
+        panel_id="qc",
+        title="Quality Control Metrics"
+    )
+)
+
+# Link panels: selections propagate across all panels
 app.link(source="umap", target="violin")
+app.link(source="umap", target="heatmap")
 
 # Render panels
 umap_fig = app.render_panel("umap")
 violin_fig = app.render_panel("violin")
+heatmap_fig = app.render_panel("heatmap")
+qc_fig = app.render_panel("qc")
 
 # Display in Jupyter notebook
 umap_fig.show()
 violin_fig.show()
+heatmap_fig.show()
+qc_fig.show()
 
 # Export reproducible code
 print(app.export_code())
