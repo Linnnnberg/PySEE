@@ -345,9 +345,9 @@ class PySEE:
             "panel_order": self._panel_order,
             "panels": panel_info,
             "has_global_selection": self._global_selection is not None,
-            "n_selected_cells": np.sum(self._global_selection)
-            if self._global_selection is not None
-            else 0,
+            "n_selected_cells": (
+                np.sum(self._global_selection) if self._global_selection is not None else 0
+            ),
             "data_summary": self._data_wrapper.get_summary_stats(),
         }
 
