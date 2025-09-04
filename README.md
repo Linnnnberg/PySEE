@@ -247,13 +247,24 @@ PySEE uses GitHub Actions for automated testing and quality assurance:
 - **Build Verification**: Package builds and installs correctly
 
 ### Contributing
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
 
-**Note**: All PRs must pass CI checks before merging.
+PySEE follows a **feature branch workflow** with protected main branch and automated CI/CD.
+
+**Quick Start:**
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature`
+3. Make your changes and test locally
+4. Submit a pull request to `develop` branch
+5. Address review feedback
+6. Wait for approval and merge
+
+**Detailed Workflow:** See [GIT_WORKFLOW.md](GIT_WORKFLOW.md) for complete development guidelines.
+
+**Requirements:**
+- All PRs must pass CI checks before merging
+- Code must be reviewed by at least one maintainer
+- Follow conventional commit message format
+- Include tests for new features
 
 ---
 
