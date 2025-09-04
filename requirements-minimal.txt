@@ -1,0 +1,15 @@
+# Minimal requirements for fast CI testing
+# Only essential packages for basic functionality
+
+# Core scientific computing
+numpy>=1.21.0
+pandas>=1.5.0
+matplotlib>=3.5.0
+
+# Essential bioinformatics (lightweight)
+anndata>=0.8.0
+
+# Development tools
+pytest>=7.0.0
+black>=22.0.0
+flake8>=5.0.0
