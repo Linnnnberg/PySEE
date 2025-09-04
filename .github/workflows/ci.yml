@@ -35,25 +35,14 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-pip-
 
-    - name: Create and activate virtual environment
-      run: |
-        python -m venv venv
-        source venv/bin/activate
-        echo "Virtual environment created and activated"
-
     - name: Install dependencies
       run: |
-        source venv/bin/activate
         python -m pip install --upgrade pip
-        echo "Installing minimal requirements for CI..."
-        pip install -r requirements-ci.txt --verbose
-        echo "Installing package in development mode..."
-        pip install -e . --verbose
-        echo "Dependencies installed successfully!"
+        pip install -r requirements-ci.txt
+        pip install -e .
 
     - name: Lint with flake8
       run: |
-        source venv/bin/activate
         # Stop the build if there are Python syntax errors or undefined names
         flake8 pysee/ test_pysee.py example.py --count --select=E9,F63,F7,F82 --show-source --statistics
         # Scientific-friendly linting with relaxed rules
@@ -61,22 +50,18 @@ jobs:
 
     - name: Format check with black
       run: |
-        source venv/bin/activate
         black --check --diff --line-length=100 pysee/ test_pysee.py example.py
 
     - name: Type check with mypy
       run: |
-        source venv/bin/activate
         mypy pysee/ --ignore-missing-imports --no-strict-optional --warn-return-any --no-error-summary
 
     - name: Test with pytest
       run: |
-        source venv/bin/activate
         pytest test_pysee.py -v
 
     - name: Test example script
       run: |
-        source venv/bin/activate
         python example.py
 
   build:
