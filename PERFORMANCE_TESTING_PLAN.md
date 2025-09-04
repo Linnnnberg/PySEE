@@ -6,35 +6,66 @@ This document outlines a comprehensive performance testing strategy for PySEE to
 
 ## Test Dataset Categories
 
-### 1. Small Datasets (Benchmark)
-- **Size**: 1K-5K cells, 2K-5K genes
-- **Purpose**: Baseline performance, development testing
-- **Sources**: 
-  - Scanpy built-in datasets (`sc.datasets.pbmc3k()`, `sc.datasets.pbmc68k_reduced()`)
-  - Custom synthetic data
+### 1. Small Datasets (Smoke & Layout Sanity)
+- **Size**: ~3K cells, ~33K genes
+- **Purpose**: UMAP/t-SNE aesthetics, cluster coloring, legends, marker-based labeling, QC plots
+- **Primary Dataset**: 10X PBMC 3K (`sc.datasets.pbmc3k()`)
+- **Expected Pattern**: Clear B/T/NK/Mono separation; canonical markers (MS4A1 B, CD3D T, NKG7 NK, LST1/LYZ Mono)
+- **Memory Fit**: ✅ Trivially safe on 16 GB
+- **Use Cases**: 
+  - Panel layout and aesthetics testing
+  - Legend and color scheme validation
+  - Marker gene visualization (dot plots, heatmaps)
+  - QC metrics visualization (violin plots for n_genes/percent.mt)
 
-### 2. Medium Datasets (Standard)
-- **Size**: 10K-50K cells, 5K-10K genes
-- **Purpose**: Typical single-cell analysis workflows
-- **Sources**:
-  - 10X Genomics public datasets
-  - Human Cell Atlas datasets
-  - Tabula Sapiens datasets
+### 2. Medium Datasets (Batch + Scale)
+- **Size**: ~68K cells, ~33K genes  
+- **Purpose**: Visual crowding tests, batch overlays, density-aware scatter, large legend handling
+- **Primary Dataset**: 10X PBMC 68K (`sc.datasets.pbmc68k_reduced()`)
+- **Expected Pattern**: Broad immune atlas with refined T-cell substructure; stable global UMAP geometry
+- **Memory Fit**: ✅ Safe on 16 GB for end-to-end plotting (keep matrices sparse)
+- **Use Cases**:
+  - Visual crowding and density testing
+  - Batch effect visualization
+  - Large legend handling
+  - Scalable dot/heatmap panels
+  - Interactive performance with larger datasets
 
-### 3. Large Datasets (Stress Test)
-- **Size**: 100K-500K cells, 10K-20K genes
-- **Purpose**: Stress testing, memory optimization
-- **Sources**:
-  - Large-scale single-cell atlases
-  - Multi-organ datasets
-  - Time-series datasets
+### 3. Large Datasets (Scalability & Downsampling)
+- **Size**: 1.3M+ cells, ~33K genes
+- **Purpose**: Backed/on-disk read, subsampled views, aggregated previews
+- **Primary Dataset**: 10X Mouse Brain 1.3M (downloadable)
+- **Expected Pattern**: Major brain lineages (neurons, glia) dominate; downsampled UMAP retains macro-structure
+- **Memory Fit**: ⚠️ Full dataset not feasible on 16 GB
+- **Strategies**:
+  - Backed/on-disk mode for I/O + selection
+  - Subsample ≤100K cells for embeddings/plots
+  - Density/hexbin or datashader-like strategies for >100K points
+- **Use Cases**:
+  - Subsampled views (50K–100K cells) → stress UMAP/t-SNE rendering
+  - Aggregated previews (cluster centroids, binning/density maps)
+  - Big-data visualization strategies
+  - Memory optimization testing
 
-### 4. Very Large Datasets (Extreme)
-- **Size**: 1M+ cells, 20K+ genes
-- **Purpose**: Scalability limits, cloud deployment testing
-- **Sources**:
-  - Human Cell Atlas full datasets
-  - Multi-modal datasets (CITE-seq, ATAC-seq)
+## System Requirements and Memory Considerations
+
+### 1. System Memory Requirements
+- **Minimum**: 8 GB RAM (small datasets only)
+- **Recommended**: 16 GB RAM (small + medium datasets)
+- **Optimal**: 32 GB RAM (all datasets including large)
+- **Workstation**: 64+ GB RAM (very large datasets, multiple analyses)
+
+### 2. Memory Usage Warnings
+- **Small datasets (3K cells)**: Safe on any system with 8+ GB RAM
+- **Medium datasets (68K cells)**: Requires 16+ GB RAM for comfortable usage
+- **Large datasets (1.3M cells)**: Requires 32+ GB RAM or backed/on-disk mode
+- **Very large datasets**: Requires 64+ GB RAM or cloud computing
+
+### 3. User Guidance
+- **Automatic detection**: PySEE should detect available memory and warn users
+- **Dataset recommendations**: Suggest appropriate datasets based on system specs
+- **Memory optimization**: Provide options for memory-efficient modes
+- **Error handling**: Graceful degradation when memory limits are exceeded
 
 ## Performance Metrics
 
@@ -97,6 +128,78 @@ for i in range(1, 6):  # 1 to 5 datasets
     measure_memory_usage(i)
 ```
 
+## Dataset Configuration System
+
+### 1. Dataset Registry (`configs/datasets.yml`)
+```yaml
+datasets:
+  pbmc3k:
+    name: "10X PBMC 3K"
+    size: "small"
+    cells: 2700
+    genes: 32738
+    source: "scanpy_builtin"
+    download_url: null
+    checksum: null
+    memory_mb: 350
+    expected_patterns:
+      - "Clear B/T/NK/Mono separation"
+      - "Canonical markers: MS4A1 (B), CD3D (T), NKG7 (NK), LST1/LYZ (Mono)"
+    use_cases:
+      - "UMAP/t-SNE aesthetics"
+      - "Cluster coloring and legends"
+      - "Marker-based labeling"
+      - "QC plots (violin for n_genes/percent.mt)"
+      - "Dot/heatmap panels"
+  
+  pbmc68k:
+    name: "10X PBMC 68K"
+    size: "medium"
+    cells: 68579
+    genes: 32738
+    source: "scanpy_builtin"
+    download_url: null
+    checksum: null
+    memory_mb: 8500
+    expected_patterns:
+      - "Broad immune atlas with refined T-cell substructure"
+      - "Stable global UMAP geometry across runs"
+    use_cases:
+      - "Visual crowding tests"
+      - "Batch overlays"
+      - "Density-aware scatter"
+      - "Large legend handling"
+      - "Scalable dot/heatmaps"
+  
+  mouse_brain_1_3m:
+    name: "10X Mouse Brain 1.3M"
+    size: "large"
+    cells: 1300000
+    genes: 27998
+    source: "10x_genomics"
+    download_url: "https://cf.10xgenomics.com/samples/cell-exp/1.3.0/1M_neurons/1M_neurons_filtered_gene_bc_matrices_h5.h5"
+    checksum: "sha256:abc123..."
+    memory_mb: 140000
+    expected_patterns:
+      - "Major brain lineages (neurons, glia) dominate"
+      - "Downsampled UMAP retains macro-structure"
+    use_cases:
+      - "Subsampled views (50K–100K cells)"
+      - "Aggregated previews (cluster centroids)"
+      - "Big-data visualization strategies"
+    strategies:
+      - "Backed/on-disk mode for I/O + selection"
+      - "Subsample ≤100K cells for embeddings/plots"
+      - "Density/hexbin or datashader-like strategies for >100K points"
+```
+
+### 2. Dataset Cache System
+- **Raw Cache**: Store downloaded datasets in `data/raw/`
+- **Processed Cache**: Store processed/cleaned datasets in `data/processed/`
+- **Checksum Validation**: Verify dataset integrity on load
+- **Automatic Download**: Download missing datasets on first use
+- **Memory Mapping**: Use backed AnnData for large datasets
+
 ## Implementation Framework
 
 ### 1. Performance Test Suite Structure
@@ -108,14 +211,15 @@ tests/performance/
 ├── test_interactive_performance.py
 ├── test_scalability.py
 ├── fixtures/
-│   ├── small_dataset.py
-│   ├── medium_dataset.py
-│   ├── large_dataset.py
-│   └── very_large_dataset.py
+│   ├── dataset_fixtures.py
+│   ├── dataset_registry.py
+│   └── dataset_cache.py
 ├── utils/
 │   ├── performance_utils.py
 │   ├── memory_profiler.py
 │   └── benchmark_runner.py
+├── configs/
+│   └── datasets.yml
 └── results/
     ├── memory_benchmarks.json
     ├── rendering_benchmarks.json

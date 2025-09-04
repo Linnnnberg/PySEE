@@ -167,6 +167,20 @@ categories:
     rendering_target: 30.0  # seconds
     datasets: []  # To be added as needed
 
+# System Requirements
+system_requirements:
+  minimum_ram:
+    small: 8        # GB
+    medium: 16      # GB
+    large: 32       # GB
+    very_large: 64  # GB
+    
+  recommended_ram:
+    small: 16       # GB
+    medium: 32      # GB
+    large: 64       # GB
+    very_large: 128 # GB
+
 # Performance Targets
 performance_targets:
   memory_usage:

@@ -66,6 +66,31 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
+```
+
+### System Requirements
+
+PySEE's memory requirements depend on your dataset size:
+
+- **Minimum**: 8 GB RAM (small datasets only)
+- **Recommended**: 16 GB RAM (small + medium datasets)
+- **Optimal**: 32 GB RAM (all datasets including large)
+- **Workstation**: 64+ GB RAM (very large datasets, multiple analyses)
+
+#### Check Your System
+
+Run the system requirements checker to see which datasets are compatible with your system:
+
+```bash
+python check_system_requirements.py
+```
+
+#### Memory-Efficient Usage
+
+For large datasets or limited memory:
+- Use backed/on-disk mode: `adata = ad.read_h5ad(file, backed='r')`
+- Subsample datasets to reduce memory usage
+- Close other applications when working with large datasets
 
 # Install PySEE in development mode
 pip install -e .

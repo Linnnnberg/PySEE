@@ -186,9 +186,13 @@ class DatasetRegistry:
         
         return file_path
     
-    def load_dataset(self, dataset_id: str, backed: bool = False) -> ad.AnnData:
+    def load_dataset(self, dataset_id: str, backed: bool = False, check_requirements: bool = True) -> ad.AnnData:
         """Load a dataset from cache or download if needed."""
         info = self.get_dataset_info(dataset_id)
+        
+        # Check system requirements if requested
+        if check_requirements:
+            self._check_system_requirements(dataset_id, info)
         
         # Check if it's a synthetic dataset
         if info['source'] == 'synthetic':
@@ -213,6 +217,33 @@ class DatasetRegistry:
             print(f"✅ Loaded {dataset_id} in memory")
         
         return adata
+    
+    def _check_system_requirements(self, dataset_id: str, info: Dict[str, Any]):
+        """Check system requirements for a dataset."""
+        try:
+            # Import here to avoid circular imports
+            import sys
+            from pathlib import Path
+            project_root = Path(__file__).parent.parent.parent
+            sys.path.insert(0, str(project_root))
+            
+            from pysee.utils.system_requirements import check_system_requirements
+            
+            # Check requirements
+            compatible = check_system_requirements(
+                dataset_id, 
+                info['size'], 
+                info['memory_mb']
+            )
+            
+            if not compatible:
+                print(f"⚠️ Proceeding with {dataset_id} despite memory warnings...")
+                
+        except ImportError:
+            # System requirements checker not available
+            pass
+        except Exception as e:
+            print(f"⚠️ Could not check system requirements: {e}")
     
     def _get_synthetic_dataset(self, dataset_id: str) -> ad.AnnData:
         """Get synthetic dataset."""
