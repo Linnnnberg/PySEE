@@ -285,3 +285,73 @@ class AnnDataWrapper:
     def __len__(self) -> int:
         """Return number of observations."""
         return self._adata.n_obs  # type: ignore[no-any-return]
+
+    def get_top_variable_genes(self, n_top: int = 50) -> List[str]:
+        """
+        Get the top variable genes based on variance.
+        
+        Parameters
+        ----------
+        n_top : int, default 50
+            Number of top variable genes to return
+            
+        Returns
+        -------
+        List[str]
+            List of top variable gene names
+        """
+        if self._adata.n_vars == 0:
+            return []
+        
+        # Calculate variance for each gene
+        expression_data = self.get_expression_data()
+        if expression_data.size == 0:
+            return []
+        
+        # Handle sparse matrices
+        if sparse.issparse(expression_data):
+            expression_data = expression_data.toarray()
+        
+        # Calculate variance along genes (axis=1)
+        gene_variances = np.var(expression_data, axis=0)
+        
+        # Get indices of top variable genes
+        top_gene_indices = np.argsort(gene_variances)[-n_top:][::-1]
+        
+        # Return gene names
+        return [self._adata.var_names[i] for i in top_gene_indices]
+
+    def get_gene_expression(self, genes: List[str], cells: List[str]) -> np.ndarray:
+        """
+        Get expression data for specific genes and cells.
+        
+        Parameters
+        ----------
+        genes : List[str]
+            List of gene names
+        cells : List[str]
+            List of cell names
+            
+        Returns
+        -------
+        np.ndarray
+            Expression matrix (genes x cells)
+        """
+        # Get gene indices
+        gene_indices = [self._adata.var_names.get_loc(gene) for gene in genes if gene in self._adata.var_names]
+        
+        # Get cell indices
+        cell_indices = [self._adata.obs_names.get_loc(cell) for cell in cells if cell in self._adata.obs_names]
+        
+        if not gene_indices or not cell_indices:
+            return np.array([]).reshape(0, 0)
+        
+        # Get expression data
+        expression_data = self._adata.X[cell_indices, :][:, gene_indices]
+        
+        # Handle sparse matrices
+        if sparse.issparse(expression_data):
+            expression_data = expression_data.toarray()
+        
+        # Transpose to get genes x cells
+        return expression_data.T
