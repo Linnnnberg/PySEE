@@ -74,7 +74,7 @@ class HeatmapPanel(BasePanel):
         """
         if self._data_wrapper is None:
             return False
-        
+
         # Check if we have expression data
         try:
             expression_matrix = self._data_wrapper.get_expression_data()
@@ -125,15 +125,14 @@ class HeatmapPanel(BasePanel):
 
         # Get expression matrix
         expression_matrix = self._data_wrapper.get_gene_expression(genes, cells)
-        
+
         return expression_matrix, genes, cells
 
     def _perform_clustering(
-        self, 
-        expression_matrix: np.ndarray, 
-        cluster_genes: bool = True, 
-        cluster_cells: bool = True
-    ) -> Tuple[Optional[np.ndarray], Optional[np.ndarray], Optional[List[int]], Optional[List[int]]]:
+        self, expression_matrix: np.ndarray, cluster_genes: bool = True, cluster_cells: bool = True
+    ) -> Tuple[
+        Optional[np.ndarray], Optional[np.ndarray], Optional[List[int]], Optional[List[int]]
+    ]:
         """
         Perform hierarchical clustering on the expression matrix.
 
@@ -158,7 +157,7 @@ class HeatmapPanel(BasePanel):
             Reordered cell indices
         """
         method = self.get_config("clustering_method")
-        
+
         gene_linkage = None
         cell_linkage = None
         gene_order = None
@@ -167,11 +166,11 @@ class HeatmapPanel(BasePanel):
         if cluster_genes and expression_matrix.shape[0] > 1:
             try:
                 # Cluster genes (rows)
-                gene_distances = pdist(expression_matrix, metric='correlation')
+                gene_distances = pdist(expression_matrix, metric="correlation")
                 # Check for infinite or NaN values
                 if np.isfinite(gene_distances).all():
                     gene_linkage = linkage(gene_distances, method=method)
-                    gene_clusters = fcluster(gene_linkage, t=0.7, criterion='distance')
+                    gene_clusters = fcluster(gene_linkage, t=0.7, criterion="distance")
                     gene_order = np.argsort(gene_clusters)
                 else:
                     # Fallback: use variance-based ordering
@@ -185,11 +184,11 @@ class HeatmapPanel(BasePanel):
         if cluster_cells and expression_matrix.shape[1] > 1:
             try:
                 # Cluster cells (columns)
-                cell_distances = pdist(expression_matrix.T, metric='correlation')
+                cell_distances = pdist(expression_matrix.T, metric="correlation")
                 # Check for infinite or NaN values
                 if np.isfinite(cell_distances).all():
                     cell_linkage = linkage(cell_distances, method=method)
-                    cell_clusters = fcluster(cell_linkage, t=0.7, criterion='distance')
+                    cell_clusters = fcluster(cell_linkage, t=0.7, criterion="distance")
                     cell_order = np.argsort(cell_clusters)
                 else:
                     # Fallback: use variance-based ordering
@@ -200,13 +199,10 @@ class HeatmapPanel(BasePanel):
                 cell_variances = np.var(expression_matrix, axis=0)
                 cell_order = np.argsort(cell_variances)[::-1]
 
-        return gene_linkage, cell_linkage, gene_order, cell_order
+        return gene_linkage, cell_linkage, gene_order, cell_order  # type: ignore[return-value]
 
     def _create_dendrogram_trace(
-        self, 
-        linkage_matrix: np.ndarray, 
-        orientation: str = "top",
-        side: str = "top"
+        self, linkage_matrix: np.ndarray, orientation: str = "top", side: str = "top"
     ) -> go.Scatter:
         """
         Create a dendrogram trace for the heatmap.
@@ -227,15 +223,15 @@ class HeatmapPanel(BasePanel):
         """
         # Create dendrogram coordinates
         dendro = dendrogram(linkage_matrix, no_plot=True)
-        
+
         # Extract coordinates
-        icoord = np.array(dendro['icoord'])
-        dcoord = np.array(dendro['dcoord'])
-        
+        icoord = np.array(dendro["icoord"])
+        dcoord = np.array(dendro["dcoord"])
+
         # Flatten coordinates for plotting
         x_coords = []
         y_coords = []
-        
+
         for i, d in zip(icoord, dcoord):
             x_coords.extend([i[0], i[1], i[2], i[3], None])
             y_coords.extend([d[0], d[1], d[2], d[3], None])
@@ -243,10 +239,10 @@ class HeatmapPanel(BasePanel):
         return go.Scatter(
             x=x_coords,
             y=y_coords,
-            mode='lines',
-            line=dict(color='black', width=1),
+            mode="lines",
+            line=dict(color="black", width=1),
             showlegend=False,
-            hoverinfo='skip'
+            hoverinfo="skip",
         )
 
     def render(self) -> go.Figure:
@@ -263,15 +259,18 @@ class HeatmapPanel(BasePanel):
 
         # Get expression data
         expression_matrix, gene_names, cell_names = self._get_expression_data()
-        
+
         if expression_matrix.size == 0:
             # Return empty figure if no data
             fig = go.Figure()
             fig.add_annotation(
                 text="No data available for heatmap",
-                xref="paper", yref="paper",
-                x=0.5, y=0.5, showarrow=False,
-                font=dict(size=16)
+                xref="paper",
+                yref="paper",
+                x=0.5,
+                y=0.5,
+                showarrow=False,
+                font=dict(size=16),
             )
             return fig
 
@@ -286,7 +285,7 @@ class HeatmapPanel(BasePanel):
         if gene_order is not None:
             expression_matrix = expression_matrix[gene_order]
             gene_names = [gene_names[i] for i in gene_order]
-        
+
         if cell_order is not None:
             expression_matrix = expression_matrix[:, cell_order]
             cell_names = [cell_names[i] for i in cell_order]
@@ -299,14 +298,15 @@ class HeatmapPanel(BasePanel):
         # Calculate subplot layout
         rows = 2 if show_gene_dendro else 1
         cols = 2 if show_cell_dendro else 1
-        
+
         # Create subplots
         fig = make_subplots(
-            rows=rows, cols=cols,
+            rows=rows,
+            cols=cols,
             subplot_titles=([self.title] if self.title else None),
             horizontal_spacing=0.1,
             vertical_spacing=0.1,
-            specs=[[{"secondary_y": False}] * cols] * rows
+            specs=[[{"secondary_y": False}] * cols] * rows,
         )
 
         # Main heatmap subplot
@@ -321,10 +321,10 @@ class HeatmapPanel(BasePanel):
             colorscale=self.get_config("color_scale"),
             showscale=self.get_config("show_colorbar"),
             hoverongaps=False,
-            hovertemplate="<b>%{y}</b><br>" +
-                         "Cell: %{x}<br>" +
-                         "Expression: %{z:.3f}<br>" +
-                         "<extra></extra>"
+            hovertemplate="<b>%{y}</b><br>"
+            + "Cell: %{x}<br>"
+            + "Expression: %{z:.3f}<br>"
+            + "<extra></extra>",
         )
 
         fig.add_trace(heatmap_trace, row=heatmap_row, col=heatmap_col)
@@ -340,9 +340,7 @@ class HeatmapPanel(BasePanel):
 
         # Update layout
         fig.update_layout(
-            title=self.title or "Gene Expression Heatmap",
-            height=600,
-            showlegend=False
+            title=self.title or "Gene Expression Heatmap", height=600, showlegend=False
         )
 
         # Update axes
@@ -355,15 +353,8 @@ class HeatmapPanel(BasePanel):
             fig.update_yaxes(showticklabels=False, row=heatmap_row, col=1)
 
         # Update main heatmap axes
-        fig.update_xaxes(
-            title="Cells",
-            tickangle=45,
-            row=heatmap_row, col=heatmap_col
-        )
-        fig.update_yaxes(
-            title="Genes",
-            row=heatmap_row, col=heatmap_col
-        )
+        fig.update_xaxes(title="Cells", tickangle=45, row=heatmap_row, col=heatmap_col)
+        fig.update_yaxes(title="Genes", row=heatmap_row, col=heatmap_col)
 
         return fig
 
@@ -381,17 +372,17 @@ class HeatmapPanel(BasePanel):
 
         genes = self.get_config("genes")
         cells = self.get_config("cells")
-        
+
         code_lines = ["# Heatmap panel selection"]
-        
+
         if genes:
             code_lines.append(f"selected_genes = {genes}")
-        
+
         if cells:
             code_lines.append(f"selected_cells = {cells}")
-        
+
         code_lines.append("# Use these for downstream analysis")
-        
+
         return "\n".join(code_lines)
 
     def set_genes(self, genes: List[str]) -> None:
