@@ -20,7 +20,7 @@ from .panels.violin import ViolinPanel
 
 __all__ = [
     "PySEE",
-    "AnnDataWrapper", 
+    "AnnDataWrapper",
     "BasePanel",
     "UMAPPanel",
     "ViolinPanel",
