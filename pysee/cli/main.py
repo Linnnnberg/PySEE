@@ -13,7 +13,7 @@ from ..panels.umap import UMAPPanel
 from ..panels.violin import ViolinPanel
 
 
-def main():
+def main() -> None:
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(
         description="PySEE - Interactive, Reproducible Bioinformatics Visualization for Python"

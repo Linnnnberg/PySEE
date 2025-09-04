@@ -142,7 +142,7 @@ class AnnDataWrapper:
             available_keys = list(self._adata.obsm.keys())
             raise KeyError(f"Embedding '{key}' not found. Available embeddings: {available_keys}")
 
-        return self._adata.obsm[key]
+        return self._adata.obsm[key]  # type: ignore[no-any-return]
 
     def get_expression_data(self, genes: Optional[Union[str, List[str]]] = None) -> np.ndarray:
         """
@@ -159,7 +159,7 @@ class AnnDataWrapper:
             Expression data matrix
         """
         if genes is None:
-            return self._adata.X.toarray() if sparse.issparse(self._adata.X) else self._adata.X
+            return self._adata.X.toarray() if sparse.issparse(self._adata.X) else self._adata.X  # type: ignore[no-any-return]
 
         if isinstance(genes, str):
             genes = [genes]
@@ -177,9 +177,9 @@ class AnnDataWrapper:
 
         # Extract expression data
         if sparse.issparse(self._adata.X):
-            return self._adata.X[:, gene_indices].toarray()
+            return self._adata.X[:, gene_indices].toarray()  # type: ignore[no-any-return]
         else:
-            return self._adata.X[:, gene_indices]
+            return self._adata.X[:, gene_indices]  # type: ignore[no-any-return]
 
     def get_cell_subset(self, obs_mask: Union[str, np.ndarray, List[bool]]) -> "AnnDataWrapper":
         """
@@ -284,4 +284,4 @@ class AnnDataWrapper:
 
     def __len__(self) -> int:
         """Return number of observations."""
-        return self._adata.n_obs
+        return self._adata.n_obs  # type: ignore[no-any-return]

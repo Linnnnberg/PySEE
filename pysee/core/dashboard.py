@@ -27,7 +27,7 @@ class PySEE:
         Title for the dashboard
     """
 
-    def __init__(self, adata, title: Optional[str] = None):
+    def __init__(self, adata: Any, title: Optional[str] = None) -> None:
         self._data_wrapper = AnnDataWrapper(adata)
         self._panels: Dict[str, BasePanel] = {}
         self._panel_order: List[str] = []
