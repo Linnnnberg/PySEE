@@ -70,27 +70,46 @@ pip install -r requirements.txt
 
 ### System Requirements
 
-PySEE's memory requirements depend on your dataset size:
-
+**Local Development:**
 - **Minimum**: 8 GB RAM (small datasets only)
 - **Recommended**: 16 GB RAM (small + medium datasets)
 - **Optimal**: 32 GB RAM (all datasets including large)
-- **Workstation**: 64+ GB RAM (very large datasets, multiple analyses)
+
+**Cloud/Server (Recommended for Large Datasets):**
+- **Google Colab**: Free tier (12 GB RAM) - medium datasets
+- **Google Colab Pro**: 25 GB RAM - large datasets
+- **AWS/GCP**: 32+ GB RAM - very large datasets
+
+#### Dataset Size Guidelines
+
+| Dataset Size | Cells | Memory | Local (16GB) | Cloud/Server |
+|--------------|-------|--------|--------------|--------------|
+| Small        | 3K    | 350 MB | ✅ Perfect   | ✅ Perfect   |
+| Medium       | 68K   | 8.5 GB | ⚠️ Caution   | ✅ Perfect   |
+| Large        | 100K+ | 15+ GB | ❌ Not recommended | ✅ Recommended |
 
 #### Check Your System
 
-Run the system requirements checker to see which datasets are compatible with your system:
+Run the system requirements checker:
 
 ```bash
 python check_system_requirements.py
 ```
 
-#### Memory-Efficient Usage
+#### Cloud Deployment
 
-For large datasets or limited memory:
-- Use backed/on-disk mode: `adata = ad.read_h5ad(file, backed='r')`
-- Subsample datasets to reduce memory usage
-- Close other applications when working with large datasets
+For large datasets, use cloud instead of complex local memory strategies:
+
+```python
+# Google Colab example
+!pip install pysee scanpy
+import scanpy as sc
+from pysee import PySEE
+
+adata = sc.datasets.pbmc68k_reduced()  # 68K cells, works great in cloud
+app = PySEE(adata)
+# ... add panels and analyze
+```
 
 # Install PySEE in development mode
 pip install -e .

@@ -454,6 +454,8 @@ Interactive, Reproducible Bioinformatics Visualization for Python - bringing iSE
 - **Testing**: Working test suite with multi-Python support (3.9-3.12)
 - **Git Workflow**: Professional branch-based development process
 - **Ready for**: v0.1.2 release with Heatmap + QC panels
+- **GPU Analysis**: ✅ COMPLETED - CuPy integration and GPU vs CPU analysis
+- **Cloud Testing**: 📋 TODO - Test large datasets (100K+ cells) on cloud infrastructure
 
 ---
 

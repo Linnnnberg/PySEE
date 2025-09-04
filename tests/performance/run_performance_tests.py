@@ -15,6 +15,7 @@ project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from tests.performance.fixtures.dataset_fixtures import DatasetFixtures
+from tests.performance.fixtures.dataset_registry import DatasetRegistry
 from tests.performance.utils.performance_utils import (
     PerformanceBenchmark, PerformanceReporter, PerformanceTargets
 )
@@ -30,11 +31,12 @@ def run_quick_performance_test():
     print("🚀 PySEE Quick Performance Test")
     print("=" * 50)
     
-    # Get small datasets for quick testing
+    # Get small datasets for quick testing (using fixtures for now)
     datasets = {
         'pbmc3k': DatasetFixtures.get_pbmc3k(),
         'synthetic_small': DatasetFixtures.generate_synthetic_small(),
     }
+    print(f"📊 Loaded {len(datasets)} small datasets from fixtures")
     
     results = []
     
