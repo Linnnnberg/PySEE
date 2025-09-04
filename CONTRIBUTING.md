@@ -62,7 +62,7 @@ Thank you for your interest in contributing to PySEE! This document provides gui
    flake8 .
    black --check .
    mypy pysee/
-   
+
    # Run tests
    python test_pysee.py
    ```

@@ -11,9 +11,9 @@ Brief description of the changes in this PR.
 - [ ] Test addition/update
 
 ## Changes Made
-- 
-- 
-- 
+-
+-
+-
 
 ## Testing
 - [ ] I have added tests that prove my fix is effective or that my feature works

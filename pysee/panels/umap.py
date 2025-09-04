@@ -34,7 +34,13 @@ class UMAPPanel(BasePanel):
         Display title for the panel
     """
 
-    def __init__(self, panel_id: str, embedding: str = "X_umap", color: Optional[str] = None, title: Optional[str] = None):
+    def __init__(
+        self,
+        panel_id: str,
+        embedding: str = "X_umap",
+        color: Optional[str] = None,
+        title: Optional[str] = None,
+    ):
         super().__init__(panel_id, title)
 
         self.set_config("embedding", embedding)
@@ -126,7 +132,10 @@ class UMAPPanel(BasePanel):
                             ),
                             name=str(category),
                             showlegend=self.get_config("show_legend"),
-                            hovertemplate=f"<b>{category}</b><br>" + "X: %{x:.2f}<br>" + "Y: %{y:.2f}<br>" + "<extra></extra>",
+                            hovertemplate=f"<b>{category}</b><br>"
+                            + "X: %{x:.2f}<br>"
+                            + "Y: %{y:.2f}<br>"
+                            + "<extra></extra>",
                         )
                     )
             else:
@@ -185,7 +194,10 @@ class UMAPPanel(BasePanel):
                     ),
                     name="Selected",
                     showlegend=True,
-                    hovertemplate="<b>Selected</b><br>" + "X: %{x:.2f}<br>" + "Y: %{y:.2f}<br>" + "<extra></extra>",
+                    hovertemplate="<b>Selected</b><br>"
+                    + "X: %{x:.2f}<br>"
+                    + "Y: %{y:.2f}<br>"
+                    + "<extra></extra>",
                 )
             )
 

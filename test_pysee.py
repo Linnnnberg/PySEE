@@ -77,11 +77,18 @@ def test_basic_functionality():
 
     # Add UMAP panel
     print("Adding UMAP panel...")
-    app.add_panel("umap", UMAPPanel(panel_id="umap", embedding="X_umap", color="cell_type", title="UMAP Plot"))
+    app.add_panel(
+        "umap", UMAPPanel(panel_id="umap", embedding="X_umap", color="cell_type", title="UMAP Plot")
+    )
 
     # Add violin panel
     print("Adding Violin panel...")
-    app.add_panel("violin", ViolinPanel(panel_id="violin", gene="Gene_001", group_by="cell_type", title="Gene Expression"))
+    app.add_panel(
+        "violin",
+        ViolinPanel(
+            panel_id="violin", gene="Gene_001", group_by="cell_type", title="Gene Expression"
+        ),
+    )
 
     # Link panels
     print("Linking panels...")

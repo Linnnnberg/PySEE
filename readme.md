@@ -1,8 +1,8 @@
 # 🔬 PySEE — Interactive, Reproducible Bioinformatics Visualization for Python
 
-**PySEE** is an open-source project bringing **iSEE-style linked dashboards** to the **Python bioinformatics ecosystem**.  
+**PySEE** is an open-source project bringing **iSEE-style linked dashboards** to the **Python bioinformatics ecosystem**.
 
-If you use **AnnData / Scanpy / MuData / Zarr**, you know the struggle of wiring up UMAP plots, violin plots, QC panels, and genome browsers by hand. R has [Shiny](https://shiny.posit.co/) and [iSEE](https://bioconductor.org/packages/release/bioc/html/iSEE.html).  
+If you use **AnnData / Scanpy / MuData / Zarr**, you know the struggle of wiring up UMAP plots, violin plots, QC panels, and genome browsers by hand. R has [Shiny](https://shiny.posit.co/) and [iSEE](https://bioconductor.org/packages/release/bioc/html/iSEE.html).
 
 👉 **PySEE fills that gap in Python**: a lightweight, notebook-first toolkit for **interactive exploration + reproducible code export**.
 
@@ -23,20 +23,20 @@ If you use **AnnData / Scanpy / MuData / Zarr**, you know the struggle of wiring
 - **CLI interface** for command-line usage
 
 ### Future Directions
-- 🔗 More panels: heatmaps, dotplots, QC metrics  
-- 🧬 Genome browser panels (IGV / JBrowse)  
-- 🧩 Spatial viewer (Vitessce) and imaging viewer (napari)  
-- ☁️ Cloud-scale rendering (Datashader, Zarr-backed data)  
-- 🎛️ Plugin system for custom panels  
-- 🌍 Deployment as shareable web apps (FastAPI/Dash backend)  
+- 🔗 More panels: heatmaps, dotplots, QC metrics
+- 🧬 Genome browser panels (IGV / JBrowse)
+- 🧩 Spatial viewer (Vitessce) and imaging viewer (napari)
+- ☁️ Cloud-scale rendering (Datashader, Zarr-backed data)
+- 🎛️ Plugin system for custom panels
+- 🌍 Deployment as shareable web apps (FastAPI/Dash backend)
 
 ---
 
 ## 🚀 Why PySEE?
 
-- **Python-native**: integrates directly with AnnData, Scanpy, scvi-tools, PyTorch  
-- **Linked & interactive**: selections propagate across panels  
-- **Reproducible**: every UI action can export a Python snippet  
+- **Python-native**: integrates directly with AnnData, Scanpy, scvi-tools, PyTorch
+- **Linked & interactive**: selections propagate across panels
+- **Reproducible**: every UI action can export a Python snippet
 - **Complementary**: works alongside projects like [OLAF](https://arxiv.org/abs/2504.03976) (LLM-based bioinformatics) and [OLSA](https://github.com/openlifescience-ai) (AI benchmarks) as the **visual exploration layer**
 
 ---
@@ -79,7 +79,7 @@ app = PySEE(adata, title="My Analysis")
 
 # Add UMAP panel
 app.add_panel(
-    "umap", 
+    "umap",
     UMAPPanel(
         panel_id="umap",
         embedding="X_umap",
@@ -90,7 +90,7 @@ app.add_panel(
 
 # Add violin panel
 app.add_panel(
-    "violin", 
+    "violin",
     ViolinPanel(
         panel_id="violin",
         gene="CD3D",  # T-cell marker

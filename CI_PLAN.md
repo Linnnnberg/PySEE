@@ -9,6 +9,7 @@ Our CI/CD strategy focuses on:
 - **Code quality checks** (linting, formatting, type checking)
 - **Automated releases** with proper versioning
 - **Clear development workflow** for contributors
+- **Scientific-friendly pre-commit hooks** optimized for bioinformatics workflows
 
 ## CI/CD Pipeline
 
@@ -50,6 +51,37 @@ Jobs:
 2. Check package integrity
 3. Create GitHub release
 4. Upload release assets
+
+## Pre-commit Hooks Optimization
+
+### Scientific-Friendly Configuration
+Our pre-commit configuration is specifically optimized for scientific bioinformatics tools:
+
+#### **Essential Checks (Always Enabled)**
+- **Black Formatting**: 100-character lines (longer for scientific code)
+- **Trailing Whitespace**: Clean version control
+- **End-of-file Fixer**: POSIX compliance
+- **YAML Validation**: CI/CD integrity
+- **Merge Conflict Detection**: Prevents broken code
+- **Debug Statement Detection**: Production quality
+
+#### **Scientific-Optimized Checks**
+- **Flake8**: Lenient rules for scientific naming patterns
+  - Ignores: E203, W503, E501, F401 (common in scientific code)
+  - 100-character line limit
+  - Higher complexity threshold (15)
+- **MyPy**: Simplified type checking
+  - Ignores missing imports (common with scientific libraries)
+  - Warns instead of fails on type issues
+  - Disables strict type requirements
+- **Large Files**: 10MB limit (allows scientific datasets)
+
+#### **Benefits for Scientific Development**
+- ✅ **Faster Development**: Less friction during coding
+- ✅ **Scientific-Friendly**: Accommodates scientific naming and patterns
+- ✅ **Better Collaboration**: Easier for researchers to contribute
+- ✅ **Maintained Quality**: Still catches important issues
+- ✅ **Reliable Setup**: No complex dependency issues
 
 ## Development Workflow
 

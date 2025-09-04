@@ -72,10 +72,16 @@ class AnnDataWrapper:
             warnings.warn("Expression matrix appears to be empty", UserWarning)
 
         if self._adata.n_obs < 10:
-            warnings.warn(f"Very few observations ({self._adata.n_obs}), some visualizations may not work well", UserWarning)
+            warnings.warn(
+                f"Very few observations ({self._adata.n_obs}), some visualizations may not work well",
+                UserWarning,
+            )
 
         if self._adata.n_vars < 10:
-            warnings.warn(f"Very few variables ({self._adata.n_vars}), some visualizations may not work well", UserWarning)
+            warnings.warn(
+                f"Very few variables ({self._adata.n_vars}), some visualizations may not work well",
+                UserWarning,
+            )
 
     def get_obs_columns(self) -> List[str]:
         """Get list of observation (cell) metadata columns."""
@@ -197,7 +203,9 @@ class AnnDataWrapper:
             mask = np.array(obs_mask)
 
         if len(mask) != self._adata.n_obs:
-            raise ValueError(f"Mask length ({len(mask)}) doesn't match number of observations ({self._adata.n_obs})")
+            raise ValueError(
+                f"Mask length ({len(mask)}) doesn't match number of observations ({self._adata.n_obs})"
+            )
 
         subset_adata = self._adata[mask].copy()
         return AnnDataWrapper(subset_adata, validate=False)
@@ -224,7 +232,9 @@ class AnnDataWrapper:
             mask = np.array(var_mask)
 
         if len(mask) != self._adata.n_vars:
-            raise ValueError(f"Mask length ({len(mask)}) doesn't match number of variables ({self._adata.n_vars})")
+            raise ValueError(
+                f"Mask length ({len(mask)}) doesn't match number of variables ({self._adata.n_vars})"
+            )
 
         subset_adata = self._adata[:, mask].copy()
         return AnnDataWrapper(subset_adata, validate=False)
