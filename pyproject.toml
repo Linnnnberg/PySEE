@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pysee"
-version = "0.1.1"
+version = "0.1.2"
 description = "Interactive, Reproducible Bioinformatics Visualization for Python"
 readme = "README.md"
 license = {text = "MIT"}

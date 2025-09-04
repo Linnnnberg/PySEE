@@ -1,0 +1,202 @@
+# PySEE Performance Testing Dataset Registry
+# This file defines the curated datasets for comprehensive performance testing
+
+datasets:
+  # Small Datasets (Smoke & Layout Sanity)
+  pbmc3k:
+    name: "10X PBMC 3K"
+    size: "small"
+    cells: 2700
+    genes: 32738
+    source: "scanpy_builtin"
+    download_url: null
+    checksum: null
+    memory_mb: 350
+    expected_patterns:
+      - "Clear B/T/NK/Mono separation"
+      - "Canonical markers: MS4A1 (B), CD3D (T), NKG7 (NK), LST1/LYZ (Mono)"
+    use_cases:
+      - "UMAP/t-SNE aesthetics"
+      - "Cluster coloring and legends"
+      - "Marker-based labeling"
+      - "QC plots (violin for n_genes/percent.mt)"
+      - "Dot/heatmap panels"
+    memory_fit: "✅ Trivially safe on 16 GB"
+    
+  # Medium Datasets (Batch + Scale)
+  pbmc68k:
+    name: "10X PBMC 68K"
+    size: "medium"
+    cells: 68579
+    genes: 32738
+    source: "scanpy_builtin"
+    download_url: null
+    checksum: null
+    memory_mb: 8500
+    expected_patterns:
+      - "Broad immune atlas with refined T-cell substructure"
+      - "Stable global UMAP geometry across runs"
+    use_cases:
+      - "Visual crowding tests"
+      - "Batch overlays"
+      - "Density-aware scatter"
+      - "Large legend handling"
+      - "Scalable dot/heatmaps"
+    memory_fit: "✅ Safe on 16 GB for end-to-end plotting (keep matrices sparse)"
+    
+  # Large Datasets (Scalability & Downsampling)
+  mouse_brain_1_3m:
+    name: "10X Mouse Brain 1.3M"
+    size: "large"
+    cells: 1300000
+    genes: 27998
+    source: "10x_genomics"
+    download_url: "https://cf.10xgenomics.com/samples/cell-exp/1.3.0/1M_neurons/1M_neurons_filtered_gene_bc_matrices_h5.h5"
+    checksum: "sha256:abc123def456..."  # To be updated with actual checksum
+    memory_mb: 140000
+    expected_patterns:
+      - "Major brain lineages (neurons, glia) dominate"
+      - "Downsampled UMAP retains macro-structure"
+    use_cases:
+      - "Subsampled views (50K–100K cells)"
+      - "Aggregated previews (cluster centroids)"
+      - "Big-data visualization strategies"
+    strategies:
+      - "Backed/on-disk mode for I/O + selection"
+      - "Subsample ≤100K cells for embeddings/plots"
+      - "Density/hexbin or datashader-like strategies for >100K points"
+    memory_fit: "⚠️ Full dataset not feasible on 16 GB"
+    
+  # Additional Real Datasets for Comprehensive Testing
+  tabula_sapiens_sample:
+    name: "Tabula Sapiens Sample"
+    size: "medium"
+    cells: 50000
+    genes: 30000
+    source: "tabula_sapiens"
+    download_url: "https://tabula-sapiens-portal.ds.czbiohub.org/static/downloads/tabula-sapiens.h5ad"
+    checksum: "sha256:def456ghi789..."  # To be updated with actual checksum
+    memory_mb: 6000
+    expected_patterns:
+      - "Multi-organ cell type diversity"
+      - "Tissue-specific marker expression"
+    use_cases:
+      - "Multi-organ visualization"
+      - "Tissue-specific analysis"
+      - "Cross-tissue comparison"
+    memory_fit: "✅ Safe on 16 GB"
+    
+  # Synthetic Datasets for Controlled Testing
+  synthetic_small:
+    name: "Synthetic Small Dataset"
+    size: "small"
+    cells: 1000
+    genes: 2000
+    source: "synthetic"
+    download_url: null
+    checksum: null
+    memory_mb: 8
+    expected_patterns:
+      - "Controlled cell type separation"
+      - "Known marker gene patterns"
+    use_cases:
+      - "Development and debugging"
+      - "Unit testing"
+      - "Performance baseline"
+    memory_fit: "✅ Trivially safe on 16 GB"
+    
+  synthetic_medium:
+    name: "Synthetic Medium Dataset"
+    size: "medium"
+    cells: 10000
+    genes: 5000
+    source: "synthetic"
+    download_url: null
+    checksum: null
+    memory_mb: 200
+    expected_patterns:
+      - "Scalable synthetic patterns"
+      - "Controlled complexity"
+    use_cases:
+      - "Performance scaling tests"
+      - "Memory optimization"
+      - "Interactive performance"
+    memory_fit: "✅ Safe on 16 GB"
+    
+  synthetic_large:
+    name: "Synthetic Large Dataset"
+    size: "large"
+    cells: 100000
+    genes: 15000
+    source: "synthetic"
+    download_url: null
+    checksum: null
+    memory_mb: 6000
+    expected_patterns:
+      - "Large-scale synthetic patterns"
+      - "Memory stress testing"
+    use_cases:
+      - "Memory stress testing"
+      - "Scalability validation"
+      - "Large dataset handling"
+    memory_fit: "✅ Safe on 16 GB"
+
+# Dataset Categories Summary
+categories:
+  small:
+    description: "Smoke & Layout Sanity"
+    memory_target: 500  # MB
+    rendering_target: 2.0  # seconds
+    datasets: ["pbmc3k", "synthetic_small"]
+    
+  medium:
+    description: "Batch + Scale"
+    memory_target: 2000  # MB
+    rendering_target: 5.0  # seconds
+    datasets: ["pbmc68k", "tabula_sapiens_sample", "synthetic_medium"]
+    
+  large:
+    description: "Scalability & Downsampling"
+    memory_target: 8000  # MB
+    rendering_target: 10.0  # seconds
+    datasets: ["mouse_brain_1_3m", "synthetic_large"]
+    
+  very_large:
+    description: "Extreme Scale"
+    memory_target: 32000  # MB
+    rendering_target: 30.0  # seconds
+    datasets: []  # To be added as needed
+
+# System Requirements
+system_requirements:
+  minimum_ram:
+    small: 8        # GB
+    medium: 16      # GB
+    large: 32       # GB
+    very_large: 64  # GB
+    
+  recommended_ram:
+    small: 16       # GB
+    medium: 32      # GB
+    large: 64       # GB
+    very_large: 128 # GB
+
+# Performance Targets
+performance_targets:
+  memory_usage:
+    small: 500      # MB
+    medium: 2000    # MB
+    large: 8000     # MB
+    very_large: 32000  # MB
+    
+  rendering_time:
+    small: 2.0      # seconds
+    medium: 5.0     # seconds
+    large: 10.0     # seconds
+    very_large: 30.0  # seconds
+    
+  interactive_response:
+    zoom_pan: 0.1   # seconds
+    selection: 0.5  # seconds
+    propagation: 0.2  # seconds
+    code_export: 1.0  # seconds
