@@ -5,6 +5,21 @@ All notable changes to PySEE will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2025-01-04
+
+### Optimized
+- **CI/CD Performance**: Reduced CI runtime from 7+ minutes to ~3 minutes
+- **Dependency Management**: Optimized CI dependencies for faster testing
+- **Python Version Support**: Comprehensive testing on Python 3.9, 3.10, 3.11, 3.12
+- **Code Quality**: Fixed all linting errors and type annotations
+- **Project Structure**: Cleaned up redundant files and configurations
+
+### Fixed
+- **CI Configuration**: Excluded venv directory from linting checks
+- **Type Annotations**: Resolved all mypy type checking errors
+- **Linting Issues**: Fixed flake8 and black formatting issues
+- **Case Sensitivity**: Resolved README.md case sensitivity for Linux compatibility
+
 ## [0.1.0] - 2025-01-04
 
 ### Added

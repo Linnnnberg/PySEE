@@ -237,12 +237,23 @@ python test_pysee.py
 python example.py
 ```
 
+### CI/CD Pipeline
+PySEE uses GitHub Actions for automated testing and quality assurance:
+
+- **Fast CI**: ~3 minutes with optimized dependencies
+- **Multi-Python Support**: Tests on Python 3.9, 3.10, 3.11, 3.12
+- **Quality Checks**: flake8, black, mypy, pytest
+- **Automated Testing**: All commits and PRs are automatically tested
+- **Build Verification**: Package builds and installs correctly
+
 ### Contributing
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
 4. Add tests
 5. Submit a pull request
+
+**Note**: All PRs must pass CI checks before merging.
 
 ---
 
