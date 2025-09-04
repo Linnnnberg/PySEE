@@ -6,32 +6,46 @@ Brief description of the changes in this PR.
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
 - [ ] Documentation update
-- [ ] Code refactoring
 - [ ] Performance improvement
-- [ ] Test addition/update
-
-## Changes Made
--
--
--
+- [ ] Code refactoring
 
 ## Testing
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] New and existing unit tests pass locally with my changes
-- [ ] I have tested this change manually
-- [ ] I have run the example scripts to verify functionality
+- [ ] Local tests pass (`python test_pysee.py`)
+- [ ] CI tests pass (all GitHub Actions checks green)
+- [ ] Manual testing completed
+- [ ] New tests added for new functionality
+
+## Code Quality
+- [ ] Code follows project style guidelines
+- [ ] Self-review of code completed
+- [ ] Code is properly commented
+- [ ] No hardcoded values or magic numbers
+- [ ] Error handling implemented where appropriate
+
+## Documentation
+- [ ] README.md updated (if needed)
+- [ ] CHANGELOG.md updated (if needed)
+- [ ] Code comments added for complex logic
+- [ ] API documentation updated (if applicable)
+
+## Breaking Changes
+- [ ] No breaking changes
+- [ ] Breaking changes documented in CHANGELOG.md
+- [ ] Migration guide provided (if needed)
 
 ## Checklist
-- [ ] My code follows the project's style guidelines
+- [ ] My code follows the style guidelines of this project
 - [ ] I have performed a self-review of my own code
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] I have made corresponding changes to the documentation
 - [ ] My changes generate no new warnings
 - [ ] I have added tests that prove my fix is effective or that my feature works
 - [ ] New and existing unit tests pass locally with my changes
-
-## Screenshots (if applicable)
-Add screenshots to help explain your changes.
+- [ ] Any dependent changes have been merged and published
 
 ## Additional Notes
-Any additional information that reviewers should know.
+Any additional information, context, or concerns for reviewers.
+
+## Related Issues
+Closes #(issue number)
+Related to #(issue number)
