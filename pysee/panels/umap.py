@@ -132,10 +132,7 @@ class UMAPPanel(BasePanel):
                             ),
                             name=str(category),
                             showlegend=self.get_config("show_legend"),
-                            hovertemplate=f"<b>{category}</b><br>"
-                            + "X: %{x:.2f}<br>"
-                            + "Y: %{y:.2f}<br>"
-                            + "<extra></extra>",
+                            hovertemplate=f"<b>{category}</b><br>" + "X: %{x:.2f}<br>" + "Y: %{y:.2f}<br>" + "<extra></extra>",
                         )
                     )
             else:
@@ -194,10 +191,7 @@ class UMAPPanel(BasePanel):
                     ),
                     name="Selected",
                     showlegend=True,
-                    hovertemplate="<b>Selected</b><br>"
-                    + "X: %{x:.2f}<br>"
-                    + "Y: %{y:.2f}<br>"
-                    + "<extra></extra>",
+                    hovertemplate="<b>Selected</b><br>" + "X: %{x:.2f}<br>" + "Y: %{y:.2f}<br>" + "<extra></extra>",
                 )
             )
 

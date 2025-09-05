@@ -203,9 +203,7 @@ class AnnDataWrapper:
             mask = np.array(obs_mask)
 
         if len(mask) != self._adata.n_obs:
-            raise ValueError(
-                f"Mask length ({len(mask)}) doesn't match number of observations ({self._adata.n_obs})"
-            )
+            raise ValueError(f"Mask length ({len(mask)}) doesn't match number of observations ({self._adata.n_obs})")
 
         subset_adata = self._adata[mask].copy()
         return AnnDataWrapper(subset_adata, validate=False)
@@ -232,9 +230,7 @@ class AnnDataWrapper:
             mask = np.array(var_mask)
 
         if len(mask) != self._adata.n_vars:
-            raise ValueError(
-                f"Mask length ({len(mask)}) doesn't match number of variables ({self._adata.n_vars})"
-            )
+            raise ValueError(f"Mask length ({len(mask)}) doesn't match number of variables ({self._adata.n_vars})")
 
         subset_adata = self._adata[:, mask].copy()
         return AnnDataWrapper(subset_adata, validate=False)
@@ -338,14 +334,10 @@ class AnnDataWrapper:
             Expression matrix (genes x cells)
         """
         # Get gene indices
-        gene_indices = [
-            self._adata.var_names.get_loc(gene) for gene in genes if gene in self._adata.var_names
-        ]
+        gene_indices = [self._adata.var_names.get_loc(gene) for gene in genes if gene in self._adata.var_names]
 
         # Get cell indices
-        cell_indices = [
-            self._adata.obs_names.get_loc(cell) for cell in cells if cell in self._adata.obs_names
-        ]
+        cell_indices = [self._adata.obs_names.get_loc(cell) for cell in cells if cell in self._adata.obs_names]
 
         if not gene_indices or not cell_indices:
             return np.array([]).reshape(0, 0)
