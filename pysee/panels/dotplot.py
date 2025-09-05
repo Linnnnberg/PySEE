@@ -276,7 +276,13 @@ class DotPlotPanel(BasePanel):
         # Create figure
         fig = go.Figure()
         
-        # Add dots for each gene-group combination
+        # Prepare data for single scatter plot
+        x_coords = []
+        y_coords = []
+        sizes = []
+        colors = []
+        hover_texts = []
+        
         for _, row in dot_data.iterrows():
             gene = row['gene']
             group = row['group']
@@ -286,27 +292,38 @@ class DotPlotPanel(BasePanel):
             # Calculate dot size based on percentage
             dot_size = dot_size_range[0] + (dot_size_range[1] - dot_size_range[0]) * pct_expr
             
-            # Add scatter point
-            fig.add_trace(go.Scatter(
-                x=[group],
-                y=[gene],
-                mode='markers',
-                marker=dict(
-                    size=dot_size,
-                    color=mean_expr,
-                    colorscale=color_scale,
-                    showscale=False,  # We'll handle colorbar in layout
-                    coloraxis="coloraxis",  # Use the coloraxis from layout
-                    line=dict(width=1, color='white')
-                ),
-                name=f"{gene}-{group}",
-                showlegend=False,
-                hovertemplate=f"<b>{gene}</b><br>" +
+            # Collect data
+            x_coords.append(group)
+            y_coords.append(gene)
+            sizes.append(dot_size)
+            colors.append(mean_expr)
+            hover_texts.append(f"<b>{gene}</b><br>" +
                              f"Group: {group}<br>" +
                              f"Mean Expression: {mean_expr:.3f}<br>" +
                              f"Pct Expressing: {pct_expr:.1%}<br>" +
-                             "<extra></extra>"
-            ))
+                             "<extra></extra>")
+        
+        # Add single scatter plot with all dots
+        fig.add_trace(go.Scatter(
+            x=x_coords,
+            y=y_coords,
+            mode='markers',
+            marker=dict(
+                size=sizes,
+                color=colors,
+                colorscale=color_scale,
+                showscale=False,  # We'll handle colorbar in layout
+                coloraxis="coloraxis",  # Use the coloraxis from layout
+                line=dict(width=1, color='white'),
+                sizemode='diameter',
+                sizemin=dot_size_range[0],
+                sizemax=dot_size_range[1]
+            ),
+            name="Gene Expression",
+            showlegend=False,
+            hovertemplate="%{customdata}<extra></extra>",
+            customdata=hover_texts
+        ))
         
         # Update layout
         fig.update_layout(
