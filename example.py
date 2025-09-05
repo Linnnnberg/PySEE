@@ -41,13 +41,17 @@ app = PySEE(adata, title="PBMC3K Analysis")
 
 # Add UMAP panel
 print("Adding UMAP panel...")
-app.add_panel("umap", UMAPPanel(panel_id="umap", embedding="X_umap", color="leiden", title="UMAP Plot"))
+app.add_panel(
+    "umap", UMAPPanel(panel_id="umap", embedding="X_umap", color="leiden", title="UMAP Plot")
+)
 
 # Add violin panel for a specific gene
 print("Adding Violin panel...")
 app.add_panel(
     "violin",
-    ViolinPanel(panel_id="violin", gene="CD3D", group_by="leiden", title="Gene Expression"),  # T-cell marker
+    ViolinPanel(
+        panel_id="violin", gene="CD3D", group_by="leiden", title="Gene Expression"
+    ),  # T-cell marker
 )
 
 # Link panels so that UMAP selection affects violin plot
