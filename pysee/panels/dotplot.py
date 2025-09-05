@@ -199,13 +199,13 @@ class DotPlotPanel(BasePanel):
             DataFrame with columns: gene, group, mean_expr, pct_expr
         """
         # Get gene indices
-        gene_indices = [gene_names.index(gene) for gene in genes if gene in gene_names]
+        gene_indices = [gene_names.get_loc(gene) for gene in genes if gene in gene_names]
         
         # Initialize results
         results = []
         
-        for gene_idx in gene_indices:
-            gene = genes[gene_indices.index(gene_idx)]
+        for i, gene_idx in enumerate(gene_indices):
+            gene = genes[i]
             gene_expr = expression_matrix[:, gene_idx]
             
             for group in unique_groups:
