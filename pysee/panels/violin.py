@@ -135,9 +135,7 @@ class ViolinPanel(BasePanel):
                             fillcolor=colors[i % len(colors)],
                             opacity=0.7,
                             line_color=colors[i % len(colors)],
-                            hovertemplate=f"<b>{group}</b><br>"
-                            + f"{gene}: %{{y:.2f}}<br>"
-                            + "<extra></extra>",
+                            hovertemplate=f"<b>{group}</b><br>" + f"{gene}: %{{y:.2f}}<br>" + "<extra></extra>",
                         )
                     )
                 elif plot_type == "box":
@@ -148,9 +146,7 @@ class ViolinPanel(BasePanel):
                             fillcolor=colors[i % len(colors)],
                             opacity=0.7,
                             line_color=colors[i % len(colors)],
-                            hovertemplate=f"<b>{group}</b><br>"
-                            + f"{gene}: %{{y:.2f}}<br>"
-                            + "<extra></extra>",
+                            hovertemplate=f"<b>{group}</b><br>" + f"{gene}: %{{y:.2f}}<br>" + "<extra></extra>",
                         )
                     )
                 elif plot_type == "strip":
@@ -164,9 +160,7 @@ class ViolinPanel(BasePanel):
                             fillcolor=colors[i % len(colors)],
                             opacity=0.7,
                             line_color=colors[i % len(colors)],
-                            hovertemplate=f"<b>{group}</b><br>"
-                            + f"{gene}: %{{y:.2f}}<br>"
-                            + "<extra></extra>",
+                            hovertemplate=f"<b>{group}</b><br>" + f"{gene}: %{{y:.2f}}<br>" + "<extra></extra>",
                         )
                     )
 
@@ -183,9 +177,7 @@ class ViolinPanel(BasePanel):
                             ),
                             name=f"{group} points",
                             showlegend=False,
-                            hovertemplate=f"<b>{group}</b><br>"
-                            + f"{gene}: %{{y:.2f}}<br>"
-                            + "<extra></extra>",
+                            hovertemplate=f"<b>{group}</b><br>" + f"{gene}: %{{y:.2f}}<br>" + "<extra></extra>",
                         )
                     )
         else:
@@ -261,9 +253,7 @@ class ViolinPanel(BasePanel):
                     ),
                     name="Selected",
                     showlegend=True,
-                    hovertemplate="<b>Selected</b><br>"
-                    + f"{gene}: %{{y:.2f}}<br>"
-                    + "<extra></extra>",
+                    hovertemplate="<b>Selected</b><br>" + f"{gene}: %{{y:.2f}}<br>" + "<extra></extra>",
                 )
             )
 

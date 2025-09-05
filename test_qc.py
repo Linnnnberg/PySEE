@@ -122,8 +122,9 @@ def test_qc_with_other_panels():
 
     # Add some mock UMAP coordinates for testing
     import numpy as np
+
     np.random.seed(42)
-    adata.obsm['X_umap'] = np.random.randn(adata.n_obs, 2)
+    adata.obsm["X_umap"] = np.random.randn(adata.n_obs, 2)
 
     # Initialize PySEE
     app = PySEE(adata)
