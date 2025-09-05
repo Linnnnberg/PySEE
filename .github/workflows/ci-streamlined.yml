@@ -1,0 +1,202 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  tags:
+    - 'v*'
+
+jobs:
+  # Fast quality checks (runs first, fails fast)
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-ci.txt
+        pip install isort
+        pip install -e .
+
+    - name: Code quality checks
+      run: |
+        echo "::group::Black Formatting"
+        black --check --diff --line-length=100 pysee/ test_pysee.py example.py
+        
+        echo "::group::Import Sorting"
+        isort --check-only --profile=black --line-length=100 pysee/ test_pysee.py example.py
+        
+        echo "::group::Linting"
+        flake8 pysee/ test_pysee.py example.py --count --max-line-length=100 --extend-ignore=E203,W503,E501,F401 --statistics
+        
+        echo "::group::Type Checking"
+        mypy pysee/ --ignore-missing-imports --no-strict-optional --warn-return-any --no-error-summary
+
+  # Tests (runs in parallel with quality)
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.11', '3.12']  # Reduced matrix for speed
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-ci.txt
+        pip install -e .
+
+    - name: Run tests
+      run: |
+        pytest test_pysee.py -v --timeout=60
+        pytest tests/ -v --timeout=60 --maxfail=3
+
+    - name: Test example script
+      run: python example.py
+
+  # Build and package (runs after quality passes)
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: quality
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+
+    - name: Build package
+      run: python -m build
+
+    - name: Check package
+      run: twine check dist/*
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist-${{ github.sha }}
+        path: dist/
+        retention-days: 7
+
+  # Security scan (runs in parallel, non-blocking)
+  security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-ci.txt
+        pip install bandit safety
+
+    - name: Security scan
+      run: |
+        echo "::group::Security Scan"
+        bandit -r pysee/ -f json -o bandit-report.json || true
+        safety check --json --output safety-report.json || true
+        echo "::endgroup::"
+
+    - name: Upload security reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: security-reports
+        path: |
+          bandit-report.json
+          safety-report.json
+
+  # Release (only on tags)
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [quality, test, build]
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+
+    - name: Build package
+      run: python -m build
+
+    - name: Check package
+      run: twine check dist/*
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        files: |
+          dist/*
+        draft: false
+        prerelease: false
+        allowUpdates: true
+
+  # Summary (runs after all jobs)
+  summary:
+    runs-on: ubuntu-latest
+    needs: [quality, test, build, security]
+    if: always()
+    
+    steps:
+    - name: CI Summary
+      run: |
+        echo "::group::CI Summary"
+        echo "Quality: ${{ needs.quality.result }}"
+        echo "Tests: ${{ needs.test.result }}"
+        echo "Build: ${{ needs.build.result }}"
+        echo "Security: ${{ needs.security.result }}"
+        echo "::endgroup::"
