@@ -130,7 +130,9 @@ class HeatmapPanel(BasePanel):
 
     def _perform_clustering(
         self, expression_matrix: np.ndarray, cluster_genes: bool = True, cluster_cells: bool = True
-    ) -> Tuple[Optional[np.ndarray], Optional[np.ndarray], Optional[List[int]], Optional[List[int]]]:
+    ) -> Tuple[
+        Optional[np.ndarray], Optional[np.ndarray], Optional[List[int]], Optional[List[int]]
+    ]:
         """
         Perform hierarchical clustering on the expression matrix.
 
@@ -199,7 +201,9 @@ class HeatmapPanel(BasePanel):
 
         return gene_linkage, cell_linkage, gene_order, cell_order  # type: ignore[return-value]
 
-    def _create_dendrogram_trace(self, linkage_matrix: np.ndarray, orientation: str = "top", side: str = "top") -> go.Scatter:
+    def _create_dendrogram_trace(
+        self, linkage_matrix: np.ndarray, orientation: str = "top", side: str = "top"
+    ) -> go.Scatter:
         """
         Create a dendrogram trace for the heatmap.
 
@@ -317,7 +321,10 @@ class HeatmapPanel(BasePanel):
             colorscale=self.get_config("color_scale"),
             showscale=self.get_config("show_colorbar"),
             hoverongaps=False,
-            hovertemplate="<b>%{y}</b><br>" + "Cell: %{x}<br>" + "Expression: %{z:.3f}<br>" + "<extra></extra>",
+            hovertemplate="<b>%{y}</b><br>"
+            + "Cell: %{x}<br>"
+            + "Expression: %{z:.3f}<br>"
+            + "<extra></extra>",
         )
 
         fig.add_trace(heatmap_trace, row=heatmap_row, col=heatmap_col)
@@ -332,7 +339,9 @@ class HeatmapPanel(BasePanel):
             fig.add_trace(dendro_trace, row=heatmap_row, col=1)
 
         # Update layout
-        fig.update_layout(title=self.title or "Gene Expression Heatmap", height=600, showlegend=False)
+        fig.update_layout(
+            title=self.title or "Gene Expression Heatmap", height=600, showlegend=False
+        )
 
         # Update axes
         if show_gene_dendro:
