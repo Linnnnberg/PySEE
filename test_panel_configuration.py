@@ -34,7 +34,9 @@ def create_test_data():
 
     # Calculate QC metrics
     mt_genes = adata.var_names.str.startswith("MT-")
-    adata.obs["pct_counts_mt"] = np.array(adata[:, mt_genes].X.sum(axis=1)).flatten() / adata.obs["n_counts"] * 100
+    adata.obs["pct_counts_mt"] = (
+        np.array(adata[:, mt_genes].X.sum(axis=1)).flatten() / adata.obs["n_counts"] * 100
+    )
 
     # Filter cells
     sc.pp.filter_cells(adata, min_genes=200)
@@ -88,7 +90,9 @@ def test_panel_configuration():
     print("-" * 40)
 
     # Create UMAP panel with initial configuration
-    umap_panel = UMAPPanel(panel_id="umap", embedding="X_umap", color="leiden", title="UMAP Visualization")
+    umap_panel = UMAPPanel(
+        panel_id="umap", embedding="X_umap", color="leiden", title="UMAP Visualization"
+    )
 
     # Configure the panel
     umap_panel.set_config("point_size", 4)
@@ -109,7 +113,9 @@ def test_panel_configuration():
     print("TEST 2: Violin Panel Configuration")
     print("-" * 40)
 
-    violin_panel = ViolinPanel(panel_id="violin", gene="CD3D", group_by="leiden", title="Gene Expression")
+    violin_panel = ViolinPanel(
+        panel_id="violin", gene="CD3D", group_by="leiden", title="Gene Expression"
+    )
 
     # Configure violin panel
     violin_panel.set_config("plot_type", "violin")
@@ -159,7 +165,9 @@ def test_panel_configuration():
 
     try:
         # Create a copy with different configuration
-        umap_export_copy = umap_panel.configure_for_export({"point_size": 6, "opacity": 0.9, "color_scale": "plasma"})
+        umap_export_copy = umap_panel.configure_for_export(
+            {"point_size": 6, "opacity": 0.9, "color_scale": "plasma"}
+        )
 
         print("Created panel copy with export configuration:")
         print(f"  Original point size: {umap_panel.get_config('point_size')}")

@@ -66,7 +66,11 @@ def create_high_quality_data():
         "mito_percent": mito_percent,
     }
 
-    return ad.AnnData(X=expression_matrix, obs=pd.DataFrame(obs_data, index=cell_names), var=pd.DataFrame(index=gene_names))
+    return ad.AnnData(
+        X=expression_matrix,
+        obs=pd.DataFrame(obs_data, index=cell_names),
+        var=pd.DataFrame(index=gene_names),
+    )
 
 
 def create_medium_quality_data():
@@ -105,7 +109,11 @@ def create_medium_quality_data():
         "mito_percent": mito_percent,
     }
 
-    return ad.AnnData(X=expression_matrix, obs=pd.DataFrame(obs_data, index=cell_names), var=pd.DataFrame(index=gene_names))
+    return ad.AnnData(
+        X=expression_matrix,
+        obs=pd.DataFrame(obs_data, index=cell_names),
+        var=pd.DataFrame(index=gene_names),
+    )
 
 
 def create_low_quality_data():
@@ -148,7 +156,11 @@ def create_low_quality_data():
         "mito_percent": mito_percent,
     }
 
-    return ad.AnnData(X=expression_matrix, obs=pd.DataFrame(obs_data, index=cell_names), var=pd.DataFrame(index=gene_names))
+    return ad.AnnData(
+        X=expression_matrix,
+        obs=pd.DataFrame(obs_data, index=cell_names),
+        var=pd.DataFrame(index=gene_names),
+    )
 
 
 def create_mixed_quality_data():
@@ -192,7 +204,11 @@ def create_mixed_quality_data():
         "mito_percent": mito_percent,
     }
 
-    return ad.AnnData(X=expression_matrix, obs=pd.DataFrame(obs_data, index=cell_names), var=pd.DataFrame(index=gene_names))
+    return ad.AnnData(
+        X=expression_matrix,
+        obs=pd.DataFrame(obs_data, index=cell_names),
+        var=pd.DataFrame(index=gene_names),
+    )
 
 
 def analyze_qc_metrics(adata, scenario_name):

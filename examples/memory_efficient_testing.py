@@ -71,11 +71,15 @@ class MemoryEfficientTester:
             n_cells = 50000
             n_genes = 10000
             estimated_memory_mb = (n_cells * n_genes * 4) / (1024 * 1024)
-            print(f"   Adjusted to: {n_cells:,} cells, {n_genes:,} genes ({estimated_memory_mb:.0f} MB)")
+            print(
+                f"   Adjusted to: {n_cells:,} cells, {n_genes:,} genes ({estimated_memory_mb:.0f} MB)"
+            )
 
         # Generate dataset
         np.random.seed(42)
-        expression_matrix = np.random.negative_binomial(4, 0.35, size=(n_cells, n_genes)).astype(np.float32)
+        expression_matrix = np.random.negative_binomial(4, 0.35, size=(n_cells, n_genes)).astype(
+            np.float32
+        )
 
         # Create gene and cell names
         gene_names = [f"Gene_{i:05d}" for i in range(n_genes)]
@@ -94,7 +98,9 @@ class MemoryEfficientTester:
 
         # Create AnnData
         adata = ad.AnnData(
-            X=expression_matrix, obs=pd.DataFrame(obs_data, index=cell_names), var=pd.DataFrame(index=gene_names)
+            X=expression_matrix,
+            obs=pd.DataFrame(obs_data, index=cell_names),
+            var=pd.DataFrame(index=gene_names),
         )
         adata.obsm["X_umap"] = umap_coords
 
@@ -144,7 +150,9 @@ class MemoryEfficientTester:
             # Generate and save dataset
             print(f"   Generating {n_cells:,} cells, {n_genes:,} genes...")
             np.random.seed(42)
-            expression_matrix = np.random.negative_binomial(4, 0.35, size=(n_cells, n_genes)).astype(np.float32)
+            expression_matrix = np.random.negative_binomial(
+                4, 0.35, size=(n_cells, n_genes)
+            ).astype(np.float32)
 
             gene_names = [f"Gene_{i:05d}" for i in range(n_genes)]
             cell_names = [f"Cell_{i:06d}" for i in range(n_cells)]
@@ -155,7 +163,9 @@ class MemoryEfficientTester:
             }
 
             adata = ad.AnnData(
-                X=expression_matrix, obs=pd.DataFrame(obs_data, index=cell_names), var=pd.DataFrame(index=gene_names)
+                X=expression_matrix,
+                obs=pd.DataFrame(obs_data, index=cell_names),
+                var=pd.DataFrame(index=gene_names),
             )
 
             # Save to disk
@@ -165,7 +175,9 @@ class MemoryEfficientTester:
             # Load in backed mode
             print("   Loading in backed mode...")
             adata_backed = ad.read_h5ad(tmp_path, backed="r")
-            print(f"   ✅ Loaded in backed mode: {adata_backed.n_obs:,} cells, {adata_backed.n_vars:,} genes")
+            print(
+                f"   ✅ Loaded in backed mode: {adata_backed.n_obs:,} cells, {adata_backed.n_vars:,} genes"
+            )
 
             # Test PySEE with backed dataset
             self._test_pysee_with_dataset(adata_backed, "Backed Mode Dataset")

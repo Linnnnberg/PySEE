@@ -205,7 +205,9 @@ class BasePanel(ABC):
 
         # Export using PublicationExporter
         exporter = PublicationExporter(template)
-        return exporter.export_panel(figure, output_path, format, width, height, dpi, title, caption, config_overrides)
+        return exporter.export_panel(
+            figure, output_path, format, width, height, dpi, title, caption, config_overrides
+        )
 
     def export_as_bytes(
         self,

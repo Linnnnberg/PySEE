@@ -165,7 +165,9 @@ class QCPanel(BasePanel):
             return fig
 
         # Create subplots
-        fig = make_subplots(rows=n_plots, cols=1, subplot_titles=self._get_subplot_titles(), vertical_spacing=0.1)
+        fig = make_subplots(
+            rows=n_plots, cols=1, subplot_titles=self._get_subplot_titles(), vertical_spacing=0.1
+        )
 
         plot_idx = 1
 
@@ -276,7 +278,9 @@ class QCPanel(BasePanel):
         fig.update_xaxes(title_text="Total Gene Counts", row=row, col=1)
         fig.update_yaxes(title_text="Number of Cells", row=row, col=1)
 
-    def _add_detected_genes_plot(self, fig: go.Figure, detected_genes: np.ndarray, row: int) -> None:
+    def _add_detected_genes_plot(
+        self, fig: go.Figure, detected_genes: np.ndarray, row: int
+    ) -> None:
         """Add detected genes plot."""
         # Create histogram
         fig.add_trace(

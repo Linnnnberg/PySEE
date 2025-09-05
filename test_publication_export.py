@@ -34,7 +34,9 @@ def create_test_data():
 
     # Calculate QC metrics
     mt_genes = adata.var_names.str.startswith("MT-")
-    adata.obs["pct_counts_mt"] = np.array(adata[:, mt_genes].X.sum(axis=1)).flatten() / adata.obs["n_counts"] * 100
+    adata.obs["pct_counts_mt"] = (
+        np.array(adata[:, mt_genes].X.sum(axis=1)).flatten() / adata.obs["n_counts"] * 100
+    )
 
     # Filter cells
     sc.pp.filter_cells(adata, min_genes=200)
@@ -112,11 +114,15 @@ def test_export_functionality():
         print(f"✅ PNG exported: {png_path}")
 
         # SVG export
-        svg_path = app.export_panel("umap", output_dir / "umap_science.svg", format="svg", template="science")
+        svg_path = app.export_panel(
+            "umap", output_dir / "umap_science.svg", format="svg", template="science"
+        )
         print(f"✅ SVG exported: {svg_path}")
 
         # PDF export
-        pdf_path = app.export_panel("umap", output_dir / "umap_cell.pdf", format="pdf", template="cell")
+        pdf_path = app.export_panel(
+            "umap", output_dir / "umap_cell.pdf", format="pdf", template="cell"
+        )
         print(f"✅ PDF exported: {pdf_path}")
 
     except Exception as e:
@@ -128,7 +134,9 @@ def test_export_functionality():
     print("-" * 40)
 
     try:
-        exported_files = app.export_all_panels(output_dir / "batch_export", format="png", template="nature", prefix="figure")
+        exported_files = app.export_all_panels(
+            output_dir / "batch_export", format="png", template="nature", prefix="figure"
+        )
         print(f"✅ Batch exported {len(exported_files)} panels:")
         for file_path in exported_files:
             print(f"   - {file_path}")
@@ -141,7 +149,9 @@ def test_export_functionality():
     print("-" * 40)
 
     try:
-        summary_path = app.export_dashboard_summary(output_dir / "dashboard_summary.html", template="custom")
+        summary_path = app.export_dashboard_summary(
+            output_dir / "dashboard_summary.html", template="custom"
+        )
         print(f"✅ Dashboard summary exported: {summary_path}")
     except Exception as e:
         print(f"❌ Error exporting dashboard summary: {e}")

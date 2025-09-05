@@ -88,7 +88,9 @@ def test_dataset_performance(n_cells, n_genes, size_label):
 
     # Generate synthetic dataset
     np.random.seed(42)
-    expression_matrix = np.random.negative_binomial(4, 0.35, size=(n_cells, n_genes)).astype(np.float32)
+    expression_matrix = np.random.negative_binomial(4, 0.35, size=(n_cells, n_genes)).astype(
+        np.float32
+    )
 
     # Create metadata
     gene_names = [f"Gene_{i:05d}" for i in range(n_genes)]
@@ -104,7 +106,11 @@ def test_dataset_performance(n_cells, n_genes, size_label):
     umap_coords = np.random.randn(n_cells, 2)
 
     # Create AnnData
-    adata = ad.AnnData(X=expression_matrix, obs=pd.DataFrame(obs_data, index=cell_names), var=pd.DataFrame(index=gene_names))
+    adata = ad.AnnData(
+        X=expression_matrix,
+        obs=pd.DataFrame(obs_data, index=cell_names),
+        var=pd.DataFrame(index=gene_names),
+    )
     adata.obsm["X_umap"] = umap_coords
 
     # Test PySEE performance
@@ -181,7 +187,9 @@ def test_gpu_vs_cpu_computation(expression_matrix, size_label):
                 print(f"    GPU Speedup: {cpu_time/gpu_time:.2f}x")
 
             except Exception as gpu_error:
-                print(f"    GPU computation: CuPy installed but GPU operations failed - {gpu_error}")
+                print(
+                    f"    GPU computation: CuPy installed but GPU operations failed - {gpu_error}"
+                )
         else:
             print(f"    GPU computation: CuPy installed but CUDA not available")
 
@@ -203,7 +211,9 @@ def demonstrate_webgl_acceleration():
     print(f"Generating medium dataset: {n_cells:,} cells, {n_genes:,} genes")
 
     np.random.seed(42)
-    expression_matrix = np.random.negative_binomial(4, 0.35, size=(n_cells, n_genes)).astype(np.float32)
+    expression_matrix = np.random.negative_binomial(4, 0.35, size=(n_cells, n_genes)).astype(
+        np.float32
+    )
 
     # Create UMAP coordinates
     umap_coords = np.random.randn(n_cells, 2)
@@ -216,7 +226,11 @@ def demonstrate_webgl_acceleration():
 
     fig_webgl = go.Figure(
         data=go.Scattergl(  # WebGL scatter plot
-            x=umap_coords[:, 0], y=umap_coords[:, 1], mode="markers", marker=dict(size=2, opacity=0.6), name="WebGL Scatter"
+            x=umap_coords[:, 0],
+            y=umap_coords[:, 1],
+            mode="markers",
+            marker=dict(size=2, opacity=0.6),
+            name="WebGL Scatter",
         )
     )
 
@@ -229,7 +243,11 @@ def demonstrate_webgl_acceleration():
 
     fig_regular = go.Figure(
         data=go.Scatter(  # Regular scatter plot
-            x=umap_coords[:, 0], y=umap_coords[:, 1], mode="markers", marker=dict(size=2, opacity=0.6), name="Regular Scatter"
+            x=umap_coords[:, 0],
+            y=umap_coords[:, 1],
+            mode="markers",
+            marker=dict(size=2, opacity=0.6),
+            name="Regular Scatter",
         )
     )
 

@@ -32,35 +32,51 @@ class DatasetFixtures:
     @staticmethod
     def generate_synthetic_small() -> ad.AnnData:
         """Generate small synthetic dataset (1K cells, 2K genes)."""
-        return DatasetFixtures._generate_synthetic_dataset(n_cells=1000, n_genes=2000, complexity="low")
+        return DatasetFixtures._generate_synthetic_dataset(
+            n_cells=1000, n_genes=2000, complexity="low"
+        )
 
     @staticmethod
     def generate_synthetic_medium() -> ad.AnnData:
         """Generate medium synthetic dataset (10K cells, 5K genes)."""
-        return DatasetFixtures._generate_synthetic_dataset(n_cells=10000, n_genes=5000, complexity="medium")
+        return DatasetFixtures._generate_synthetic_dataset(
+            n_cells=10000, n_genes=5000, complexity="medium"
+        )
 
     @staticmethod
     def generate_synthetic_large() -> ad.AnnData:
         """Generate large synthetic dataset (50K cells, 10K genes)."""
-        return DatasetFixtures._generate_synthetic_dataset(n_cells=50000, n_genes=10000, complexity="high")
+        return DatasetFixtures._generate_synthetic_dataset(
+            n_cells=50000, n_genes=10000, complexity="high"
+        )
 
     @staticmethod
     def generate_synthetic_very_large() -> ad.AnnData:
         """Generate very large synthetic dataset (100K cells, 15K genes)."""
-        return DatasetFixtures._generate_synthetic_dataset(n_cells=100000, n_genes=15000, complexity="high")
+        return DatasetFixtures._generate_synthetic_dataset(
+            n_cells=100000, n_genes=15000, complexity="high"
+        )
 
     @staticmethod
-    def _generate_synthetic_dataset(n_cells: int, n_genes: int, complexity: str = "medium") -> ad.AnnData:
+    def _generate_synthetic_dataset(
+        n_cells: int, n_genes: int, complexity: str = "medium"
+    ) -> ad.AnnData:
         """Generate synthetic single-cell dataset for testing."""
         np.random.seed(42)
 
         # Base expression matrix
         if complexity == "low":
-            expression_matrix = np.random.negative_binomial(3, 0.4, size=(n_cells, n_genes)).astype(float)
+            expression_matrix = np.random.negative_binomial(3, 0.4, size=(n_cells, n_genes)).astype(
+                float
+            )
         elif complexity == "medium":
-            expression_matrix = np.random.negative_binomial(4, 0.35, size=(n_cells, n_genes)).astype(float)
+            expression_matrix = np.random.negative_binomial(
+                4, 0.35, size=(n_cells, n_genes)
+            ).astype(float)
         else:  # high complexity
-            expression_matrix = np.random.negative_binomial(5, 0.3, size=(n_cells, n_genes)).astype(float)
+            expression_matrix = np.random.negative_binomial(5, 0.3, size=(n_cells, n_genes)).astype(
+                float
+            )
 
         # Add some structure
         n_hvg = int(0.1 * n_genes)  # 10% highly variable genes
@@ -100,7 +116,9 @@ class DatasetFixtures:
 
         # Create AnnData
         adata = ad.AnnData(
-            X=expression_matrix, obs=pd.DataFrame(obs_data, index=cell_names), var=pd.DataFrame(index=gene_names)
+            X=expression_matrix,
+            obs=pd.DataFrame(obs_data, index=cell_names),
+            var=pd.DataFrame(index=gene_names),
         )
 
         # Add UMAP coordinates

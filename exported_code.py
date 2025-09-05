@@ -14,10 +14,15 @@ from pysee import PySEE, UMAPPanel, ViolinPanel
 app = PySEE(adata, title="PBMC3K Analysis")
 
 # Add UMAP panel: umap
-app.add_panel("umap", UMAPPanel(panel_id="umap", embedding="X_umap", color="leiden", title="UMAP Plot"))
+app.add_panel(
+    "umap", UMAPPanel(panel_id="umap", embedding="X_umap", color="leiden", title="UMAP Plot")
+)
 
 # Add Violin panel: violin
-app.add_panel("violin", ViolinPanel(panel_id="violin", gene="CD3D", group_by="leiden", title="Gene Expression"))
+app.add_panel(
+    "violin",
+    ViolinPanel(panel_id="violin", gene="CD3D", group_by="leiden", title="Gene Expression"),
+)
 
 app.link("umap", "violin")
 

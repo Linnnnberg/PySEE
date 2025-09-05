@@ -34,7 +34,9 @@ def create_sample_data():
 
     # Calculate QC metrics
     mt_genes = adata.var_names.str.startswith("MT-")
-    adata.obs["pct_counts_mt"] = np.array(adata[:, mt_genes].X.sum(axis=1)).flatten() / adata.obs["n_counts"] * 100
+    adata.obs["pct_counts_mt"] = (
+        np.array(adata[:, mt_genes].X.sum(axis=1)).flatten() / adata.obs["n_counts"] * 100
+    )
 
     # Filter cells
     sc.pp.filter_cells(adata, min_genes=200)
@@ -84,7 +86,9 @@ def generate_examples():
     app = PySEE(adata, title="PySEE Example Dashboard")
 
     # Add UMAP panel
-    umap_panel = UMAPPanel(panel_id="umap", embedding="X_umap", color="leiden", title="UMAP Visualization")
+    umap_panel = UMAPPanel(
+        panel_id="umap", embedding="X_umap", color="leiden", title="UMAP Visualization"
+    )
     umap_panel.set_config("point_size", 4)
     umap_panel.set_config("opacity", 0.8)
     app.add_panel("umap", umap_panel)
@@ -93,7 +97,9 @@ def generate_examples():
     available_genes = adata.var_names.tolist()[:10]  # Get first 10 genes
     violin_gene = available_genes[0]  # Use first available gene
 
-    violin_panel = ViolinPanel(panel_id="violin", gene=violin_gene, group_by="leiden", title=f"{violin_gene} Expression")
+    violin_panel = ViolinPanel(
+        panel_id="violin", gene=violin_gene, group_by="leiden", title=f"{violin_gene} Expression"
+    )
     violin_panel.set_config("plot_type", "violin")
     violin_panel.set_config("show_points", True)
     app.add_panel("violin", violin_panel)
@@ -121,10 +127,14 @@ def generate_examples():
         )
 
         print("  - UMAP Science style...")
-        umap_panel.export(output_dir / "umap_science.png", format="png", template="science", title="UMAP Plot")
+        umap_panel.export(
+            output_dir / "umap_science.png", format="png", template="science", title="UMAP Plot"
+        )
 
         print("  - UMAP Cell style...")
-        umap_panel.export(output_dir / "umap_cell.png", format="png", template="cell", title="UMAP Embedding")
+        umap_panel.export(
+            output_dir / "umap_cell.png", format="png", template="cell", title="UMAP Embedding"
+        )
 
         # Export Violin panel
         print("  - Violin plot...")
@@ -153,7 +163,10 @@ def generate_examples():
         # Export as PDF
         print("  - UMAP PDF...")
         umap_panel.export(
-            output_dir / "umap_publication.pdf", format="pdf", template="nature", title="UMAP Visualization for Publication"
+            output_dir / "umap_publication.pdf",
+            format="pdf",
+            template="nature",
+            title="UMAP Visualization for Publication",
         )
 
         # Export dashboard summary

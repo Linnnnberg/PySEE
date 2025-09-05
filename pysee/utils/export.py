@@ -303,13 +303,18 @@ class PublicationExporter:
 
         # Update layout with publication styling
         styled_figure.update_layout(
-            font=dict(family=self.config["font_family"], size=self.config["font_size"], color="black"),
+            font=dict(
+                family=self.config["font_family"], size=self.config["font_size"], color="black"
+            ),
             plot_bgcolor="white",
             paper_bgcolor="white",
             margin=dict(l=60, r=60, t=60, b=60),
             showlegend=True,
             legend=dict(
-                font=dict(size=self.config["font_size"]), bgcolor="rgba(255,255,255,0.8)", bordercolor="black", borderwidth=0.5
+                font=dict(size=self.config["font_size"]),
+                bgcolor="rgba(255,255,255,0.8)",
+                bordercolor="black",
+                borderwidth=0.5,
             ),
         )
 
@@ -337,7 +342,11 @@ class PublicationExporter:
             styled_figure.update_layout(
                 title=dict(
                     text=title,
-                    font=dict(family=self.config["font_family"], size=self.config["font_size"] + 2, color="black"),
+                    font=dict(
+                        family=self.config["font_family"],
+                        size=self.config["font_size"] + 2,
+                        color="black",
+                    ),
                     x=0.5,
                     xanchor="center",
                 )
@@ -352,7 +361,11 @@ class PublicationExporter:
                 x=0.5,
                 y=-0.1,
                 showarrow=False,
-                font=dict(family=self.config["font_family"], size=self.config["font_size"] - 1, color="black"),
+                font=dict(
+                    family=self.config["font_family"],
+                    size=self.config["font_size"] - 1,
+                    color="black",
+                ),
                 xanchor="center",
             )
 
@@ -405,7 +418,11 @@ class PublicationExporter:
 
 
 def export_panel(
-    figure: go.Figure, output_path: Union[str, Path], template: str = "custom", format: str = "png", **kwargs
+    figure: go.Figure,
+    output_path: Union[str, Path],
+    template: str = "custom",
+    format: str = "png",
+    **kwargs,
 ) -> str:
     """
     Convenience function for exporting a single panel.
@@ -433,7 +450,11 @@ def export_panel(
 
 
 def export_batch(
-    panels: List[Tuple[go.Figure, str]], output_dir: Union[str, Path], template: str = "custom", format: str = "png", **kwargs
+    panels: List[Tuple[go.Figure, str]],
+    output_dir: Union[str, Path],
+    template: str = "custom",
+    format: str = "png",
+    **kwargs,
 ) -> List[str]:
     """
     Convenience function for batch export.

@@ -347,7 +347,9 @@ class PySEE:
             "panel_order": self._panel_order,
             "panels": panel_info,
             "has_global_selection": self._global_selection is not None,
-            "n_selected_cells": (np.sum(self._global_selection) if self._global_selection is not None else 0),
+            "n_selected_cells": (
+                np.sum(self._global_selection) if self._global_selection is not None else 0
+            ),
             "data_summary": self._data_wrapper.get_summary_stats(),
         }
 
@@ -360,7 +362,9 @@ class PySEE:
         """
         print(f"PySEE Dashboard: {self._title}")
         print(f"Number of panels: {len(self._panels)}")
-        print(f"Data: {self._data_wrapper.adata.n_obs} cells, {self._data_wrapper.adata.n_vars} genes")
+        print(
+            f"Data: {self._data_wrapper.adata.n_obs} cells, {self._data_wrapper.adata.n_vars} genes"
+        )
 
         if self._global_selection is not None:
             n_selected = np.sum(self._global_selection)
@@ -372,7 +376,12 @@ class PySEE:
             print(f"  - {panel_id}: {panel.__class__.__name__} - {panel.title}")
 
     def export_panel(
-        self, panel_id: str, output_path: Union[str, Path], format: str = "png", template: str = "custom", **kwargs
+        self,
+        panel_id: str,
+        output_path: Union[str, Path],
+        format: str = "png",
+        template: str = "custom",
+        **kwargs,
     ) -> str:
         """
         Export a specific panel in publication-ready format.
@@ -402,7 +411,12 @@ class PySEE:
         return panel.export(output_path, format, template, **kwargs)
 
     def export_all_panels(
-        self, output_dir: Union[str, Path], format: str = "png", template: str = "custom", prefix: str = "panel", **kwargs
+        self,
+        output_dir: Union[str, Path],
+        format: str = "png",
+        template: str = "custom",
+        prefix: str = "panel",
+        **kwargs,
     ) -> List[str]:
         """
         Export all panels in batch.
@@ -501,7 +515,9 @@ class PySEE:
             "available_templates": exporter.get_available_templates(),
             "supported_formats": ["png", "svg", "pdf", "html"],
             "n_panels": len(self._panels),
-            "exportable_panels": [panel_id for panel_id, panel in self._panels.items() if panel.validate_data()],
+            "exportable_panels": [
+                panel_id for panel_id, panel in self._panels.items() if panel.validate_data()
+            ],
             "default_dpi": 300,
             "default_width_mm": 180,
             "default_height_mm": 120,
@@ -568,7 +584,9 @@ class PySEE:
                     # Get panel as base64 image
                     figure = panel.render()
                     base64_image = exporter.get_figure_as_base64(figure, "png")
-                    html_parts.append(f"<img src='data:image/png;base64,{base64_image}' class='panel-image'>")
+                    html_parts.append(
+                        f"<img src='data:image/png;base64,{base64_image}' class='panel-image'>"
+                    )
                 except Exception as e:
                     html_parts.append(f"<p>Error rendering panel: {str(e)}</p>")
             else:

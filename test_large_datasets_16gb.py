@@ -112,7 +112,9 @@ def test_large_synthetic():
 
         # Generate expression matrix
         np.random.seed(42)
-        expression_matrix = np.random.negative_binomial(4, 0.35, size=(n_cells, n_genes)).astype(np.float32)
+        expression_matrix = np.random.negative_binomial(4, 0.35, size=(n_cells, n_genes)).astype(
+            np.float32
+        )
 
         # Create metadata
         gene_names = [f"Gene_{i:05d}" for i in range(n_genes)]
@@ -130,7 +132,9 @@ def test_large_synthetic():
 
         # Create AnnData
         adata = ad.AnnData(
-            X=expression_matrix, obs=pd.DataFrame(obs_data, index=cell_names), var=pd.DataFrame(index=gene_names)
+            X=expression_matrix,
+            obs=pd.DataFrame(obs_data, index=cell_names),
+            var=pd.DataFrame(index=gene_names),
         )
         adata.obsm["X_umap"] = umap_coords
 
@@ -174,7 +178,9 @@ def test_backed_mode():
             print(f"   Generating {n_cells:,} cells, {n_genes:,} genes...")
 
             np.random.seed(42)
-            expression_matrix = np.random.negative_binomial(4, 0.35, size=(n_cells, n_genes)).astype(np.float32)
+            expression_matrix = np.random.negative_binomial(
+                4, 0.35, size=(n_cells, n_genes)
+            ).astype(np.float32)
 
             gene_names = [f"Gene_{i:05d}" for i in range(n_genes)]
             cell_names = [f"Cell_{i:06d}" for i in range(n_cells)]
@@ -185,7 +191,9 @@ def test_backed_mode():
             }
 
             adata = ad.AnnData(
-                X=expression_matrix, obs=pd.DataFrame(obs_data, index=cell_names), var=pd.DataFrame(index=gene_names)
+                X=expression_matrix,
+                obs=pd.DataFrame(obs_data, index=cell_names),
+                var=pd.DataFrame(index=gene_names),
             )
 
             # Save to disk
@@ -195,7 +203,9 @@ def test_backed_mode():
             # Load in backed mode
             print("   Loading in backed mode...")
             adata_backed = ad.read_h5ad(tmp_path, backed="r")
-            print(f"   ✅ Loaded in backed mode: {adata_backed.n_obs:,} cells, {adata_backed.n_vars:,} genes")
+            print(
+                f"   ✅ Loaded in backed mode: {adata_backed.n_obs:,} cells, {adata_backed.n_vars:,} genes"
+            )
 
             # Test PySEE with backed dataset
             app = PySEE(adata_backed, title="Backed Mode Test")

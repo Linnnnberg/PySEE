@@ -16,7 +16,11 @@ sys.path.insert(0, str(project_root))
 
 from tests.performance.fixtures.dataset_fixtures import DatasetFixtures
 from tests.performance.fixtures.dataset_registry import DatasetRegistry
-from tests.performance.utils.performance_utils import PerformanceBenchmark, PerformanceReporter, PerformanceTargets
+from tests.performance.utils.performance_utils import (
+    PerformanceBenchmark,
+    PerformanceReporter,
+    PerformanceTargets,
+)
 from pysee import PySEE
 from pysee.panels.umap import UMAPPanel
 from pysee.panels.violin import ViolinPanel
@@ -72,7 +76,9 @@ def run_quick_performance_test():
             results.append(result)
 
             print(f"     Time: {result['mean_time']:.3f}s ± {result['std_time']:.3f}s")
-            print(f"     Memory: {result['mean_memory_delta']:.1f}MB ± {result['std_memory_delta']:.1f}MB")
+            print(
+                f"     Memory: {result['mean_memory_delta']:.1f}MB ± {result['std_memory_delta']:.1f}MB"
+            )
 
     # Generate report
     print("\n" + "=" * 50)

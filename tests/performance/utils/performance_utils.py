@@ -82,7 +82,10 @@ def measure_performance(description: str = ""):
     finally:
         metrics = profiler.stop_profiling()
         if description:
-            print(f"{description}: {metrics['execution_time']:.3f}s, " f"Memory: {metrics['memory_delta_mb']:.1f}MB")
+            print(
+                f"{description}: {metrics['execution_time']:.3f}s, "
+                f"Memory: {metrics['memory_delta_mb']:.1f}MB"
+            )
 
 
 class PerformanceBenchmark:

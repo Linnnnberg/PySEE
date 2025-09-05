@@ -50,7 +50,9 @@ def create_realistic_sample_data():
     # Create cell metadata with realistic QC metrics
     obs_data = {
         "cell_type": np.random.choice(
-            ["T_cell", "B_cell", "NK_cell", "Monocyte", "Dendritic"], n_cells, p=[0.4, 0.25, 0.15, 0.15, 0.05]
+            ["T_cell", "B_cell", "NK_cell", "Monocyte", "Dendritic"],
+            n_cells,
+            p=[0.4, 0.25, 0.15, 0.15, 0.05],
         ),
         "batch": np.random.choice(["Batch_1", "Batch_2", "Batch_3", "Batch_4"], n_cells),
         "total_counts": expression_matrix.sum(axis=1),
@@ -69,7 +71,9 @@ def create_realistic_sample_data():
 
     # Create AnnData
     adata = ad.AnnData(
-        X=expression_matrix.astype(float), obs=pd.DataFrame(obs_data, index=cell_names), var=pd.DataFrame(index=gene_names)
+        X=expression_matrix.astype(float),
+        obs=pd.DataFrame(obs_data, index=cell_names),
+        var=pd.DataFrame(index=gene_names),
     )
 
     # Add UMAP coordinates
@@ -132,7 +136,9 @@ def demo_multi_panel_dashboard():
 
     # Create all panels
     umap_panel = UMAPPanel("umap", title="UMAP Visualization", color="cell_type")
-    violin_panel = ViolinPanel("violin", gene="Gene_0001", group_by="cell_type", title="Gene Expression by Cell Type")
+    violin_panel = ViolinPanel(
+        "violin", gene="Gene_0001", group_by="cell_type", title="Gene Expression by Cell Type"
+    )
     heatmap_panel = HeatmapPanel("heatmap", title="Gene Expression Heatmap")
     qc_panel = QCPanel("qc", title="Quality Control Metrics")
 
