@@ -295,8 +295,8 @@ class DotPlotPanel(BasePanel):
                     size=dot_size,
                     color=mean_expr,
                     colorscale=color_scale,
-                    showscale=True,
-                    colorbar=dict(title="Mean Expression"),
+                    showscale=False,  # We'll handle colorbar in layout
+                    coloraxis="coloraxis",  # Use the coloraxis from layout
                     line=dict(width=1, color='white')
                 ),
                 name=f"{gene}-{group}",
@@ -315,8 +315,23 @@ class DotPlotPanel(BasePanel):
             yaxis_title="Gene",
             showlegend=show_legend,
             hovermode='closest',
-            width=800,
-            height=600
+            width=900,  # Increased width for better spacing
+            height=600,
+            margin=dict(l=80, r=120, t=80, b=80),  # Added margins for color bar space
+            coloraxis=dict(
+                colorbar=dict(
+                    len=0.8,  # Make color bar shorter
+                    thickness=20,  # Make color bar thicker
+                    x=1.02,  # Position color bar further right
+                    xpad=20,  # Add padding between plot and color bar
+                    title=dict(
+                        text="Mean Expression",
+                        side="right",
+                        font=dict(size=12)
+                    ),
+                    tickfont=dict(size=10)  # Smaller font for tick labels
+                )
+            )
         )
         
         # Update axes
