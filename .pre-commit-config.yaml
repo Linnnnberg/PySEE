@@ -1,44 +1,80 @@
-# Simplified pre-commit configuration for scientific tools
-# Focuses on essential checks without overly complex dependencies
+# Pre-commit hooks for PySEE
+# This configuration runs checks before each commit to catch issues early
+
 repos:
+  # Black code formatting
+  - repo: https://github.com/psf/black
+    rev: 24.10.0
+    hooks:
+      - id: black
+        language_version: python3
+        args: [--line-length=100]
+        files: \.py$
+
+  # isort import sorting
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: [--profile=black, --line-length=100]
+        files: \.py$
+
+  # flake8 linting
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
+        args: [--max-line-length=100, --extend-ignore=E203,W503,E501,F401]
+        files: \.py$
+
+  # mypy type checking
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.13.0
+    hooks:
+      - id: mypy
+        additional_dependencies: [types-all]
+        args: [--ignore-missing-imports, --no-strict-optional, --warn-return-any, --no-error-summary]
+        files: ^pysee/
+
+  # General hooks
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v5.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
-      - id: check-added-large-files
-        args: ['--maxkb=10000']  # Allow larger files for scientific data
-      - id: check-merge-conflict
-      - id: debug-statements
-      - id: check-docstring-first
       - id: check-json
       - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+      - id: debug-statements
+      - id: check-docstring-first
 
-  - repo: https://github.com/psf/black
-    rev: 23.3.0
+  # Python-specific hooks
+  - repo: https://github.com/pycqa/pydocstyle
+    rev: 6.3.0
     hooks:
-      - id: black
-        language_version: python3
-        args: [--line-length=100]  # Longer lines for scientific code
+      - id: pydocstyle
+        args: [--convention=google]
+        files: ^pysee/
 
-  - repo: https://github.com/pycqa/flake8
-    rev: 6.0.0
+  # Security checks
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.10
     hooks:
-      - id: flake8
-        args: [--max-line-length=100, --extend-ignore=E203,W503,E501,F401]
+      - id: bandit
+        args: [-r, pysee/, -f, json, -o, bandit-report.json]
+        exclude: ^tests/
 
-  # Simplified mypy without types-all dependency
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.3.0
-    hooks:
-      - id: mypy
-        args: [
-          --ignore-missing-imports,
-          --no-strict-optional,
-          --warn-return-any,
-          --no-error-summary,
-          --disable-error-code=no-any-return,
-          --disable-error-code=no-untyped-def,
-          --disable-error-code=name-defined,
-        ]
+# Configuration for specific tools
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit.com hooks
+
+    for more information, see https://pre-commit.ci
+  autofix_prs: true
+  autoupdate_branch: ''
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_schedule: weekly
+  skip: []
+  submodules: false

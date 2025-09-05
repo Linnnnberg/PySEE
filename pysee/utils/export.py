@@ -121,11 +121,11 @@ class PublicationExporter:
         """
         # Convert mm to pixels if needed
         if width is None:
-            width = int(self.config["width"] * self.config["dpi"] / 25.4)
+            width = int(float(self.config["width"]) * float(self.config["dpi"]) / 25.4)  # type: ignore[arg-type]
         if height is None:
-            height = int(self.config["height"] * self.config["dpi"] / 25.4)
+            height = int(float(self.config["height"]) * float(self.config["dpi"]) / 25.4)  # type: ignore[arg-type]
         if dpi is None:
-            dpi = self.config["dpi"]
+            dpi = int(self.config["dpi"])  # type: ignore[arg-type]
 
         # Apply publication styling with config overrides
         styled_figure = self._apply_publication_styling(figure, title, caption, config_overrides)
@@ -161,7 +161,7 @@ class PublicationExporter:
         output_dir: Union[str, Path],
         format: str = "png",
         prefix: str = "panel",
-        **kwargs,
+        **kwargs: Any,
     ) -> List[str]:
         """
         Export multiple panels in batch.
@@ -231,21 +231,21 @@ class PublicationExporter:
 
         # Convert mm to pixels if needed
         if width is None:
-            width = int(self.config["width"] * self.config["dpi"] / 25.4)
+            width = int(float(self.config["width"]) * float(self.config["dpi"]) / 25.4)  # type: ignore[arg-type]
         if height is None:
-            height = int(self.config["height"] * self.config["dpi"] / 25.4)
+            height = int(float(self.config["height"]) * float(self.config["dpi"]) / 25.4)  # type: ignore[arg-type]
         if dpi is None:
-            dpi = self.config["dpi"]
+            dpi = int(self.config["dpi"])  # type: ignore[arg-type]
 
         # Convert to bytes
         if format.lower() == "png":
-            return to_image(styled_figure, format="png", width=width, height=height, scale=dpi / 72)
+            return to_image(styled_figure, format="png", width=width, height=height, scale=dpi / 72)  # type: ignore[return-value]
         elif format.lower() == "svg":
-            return to_image(styled_figure, format="svg", width=width, height=height)
+            return to_image(styled_figure, format="svg", width=width, height=height)  # type: ignore[return-value]
         else:
             raise ValueError(f"Unsupported format for bytes: {format}")
 
-    def get_figure_as_base64(self, figure: go.Figure, format: str = "png", **kwargs) -> str:
+    def get_figure_as_base64(self, figure: go.Figure, format: str = "png", **kwargs: Any) -> str:
         """
         Get figure as base64 string for embedding in HTML.
 
@@ -344,7 +344,7 @@ class PublicationExporter:
                     text=title,
                     font=dict(
                         family=self.config["font_family"],
-                        size=self.config["font_size"] + 2,
+                        size=int(self.config["font_size"]) + 2,  # type: ignore[arg-type]
                         color="black",
                     ),
                     x=0.5,
@@ -363,7 +363,7 @@ class PublicationExporter:
                 showarrow=False,
                 font=dict(
                     family=self.config["font_family"],
-                    size=self.config["font_size"] - 1,
+                    size=int(self.config["font_size"]) - 1,  # type: ignore[arg-type]
                     color="black",
                 ),
                 xanchor="center",
@@ -422,7 +422,7 @@ def export_panel(
     output_path: Union[str, Path],
     template: str = "custom",
     format: str = "png",
-    **kwargs,
+    **kwargs: Any,
 ) -> str:
     """
     Convenience function for exporting a single panel.
@@ -454,7 +454,7 @@ def export_batch(
     output_dir: Union[str, Path],
     template: str = "custom",
     format: str = "png",
-    **kwargs,
+    **kwargs: Any,
 ) -> List[str]:
     """
     Convenience function for batch export.

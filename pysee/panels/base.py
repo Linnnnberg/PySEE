@@ -248,7 +248,7 @@ class BasePanel(ABC):
         exporter = PublicationExporter(template)
         return exporter.get_figure_as_bytes(figure, format, width, height, dpi)
 
-    def export_as_base64(self, format: str = "png", template: str = "custom", **kwargs) -> str:
+    def export_as_base64(self, format: str = "png", template: str = "custom", **kwargs: Any) -> str:
         """
         Export the panel visualization as base64 string.
 

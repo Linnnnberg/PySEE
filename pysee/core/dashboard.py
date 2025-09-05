@@ -381,7 +381,7 @@ class PySEE:
         output_path: Union[str, Path],
         format: str = "png",
         template: str = "custom",
-        **kwargs,
+        **kwargs: Any,
     ) -> str:
         """
         Export a specific panel in publication-ready format.
@@ -416,7 +416,7 @@ class PySEE:
         format: str = "png",
         template: str = "custom",
         prefix: str = "panel",
-        **kwargs,
+        **kwargs: Any,
     ) -> List[str]:
         """
         Export all panels in batch.
@@ -462,7 +462,7 @@ class PySEE:
         format: str = "html",
         template: str = "custom",
         include_panels: bool = True,
-        **kwargs,
+        **kwargs: Any,
     ) -> str:
         """
         Export a dashboard summary with all panels.
