@@ -326,7 +326,7 @@ class DotPlotPanel(BasePanel):
                 categoryarray=groups,
                 tickangle=45
             )
-            fig.update_yaxis(
+            fig.update_yaxes(
                 categoryorder='array',
                 categoryarray=genes
             )
