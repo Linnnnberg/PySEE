@@ -15,7 +15,9 @@ from ..panels.violin import ViolinPanel
 
 def main() -> None:
     """Main CLI entry point."""
-    parser = argparse.ArgumentParser(description="PySEE - Interactive, Reproducible Bioinformatics Visualization for Python")
+    parser = argparse.ArgumentParser(
+        description="PySEE - Interactive, Reproducible Bioinformatics Visualization for Python"
+    )
 
     parser.add_argument("data_file", help="Path to the data file (h5ad, h5, or csv)")
 
@@ -25,7 +27,9 @@ def main() -> None:
         help="Title for the dashboard (default: 'PySEE Dashboard')",
     )
 
-    parser.add_argument("--umap-embedding", default="X_umap", help="Embedding key for UMAP plot (default: 'X_umap')")
+    parser.add_argument(
+        "--umap-embedding", default="X_umap", help="Embedding key for UMAP plot (default: 'X_umap')"
+    )
 
     parser.add_argument("--umap-color", help="Column name to use for coloring UMAP points")
 
@@ -33,7 +37,9 @@ def main() -> None:
 
     parser.add_argument("--violin-group", help="Column name to use for grouping violin plot")
 
-    parser.add_argument("--export-code", action="store_true", help="Export Python code instead of running dashboard")
+    parser.add_argument(
+        "--export-code", action="store_true", help="Export Python code instead of running dashboard"
+    )
 
     args = parser.parse_args()
 
@@ -61,7 +67,9 @@ def main() -> None:
     # Add UMAP panel
     app.add_panel(
         "umap",
-        UMAPPanel(panel_id="umap", embedding=args.umap_embedding, color=args.umap_color, title="UMAP Plot"),
+        UMAPPanel(
+            panel_id="umap", embedding=args.umap_embedding, color=args.umap_color, title="UMAP Plot"
+        ),
     )
 
     # Add violin panel if gene is specified

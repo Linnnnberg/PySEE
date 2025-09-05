@@ -154,11 +154,21 @@ class DotPlotPanel(BasePanel):
                 unique_groups = ["All"]
 
             # Calculate statistics for each gene-group combination
-            dot_data = self._calculate_dot_plot_data(expression_matrix, gene_names, genes, groups, unique_groups)
+            dot_data = self._calculate_dot_plot_data(
+                expression_matrix, gene_names, genes, groups, unique_groups
+            )
 
             # Create the dot plot
             fig = self._create_dot_plot_figure(
-                dot_data, genes, unique_groups, dot_size_range, color_scale, show_legend, show_axes, sort_genes, sort_groups
+                dot_data,
+                genes,
+                unique_groups,
+                dot_size_range,
+                color_scale,
+                show_legend,
+                show_axes,
+                sort_genes,
+                sort_groups,
             )
 
             return fig
@@ -214,7 +224,9 @@ class DotPlotPanel(BasePanel):
                 mean_expr = np.mean(group_expr)
                 pct_expr = np.mean(group_expr > 0)  # Percentage of cells expressing
 
-                results.append({"gene": gene, "group": group, "mean_expr": mean_expr, "pct_expr": pct_expr})
+                results.append(
+                    {"gene": gene, "group": group, "mean_expr": mean_expr, "pct_expr": pct_expr}
+                )
 
         return pd.DataFrame(results)
 
@@ -353,9 +365,21 @@ class DotPlotPanel(BasePanel):
         """Create an error figure with the given message."""
         fig = go.Figure()
         fig.add_annotation(
-            text=message, xref="paper", yref="paper", x=0.5, y=0.5, showarrow=False, font=dict(size=16, color="red")
+            text=message,
+            xref="paper",
+            yref="paper",
+            x=0.5,
+            y=0.5,
+            showarrow=False,
+            font=dict(size=16, color="red"),
         )
-        fig.update_layout(title=self.title, xaxis=dict(visible=False), yaxis=dict(visible=False), width=800, height=600)
+        fig.update_layout(
+            title=self.title,
+            xaxis=dict(visible=False),
+            yaxis=dict(visible=False),
+            width=800,
+            height=600,
+        )
         return fig
 
     def get_selection_code(self) -> str:
