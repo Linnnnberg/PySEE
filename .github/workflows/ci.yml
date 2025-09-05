@@ -9,6 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     strategy:
       matrix:
         python-version: ['3.9', '3.10', '3.11', '3.12']  # Full Python version matrix
@@ -58,7 +59,8 @@ jobs:
 
     - name: Test with pytest
       run: |
-        pytest test_pysee.py -v
+        pytest test_pysee.py -v --timeout=60
+        pytest tests/ -v --timeout=60 --maxfail=3
 
     - name: Test example script
       run: |
