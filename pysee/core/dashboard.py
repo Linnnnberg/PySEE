@@ -5,11 +5,13 @@ This module provides the PySEE class that manages panels, interactions,
 and code export functionality.
 """
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union, Tuple
+from pathlib import Path
 import numpy as np
 import pandas as pd
 from .data import AnnDataWrapper
 from ..panels.base import BasePanel
+from ..utils.export import PublicationExporter, export_batch
 
 
 class PySEE:
@@ -368,6 +370,233 @@ class PySEE:
         for panel_id in self._panel_order:
             panel = self._panels[panel_id]
             print(f"  - {panel_id}: {panel.__class__.__name__} - {panel.title}")
+
+    def export_panel(
+        self,
+        panel_id: str,
+        output_path: Union[str, Path],
+        format: str = "png",
+        template: str = "custom",
+        **kwargs
+    ) -> str:
+        """
+        Export a specific panel in publication-ready format.
+
+        Parameters
+        ----------
+        panel_id : str
+            ID of the panel to export
+        output_path : str or Path
+            Output file path
+        format : str, default 'png'
+            Export format ('png', 'svg', 'pdf', 'html')
+        template : str, default 'custom'
+            Journal template ('nature', 'science', 'cell', 'custom')
+        **kwargs
+            Additional arguments passed to panel.export()
+
+        Returns
+        -------
+        str
+            Path to the exported file
+        """
+        if panel_id not in self._panels:
+            raise ValueError(f"Panel '{panel_id}' not found")
+
+        panel = self._panels[panel_id]
+        return panel.export(output_path, format, template, **kwargs)
+
+    def export_all_panels(
+        self,
+        output_dir: Union[str, Path],
+        format: str = "png",
+        template: str = "custom",
+        prefix: str = "panel",
+        **kwargs
+    ) -> List[str]:
+        """
+        Export all panels in batch.
+
+        Parameters
+        ----------
+        output_dir : str or Path
+            Output directory
+        format : str, default 'png'
+            Export format
+        template : str, default 'custom'
+            Journal template
+        prefix : str, default 'panel'
+            Prefix for output filenames
+        **kwargs
+            Additional arguments passed to panel.export()
+
+        Returns
+        -------
+        List[str]
+            List of exported file paths
+        """
+        # Prepare panels for batch export
+        panels = []
+        for panel_id in self._panel_order:
+            panel = self._panels[panel_id]
+            if panel.validate_data():
+                figure = panel.render()
+                panels.append((figure, panel_id))
+            else:
+                print(f"Warning: Panel '{panel_id}' data requirements not met, skipping")
+
+        if not panels:
+            raise ValueError("No valid panels to export")
+
+        # Export using batch function
+        exporter = PublicationExporter(template)
+        return exporter.export_batch(panels, output_dir, format, prefix, **kwargs)
+
+    def export_dashboard_summary(
+        self,
+        output_path: Union[str, Path],
+        format: str = "html",
+        template: str = "custom",
+        include_panels: bool = True,
+        **kwargs
+    ) -> str:
+        """
+        Export a dashboard summary with all panels.
+
+        Parameters
+        ----------
+        output_path : str or Path
+            Output file path
+        format : str, default 'html'
+            Export format (currently only 'html' supported)
+        template : str, default 'custom'
+            Journal template
+        include_panels : bool, default True
+            Whether to include panel visualizations
+        **kwargs
+            Additional arguments
+
+        Returns
+        -------
+        str
+            Path to the exported file
+        """
+        if format.lower() != "html":
+            raise ValueError("Dashboard summary currently only supports HTML format")
+
+        # Create HTML summary
+        html_content = self._generate_html_summary(template, include_panels)
+        
+        # Write to file
+        output_path = Path(output_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        with open(output_path, 'w', encoding='utf-8') as f:
+            f.write(html_content)
+            
+        return str(output_path)
+
+    def get_export_info(self) -> Dict[str, Any]:
+        """
+        Get information about export capabilities.
+
+        Returns
+        -------
+        dict
+            Dictionary containing export information
+        """
+        exporter = PublicationExporter()
+        
+        return {
+            "available_templates": exporter.get_available_templates(),
+            "supported_formats": ["png", "svg", "pdf", "html"],
+            "n_panels": len(self._panels),
+            "exportable_panels": [
+                panel_id for panel_id, panel in self._panels.items()
+                if panel.validate_data()
+            ],
+            "default_dpi": 300,
+            "default_width_mm": 180,
+            "default_height_mm": 120
+        }
+
+    def _generate_html_summary(
+        self,
+        template: str = "custom",
+        include_panels: bool = True
+    ) -> str:
+        """
+        Generate HTML summary of the dashboard.
+
+        Parameters
+        ----------
+        template : str, default 'custom'
+            Journal template
+        include_panels : bool, default True
+            Whether to include panel visualizations
+
+        Returns
+        -------
+        str
+            HTML content
+        """
+        exporter = PublicationExporter(template)
+        config = exporter.config
+        
+        html_parts = [
+            "<!DOCTYPE html>",
+            "<html>",
+            "<head>",
+            f"<title>{self._title}</title>",
+            f"<style>",
+            "body { font-family: Arial, sans-serif; margin: 20px; }",
+            ".panel { margin: 20px 0; border: 1px solid #ccc; padding: 10px; }",
+            ".panel-title { font-weight: bold; font-size: 16px; margin-bottom: 10px; }",
+            ".panel-info { font-size: 12px; color: #666; margin-bottom: 10px; }",
+            ".panel-image { max-width: 100%; height: auto; }",
+            "</style>",
+            "</head>",
+            "<body>",
+            f"<h1>{self._title}</h1>",
+            f"<p>Dashboard with {len(self._panels)} panels</p>",
+            f"<p>Data: {self._data_wrapper.adata.n_obs} cells, {self._data_wrapper.adata.n_vars} genes</p>",
+        ]
+
+        if self._global_selection is not None:
+            n_selected = np.sum(self._global_selection)
+            html_parts.append(f"<p>Selection: {n_selected} cells selected</p>")
+
+        html_parts.append("<hr>")
+
+        # Add panels
+        for panel_id in self._panel_order:
+            panel = self._panels[panel_id]
+            
+            html_parts.extend([
+                f"<div class='panel'>",
+                f"<div class='panel-title'>{panel.title}</div>",
+                f"<div class='panel-info'>Type: {panel.__class__.__name__} | ID: {panel_id}</div>"
+            ])
+
+            if include_panels and panel.validate_data():
+                try:
+                    # Get panel as base64 image
+                    figure = panel.render()
+                    base64_image = exporter.get_figure_as_base64(figure, "png")
+                    html_parts.append(f"<img src='data:image/png;base64,{base64_image}' class='panel-image'>")
+                except Exception as e:
+                    html_parts.append(f"<p>Error rendering panel: {str(e)}</p>")
+            else:
+                html_parts.append("<p>Panel not available for export</p>")
+
+            html_parts.append("</div>")
+
+        html_parts.extend([
+            "</body>",
+            "</html>"
+        ])
+
+        return "\n".join(html_parts)
 
     def __repr__(self) -> str:
         """String representation of the dashboard."""
