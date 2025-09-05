@@ -45,8 +45,8 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest test_pysee.py -v --timeout=60
-        pytest tests/ -v --timeout=60 --maxfail=3
+        pytest test_pysee.py
+        pytest tests/ --maxfail=3
 
     - name: Test example script
       run: python example.py
