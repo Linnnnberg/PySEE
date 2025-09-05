@@ -5,14 +5,16 @@ This module provides the DotPlotPanel class for visualizing marker gene expressi
 with dot plots showing expression levels and percentage of cells expressing each gene.
 """
 
-from typing import Any, Dict, List, Optional, Union, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
+
 import numpy as np
 import pandas as pd
-import plotly.graph_objects as go
 import plotly.express as px
+import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-from .base import BasePanel
+
 from ..core.data import AnnDataWrapper
+from .base import BasePanel
 
 
 class DotPlotPanel(BasePanel):

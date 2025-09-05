@@ -5,13 +5,15 @@ This module provides the PySEE class that manages panels, interactions,
 and code export functionality.
 """
 
-from typing import Any, Dict, List, Optional, Union, Tuple
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple, Union
+
 import numpy as np
 import pandas as pd
-from .data import AnnDataWrapper
+
 from ..panels.base import BasePanel
 from ..utils.export import PublicationExporter, export_batch
+from .data import AnnDataWrapper
 
 
 class PySEE:

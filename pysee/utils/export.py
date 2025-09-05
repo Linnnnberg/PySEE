@@ -5,13 +5,14 @@ This module provides functionality for exporting PySEE visualizations in
 publication-ready formats with high resolution and journal-specific styling.
 """
 
-import os
-import io
-from typing import Any, Dict, List, Optional, Union, Tuple
-from pathlib import Path
-import plotly.graph_objects as go
-from plotly.io import to_image, to_html, write_image, write_html
 import base64
+import io
+import os
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple, Union
+
+import plotly.graph_objects as go
+from plotly.io import to_html, to_image, write_html, write_image
 
 
 class PublicationExporter:

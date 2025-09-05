@@ -5,10 +5,12 @@ This module defines the abstract base class that all PySEE panels must inherit f
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional, Union
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Union
+
 import numpy as np
 import pandas as pd
+
 from ..core.data import AnnDataWrapper
 from ..utils.export import PublicationExporter
 

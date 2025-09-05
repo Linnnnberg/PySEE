@@ -8,6 +8,7 @@ visualizations for single-cell data analysis.
 import numpy as np
 import pandas as pd
 import scanpy as sc
+
 from pysee import PySEE, UMAPPanel, ViolinPanel
 
 # Load sample data (you can replace this with your own data)

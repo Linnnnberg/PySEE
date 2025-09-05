@@ -5,10 +5,11 @@ This module provides utilities to check system resources and warn users
 about potential memory limitations when working with large datasets.
 """
 
-import psutil
 import os
-from typing import Dict, Any, List, Optional, Tuple
 import warnings
+from typing import Any, Dict, List, Optional, Tuple
+
+import psutil
 
 
 class SystemRequirementsChecker:

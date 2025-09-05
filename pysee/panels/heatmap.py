@@ -5,16 +5,18 @@ This module provides the HeatmapPanel class for visualizing gene expression matr
 with hierarchical clustering, dendrograms, and interactive selection.
 """
 
-from typing import Any, Dict, List, Optional, Union, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
+
 import numpy as np
 import pandas as pd
-import plotly.graph_objects as go
 import plotly.express as px
+import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
+from scipy.cluster.hierarchy import dendrogram, fcluster, linkage
 from scipy.spatial.distance import pdist
-from .base import BasePanel
+
 from ..core.data import AnnDataWrapper
+from .base import BasePanel
 
 
 class HeatmapPanel(BasePanel):
