@@ -316,8 +316,7 @@ class DotPlotPanel(BasePanel):
                 coloraxis="coloraxis",  # Use the coloraxis from layout
                 line=dict(width=1, color='white'),
                 sizemode='diameter',
-                sizemin=dot_size_range[0],
-                sizemax=dot_size_range[1]
+                sizemin=dot_size_range[0]
             ),
             name="Gene Expression",
             showlegend=False,
