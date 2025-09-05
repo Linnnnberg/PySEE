@@ -3,8 +3,8 @@ requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pysee"
-version = "0.1.2"
+name = "pysee-bio"
+version = "0.1.3"
 description = "Interactive, Reproducible Bioinformatics Visualization for Python"
 readme = "README.md"
 license = {text = "MIT"}
