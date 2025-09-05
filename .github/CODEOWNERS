@@ -1,0 +1,17 @@
+# Global owners
+* @Linnnnberg
+
+# Critical files require review
+pyproject.toml @Linnnnberg
+.github/workflows/ @Linnnnberg
+README.md @Linnnnberg
+CHANGELOG.md @Linnnnberg
+
+# Core code requires review
+pysee/ @Linnnnberg
+tests/ @Linnnnberg
+examples/ @Linnnnberg
+
+# Documentation requires review
+docs/ @Linnnnberg
+*.md @Linnnnberg
