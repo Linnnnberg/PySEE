@@ -7,14 +7,14 @@ about potential memory limitations when working with large datasets.
 
 import psutil
 import os
-from typing import Dict, Any, Optional, Tuple
+from typing import Dict, Any, List, Optional, Tuple
 import warnings
 
 
 class SystemRequirementsChecker:
     """Check system requirements and provide memory warnings."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.total_memory_gb = psutil.virtual_memory().total / (1024**3)
         self.available_memory_gb = psutil.virtual_memory().available / (1024**3)
         self.cpu_count = psutil.cpu_count()
@@ -110,12 +110,12 @@ class SystemRequirementsChecker:
         requirements = {"small": 16, "medium": 32, "large": 64, "very_large": 128}
         return requirements.get(dataset_size, 16)
 
-    def recommend_datasets(self) -> Dict[str, list]:
+    def recommend_datasets(self) -> Dict[str, List[str]]:
         """Recommend datasets based on current system capabilities."""
-        recommendations = {"safe": [], "caution": [], "not_recommended": []}
+        recommendations: Dict[str, List[str]] = {"safe": [], "caution": [], "not_recommended": []}
 
         # Dataset memory requirements (in MB)
-        dataset_requirements = {
+        dataset_requirements: Dict[str, Dict[str, Any]] = {
             "pbmc3k": {"size": "small", "memory_mb": 350},
             "pbmc68k": {"size": "medium", "memory_mb": 8500},
             "mouse_brain_1_3m": {"size": "large", "memory_mb": 140000},
@@ -125,7 +125,7 @@ class SystemRequirementsChecker:
         }
 
         for dataset_id, req in dataset_requirements.items():
-            compatibility = self.check_dataset_compatibility(req["size"], req["memory_mb"])
+            compatibility = self.check_dataset_compatibility(str(req["size"]), req["memory_mb"])
 
             if compatibility["compatible"] and compatibility["recommended"]:
                 recommendations["safe"].append(dataset_id)
@@ -136,7 +136,7 @@ class SystemRequirementsChecker:
 
         return recommendations
 
-    def print_system_report(self):
+    def print_system_report(self) -> None:
         """Print a comprehensive system report."""
         info = self.get_system_info()
         recommendations = self.recommend_datasets()
@@ -168,7 +168,7 @@ class SystemRequirementsChecker:
             print(f"   - Recommended: 16+ GB for medium datasets")
             print(f"   - Optimal: 32+ GB for large datasets")
 
-    def warn_user(self, dataset_id: str, dataset_size: str, dataset_memory_mb: float):
+    def warn_user(self, dataset_id: str, dataset_size: str, dataset_memory_mb: float) -> bool:
         """Warn user about potential memory issues with a specific dataset."""
         compatibility = self.check_dataset_compatibility(dataset_size, dataset_memory_mb)
 
@@ -201,7 +201,7 @@ def get_system_info() -> Dict[str, Any]:
     return checker.get_system_info()
 
 
-def print_system_report():
+def print_system_report() -> None:
     """Print a comprehensive system report."""
     checker = SystemRequirementsChecker()
     checker.print_system_report()
