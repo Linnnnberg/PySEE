@@ -1,6 +1,8 @@
 name: Pre-commit Ultra-Streamlined
 
 on:
+  push:
+    branches: [ main, develop, merge-publication-export ]
   pull_request:
     branches: [ main, develop ]
 

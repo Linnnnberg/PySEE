@@ -2,7 +2,7 @@ name: CI Ultra-Streamlined
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, merge-publication-export ]
     tags: [ 'v*' ]
   pull_request:
     branches: [ main, develop ]
