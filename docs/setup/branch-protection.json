@@ -3,7 +3,7 @@
     "strict": true,
     "contexts": [
       "test (3.9)",
-      "test (3.10)", 
+      "test (3.10)",
       "test (3.11)",
       "test (3.12)",
       "build"

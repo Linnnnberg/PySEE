@@ -5,15 +5,16 @@ This module provides various dataset sizes and types for comprehensive
 performance testing of PySEE components.
 """
 
+import gzip
+import os
+import tempfile
+from typing import Any, Dict, Optional
+
+import anndata as ad
 import numpy as np
 import pandas as pd
-import anndata as ad
-import scanpy as sc
-from typing import Dict, Any, Optional
-import os
 import requests
-import gzip
-import tempfile
+import scanpy as sc
 
 
 class DatasetFixtures:

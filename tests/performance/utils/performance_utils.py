@@ -5,15 +5,16 @@ This module provides utilities for measuring and analyzing performance
 metrics across different PySEE components.
 """
 
-import time
-import psutil
-import os
 import gc
-from typing import Dict, Any, Callable, List, Optional
+import os
+import time
+import tracemalloc
+from contextlib import contextmanager
+from typing import Any, Callable, Dict, List, Optional
+
 import numpy as np
 import pandas as pd
-from contextlib import contextmanager
-import tracemalloc
+import psutil
 
 
 class PerformanceProfiler:

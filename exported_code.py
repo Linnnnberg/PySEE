@@ -5,6 +5,7 @@
 import numpy as np
 import pandas as pd
 import scanpy as sc
+
 from pysee import PySEE, UMAPPanel, ViolinPanel
 
 # Load your data (replace with your actual data loading code)

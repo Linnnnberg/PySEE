@@ -4,14 +4,15 @@ Demo script to showcase QC Panel and other PySEE visualizations.
 This script creates interactive HTML files showing the QC panel and other panels.
 """
 
+import anndata as ad
 import numpy as np
 import pandas as pd
-import anndata as ad
+
 from pysee import PySEE
+from pysee.panels.heatmap import HeatmapPanel
 from pysee.panels.qc import QCPanel
 from pysee.panels.umap import UMAPPanel
 from pysee.panels.violin import ViolinPanel
-from pysee.panels.heatmap import HeatmapPanel
 
 
 def create_realistic_sample_data():

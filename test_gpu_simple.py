@@ -103,9 +103,10 @@ def test_gpu_vs_cpu_performance():
     print("=" * 40)
 
     try:
+        import time
+
         import cupy as cp
         import numpy as np
-        import time
 
         if not cp.cuda.is_available():
             print("❌ CUDA not available, skipping performance test")

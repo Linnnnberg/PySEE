@@ -17,7 +17,7 @@ PySEE follows [Semantic Versioning (SemVer)](https://semver.org/) with a clear r
 - **Features**: Core architecture, UMAP panel, Violin panel, linking system
 - **Stability**: Stable for basic bioinformatics workflows
 
-### **v0.1.1** - Infrastructure Optimization ✅ COMPLETED  
+### **v0.1.1** - Infrastructure Optimization ✅ COMPLETED
 - **Status**: Infrastructure improvements
 - **Features**: CI/CD optimization, Git workflow, documentation
 - **Stability**: Enhanced development process

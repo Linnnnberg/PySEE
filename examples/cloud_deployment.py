@@ -12,13 +12,14 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
+import anndata as ad
+import scanpy as sc
+
 from pysee import PySEE
-from pysee.panels.umap import UMAPPanel
-from pysee.panels.violin import ViolinPanel
 from pysee.panels.heatmap import HeatmapPanel
 from pysee.panels.qc import QCPanel
-import scanpy as sc
-import anndata as ad
+from pysee.panels.umap import UMAPPanel
+from pysee.panels.violin import ViolinPanel
 
 
 def google_colab_example():

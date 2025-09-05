@@ -5,16 +5,17 @@ This script downloads real bioinformatics datasets for comprehensive
 performance testing of PySEE components, following the curated dataset plan.
 """
 
+import gzip
 import os
 import sys
-import requests
-import gzip
 import tempfile
 from pathlib import Path
-from typing import Optional, Dict, Any
+from typing import Any, Dict, Optional
+
 import anndata as ad
-import pandas as pd
 import numpy as np
+import pandas as pd
+import requests
 import scanpy as sc
 
 # Add project root to path

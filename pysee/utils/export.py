@@ -126,7 +126,7 @@ class PublicationExporter:
         if height is None:
             height = int(float(self.config["height"]) * float(self.config["dpi"]) / 25.4)  # type: ignore[arg-type]
         if dpi is None:
-            dpi = int(self.config["dpi"])  # type: ignore[arg-type]
+            dpi = int(float(self.config["dpi"]))  # type: ignore[arg-type]
 
         # Apply publication styling with config overrides
         styled_figure = self._apply_publication_styling(figure, title, caption, config_overrides)
@@ -236,7 +236,7 @@ class PublicationExporter:
         if height is None:
             height = int(float(self.config["height"]) * float(self.config["dpi"]) / 25.4)  # type: ignore[arg-type]
         if dpi is None:
-            dpi = int(self.config["dpi"])  # type: ignore[arg-type]
+            dpi = int(float(self.config["dpi"]))  # type: ignore[arg-type]
 
         # Convert to bytes
         if format.lower() == "png":
@@ -345,7 +345,7 @@ class PublicationExporter:
                     text=title,
                     font=dict(
                         family=self.config["font_family"],
-                        size=int(self.config["font_size"]) + 2,  # type: ignore[arg-type]
+                        size=int(float(self.config["font_size"])) + 2,  # type: ignore[arg-type]
                         color="black",
                     ),
                     x=0.5,
@@ -364,7 +364,7 @@ class PublicationExporter:
                 showarrow=False,
                 font=dict(
                     family=self.config["font_family"],
-                    size=int(self.config["font_size"]) - 1,  # type: ignore[arg-type]
+                    size=int(float(self.config["font_size"])) - 1,  # type: ignore[arg-type]
                     color="black",
                 ),
                 xanchor="center",

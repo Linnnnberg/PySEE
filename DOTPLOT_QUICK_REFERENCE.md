@@ -6,7 +6,7 @@
 
 ## 🎨 Color = Expression Level
 - **Red** = High expression
-- **Yellow** = Medium expression  
+- **Yellow** = Medium expression
 - **Blue** = Low expression
 
 ## 📊 Reading the Chart

@@ -2,9 +2,10 @@
 Quick preview of QC panel functionality and statistics.
 """
 
+import anndata as ad
 import numpy as np
 import pandas as pd
-import anndata as ad
+
 from pysee import PySEE
 from pysee.panels.qc import QCPanel
 

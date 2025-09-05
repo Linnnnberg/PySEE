@@ -33,7 +33,7 @@ CuPy failed to load nvrtc64_120_0.dll: FileNotFoundError: Could not find module 
    # Add to system PATH:
    C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.x\bin
    C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.x\libnvvp
-   
+
    # Set CUDA_PATH:
    CUDA_PATH=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.x
    ```

@@ -4,7 +4,7 @@
 
 ### **Local Development (Recommended)**
 - **Minimum**: 8 GB RAM
-- **Recommended**: 16 GB RAM  
+- **Recommended**: 16 GB RAM
 - **Optimal**: 32 GB RAM
 - **Use for**: Development, testing, small-medium datasets (up to 68K cells)
 

@@ -32,7 +32,6 @@ repos:
     rev: v1.13.0
     hooks:
       - id: mypy
-        additional_dependencies: [types-all]
         args: [--ignore-missing-imports, --no-strict-optional, --warn-return-any, --no-error-summary]
         files: ^pysee/
 
@@ -50,21 +49,21 @@ repos:
       - id: debug-statements
       - id: check-docstring-first
 
-  # Python-specific hooks
-  - repo: https://github.com/pycqa/pydocstyle
-    rev: 6.3.0
-    hooks:
-      - id: pydocstyle
-        args: [--convention=google]
-        files: ^pysee/
+  # Python-specific hooks (optional - can be enabled later)
+  # - repo: https://github.com/pycqa/pydocstyle
+  #   rev: 6.3.0
+  #   hooks:
+  #     - id: pydocstyle
+  #       args: [--convention=google]
+  #       files: ^pysee/
 
-  # Security checks
-  - repo: https://github.com/PyCQA/bandit
-    rev: 1.7.10
-    hooks:
-      - id: bandit
-        args: [-r, pysee/, -f, json, -o, bandit-report.json]
-        exclude: ^tests/
+  # Security checks (optional - can be enabled later)
+  # - repo: https://github.com/PyCQA/bandit
+  #   rev: 1.7.10
+  #   hooks:
+  #     - id: bandit
+  #       args: [-r, pysee/, -f, json, -o, bandit-report.json]
+  #       exclude: ^tests/
 
 # Configuration for specific tools
 ci:

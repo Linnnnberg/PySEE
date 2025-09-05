@@ -210,7 +210,7 @@ Interactive, Reproducible Bioinformatics Visualization for Python - bringing iSE
 
 #### **Current Package Status (v0.1.2)**
 - **MVP Complete**: ✅ Core architecture, UMAP panel, Violin panel, Heatmap panel
-- **Infrastructure Ready**: ✅ CI/CD, testing, documentation, Git workflow  
+- **Infrastructure Ready**: ✅ CI/CD, testing, documentation, Git workflow
 - **Package Structure**: ✅ Complete setup.py, requirements.txt, proper Python package
 - **Quality Gates**: ✅ All tests passing, linting clean, type checking passing
 - **Documentation**: ✅ Comprehensive README, examples, API docs

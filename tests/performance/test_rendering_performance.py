@@ -5,14 +5,16 @@ This module tests the rendering performance of different PySEE panels
 across various dataset sizes.
 """
 
-import pytest
 import time
-from typing import Dict, Any
+from typing import Any, Dict
+
+import pytest
+
 from pysee import PySEE
-from pysee.panels.umap import UMAPPanel
-from pysee.panels.violin import ViolinPanel
 from pysee.panels.heatmap import HeatmapPanel
 from pysee.panels.qc import QCPanel
+from pysee.panels.umap import UMAPPanel
+from pysee.panels.violin import ViolinPanel
 
 from .fixtures.dataset_fixtures import DatasetFixtures
 from .utils.performance_utils import PerformanceBenchmark, PerformanceTargets

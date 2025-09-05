@@ -4,9 +4,9 @@ Performance test runner for PySEE.
 This script runs comprehensive performance tests and generates reports.
 """
 
-import sys
-import os
 import json
+import os
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -14,6 +14,11 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
+from pysee import PySEE
+from pysee.panels.heatmap import HeatmapPanel
+from pysee.panels.qc import QCPanel
+from pysee.panels.umap import UMAPPanel
+from pysee.panels.violin import ViolinPanel
 from tests.performance.fixtures.dataset_fixtures import DatasetFixtures
 from tests.performance.fixtures.dataset_registry import DatasetRegistry
 from tests.performance.utils.performance_utils import (
@@ -21,11 +26,6 @@ from tests.performance.utils.performance_utils import (
     PerformanceReporter,
     PerformanceTargets,
 )
-from pysee import PySEE
-from pysee.panels.umap import UMAPPanel
-from pysee.panels.violin import ViolinPanel
-from pysee.panels.heatmap import HeatmapPanel
-from pysee.panels.qc import QCPanel
 
 
 def run_quick_performance_test():

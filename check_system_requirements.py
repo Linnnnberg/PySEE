@@ -12,7 +12,7 @@ from pathlib import Path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
-from pysee.utils.system_requirements import print_system_report, SystemRequirementsChecker
+from pysee.utils.system_requirements import SystemRequirementsChecker, print_system_report
 
 
 def main():

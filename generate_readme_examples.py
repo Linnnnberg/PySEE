@@ -13,11 +13,12 @@ from pathlib import Path
 # Add the current directory to Python path
 sys.path.insert(0, str(Path(__file__).parent))
 
-import scanpy as sc
-import pandas as pd
 import numpy as np
+import pandas as pd
+import scanpy as sc
+
 from pysee import PySEE
-from pysee.panels import UMAPPanel, ViolinPanel, HeatmapPanel, QCPanel, DotPlotPanel
+from pysee.panels import DotPlotPanel, HeatmapPanel, QCPanel, UMAPPanel, ViolinPanel
 
 
 def create_sample_data():

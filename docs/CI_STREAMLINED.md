@@ -27,7 +27,7 @@
 #### **Jobs (Parallel Execution):**
 1. **Quality Checks** (5 min) - Fast feedback
    - Black formatting
-   - isort import sorting  
+   - isort import sorting
    - flake8 linting
    - MyPy type checking
 

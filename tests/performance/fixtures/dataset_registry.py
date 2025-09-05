@@ -5,14 +5,15 @@ This module provides a registry system for managing curated datasets
 with metadata, checksums, and performance targets.
 """
 
-import yaml
+import hashlib
 import os
 from pathlib import Path
-from typing import Dict, Any, Optional, List
+from typing import Any, Dict, List, Optional
+
 import anndata as ad
-import scanpy as sc
-import hashlib
 import requests
+import scanpy as sc
+import yaml
 
 # Import will be handled at runtime
 

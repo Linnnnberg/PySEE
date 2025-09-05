@@ -6,23 +6,24 @@ for GPU acceleration in PySEE.
 """
 
 import sys
+import time
 from pathlib import Path
+
+import anndata as ad
 import numpy as np
 import pandas as pd
-import anndata as ad
-import scanpy as sc
-import time
 import psutil
+import scanpy as sc
 
 # Add project root to path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 from pysee import PySEE
-from pysee.panels.umap import UMAPPanel
-from pysee.panels.violin import ViolinPanel
 from pysee.panels.heatmap import HeatmapPanel
 from pysee.panels.qc import QCPanel
+from pysee.panels.umap import UMAPPanel
+from pysee.panels.violin import ViolinPanel
 
 
 def analyze_gpu_vs_cpu_limitations():

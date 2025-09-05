@@ -33,13 +33,13 @@ jobs:
       run: |
         echo "::group::Black Formatting"
         black --check --diff --line-length=100 pysee/ test_pysee.py example.py
-        
+
         echo "::group::Import Sorting"
         isort --check-only --profile=black --line-length=100 pysee/ test_pysee.py example.py
-        
+
         echo "::group::Linting"
         flake8 pysee/ test_pysee.py example.py --count --max-line-length=100 --extend-ignore=E203,W503,E501,F401 --statistics
-        
+
         echo "::group::Type Checking"
         mypy pysee/ --ignore-missing-imports --no-strict-optional --warn-return-any --no-error-summary
 
@@ -80,7 +80,7 @@ jobs:
     timeout-minutes: 5
     needs: quality
     if: github.event_name == 'push' || github.event_name == 'pull_request'
-    
+
     steps:
     - uses: actions/checkout@v4
 
@@ -113,7 +113,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    
+
     steps:
     - uses: actions/checkout@v4
 
@@ -190,7 +190,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [quality, test, build, security]
     if: always()
-    
+
     steps:
     - name: CI Summary
       run: |

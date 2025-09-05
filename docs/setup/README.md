@@ -43,7 +43,7 @@ Bash script to automatically apply branch protection rules using GitHub CLI.
 
 ✅ **Status Checks Required:**
 - test (3.9)
-- test (3.10) 
+- test (3.10)
 - test (3.11)
 - test (3.12)
 - build

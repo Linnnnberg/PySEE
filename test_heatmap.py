@@ -5,9 +5,10 @@ Test script for the HeatmapPanel implementation.
 This script tests the new HeatmapPanel functionality with sample data.
 """
 
+import anndata as ad
 import numpy as np
 import pandas as pd
-import anndata as ad
+
 from pysee import PySEE
 from pysee.panels.heatmap import HeatmapPanel
 from pysee.panels.umap import UMAPPanel

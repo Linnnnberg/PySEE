@@ -5,7 +5,7 @@ The DotPlot panel displays **marker gene expression** across different cell clus
 
 ## 🧬 Genes Analyzed
 - **MS4A1** - B cell marker
-- **NKG7** - NK cell marker  
+- **NKG7** - NK cell marker
 - **GNLY** - NK cell marker
 - **CD19** - B cell marker
 - **FCGR3A** - Monocyte marker
@@ -19,7 +19,7 @@ The data shows **6 distinct cell clusters** (0, 1, 2, 3, 4, 5) identified by Lei
 - Represents **percentage of cells** expressing each gene
 - Larger dots = higher percentage of cells expressing the gene
 
-### Color Intensity  
+### Color Intensity
 - Represents **mean expression level** of each gene
 - Darker colors = higher expression levels
 
@@ -35,7 +35,7 @@ The data shows **6 distinct cell clusters** (0, 1, 2, 3, 4, 5) identified by Lei
 - **High CD19 expression** - Confirms B cell identity
 - **Low NKG7/GNLY** - No NK cell markers
 
-### Cluster 2 (NK Cells)  
+### Cluster 2 (NK Cells)
 - **High NKG7 expression** - Strong NK cell marker
 - **High GNLY expression** - Confirms NK cell identity
 - **Low MS4A1/CD19** - No B cell markers

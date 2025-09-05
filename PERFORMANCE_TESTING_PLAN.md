@@ -12,14 +12,14 @@ This document outlines a comprehensive performance testing strategy for PySEE to
 - **Primary Dataset**: 10X PBMC 3K (`sc.datasets.pbmc3k()`)
 - **Expected Pattern**: Clear B/T/NK/Mono separation; canonical markers (MS4A1 B, CD3D T, NKG7 NK, LST1/LYZ Mono)
 - **Memory Fit**: ✅ Trivially safe on 16 GB
-- **Use Cases**: 
+- **Use Cases**:
   - Panel layout and aesthetics testing
   - Legend and color scheme validation
   - Marker gene visualization (dot plots, heatmaps)
   - QC metrics visualization (violin plots for n_genes/percent.mt)
 
 ### 2. Medium Datasets (Batch + Scale)
-- **Size**: ~68K cells, ~33K genes  
+- **Size**: ~68K cells, ~33K genes
 - **Purpose**: Visual crowding tests, batch overlays, density-aware scatter, large legend handling
 - **Primary Dataset**: 10X PBMC 68K (`sc.datasets.pbmc68k_reduced()`)
 - **Expected Pattern**: Broad immune atlas with refined T-cell substructure; stable global UMAP geometry
@@ -151,7 +151,7 @@ datasets:
       - "Marker-based labeling"
       - "QC plots (violin for n_genes/percent.mt)"
       - "Dot/heatmap panels"
-  
+
   pbmc68k:
     name: "10X PBMC 68K"
     size: "medium"
@@ -170,7 +170,7 @@ datasets:
       - "Density-aware scatter"
       - "Large legend handling"
       - "Scalable dot/heatmaps"
-  
+
   mouse_brain_1_3m:
     name: "10X Mouse Brain 1.3M"
     size: "large"

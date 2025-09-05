@@ -5,14 +5,16 @@ This module tests memory consumption patterns across different PySEE
 components and dataset sizes.
 """
 
-import pytest
 import gc
-from typing import Dict, Any
+from typing import Any, Dict
+
+import pytest
+
 from pysee import PySEE
-from pysee.panels.umap import UMAPPanel
-from pysee.panels.violin import ViolinPanel
 from pysee.panels.heatmap import HeatmapPanel
 from pysee.panels.qc import QCPanel
+from pysee.panels.umap import UMAPPanel
+from pysee.panels.violin import ViolinPanel
 
 from .fixtures.dataset_fixtures import DatasetFixtures
 from .utils.performance_utils import PerformanceProfiler, PerformanceTargets

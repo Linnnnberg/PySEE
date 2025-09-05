@@ -5,25 +5,26 @@ This script demonstrates how to test large and very large datasets
 efficiently on a 16 GB RAM system using various memory optimization strategies.
 """
 
+import gc
+import os
 import sys
+import tempfile
 from pathlib import Path
+
+import anndata as ad
 import numpy as np
 import pandas as pd
-import anndata as ad
 import scanpy as sc
-import tempfile
-import os
-import gc
 
 # Add project root to path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
 from pysee import PySEE
-from pysee.panels.umap import UMAPPanel
-from pysee.panels.violin import ViolinPanel
 from pysee.panels.heatmap import HeatmapPanel
 from pysee.panels.qc import QCPanel
+from pysee.panels.umap import UMAPPanel
+from pysee.panels.violin import ViolinPanel
 from pysee.utils.system_requirements import SystemRequirementsChecker
 
 

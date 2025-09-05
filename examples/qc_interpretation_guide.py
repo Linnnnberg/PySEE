@@ -4,9 +4,10 @@ QC Panel Interpretation Guide for Single-Cell RNA-seq Data.
 This script explains typical QC ranges and how to interpret QC metrics.
 """
 
+import anndata as ad
 import numpy as np
 import pandas as pd
-import anndata as ad
+
 from pysee import PySEE
 from pysee.panels.qc import QCPanel
 

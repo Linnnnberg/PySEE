@@ -21,7 +21,7 @@ ci.yml                    (Main CI - 4 Python versions)
 ├── build job
 └── 15-20 min total
 
-ci-simple.yml            (Simple CI - 4 Python versions)  
+ci-simple.yml            (Simple CI - 4 Python versions)
 ├── check job (4 versions)
 ├── build job (main only)
 └── 15 min total
@@ -51,7 +51,7 @@ release.yml              (Release workflow)
 ```
 ci.yml                   (Main CI - Streamlined)
 ├── quality job (5 min)     - Fast feedback
-├── test job (10 min)       - 3 Python versions  
+├── test job (10 min)       - 3 Python versions
 ├── build job (5 min)       - Package validation
 ├── security job (5 min)    - Main branch only
 ├── release job (10 min)    - Tag-triggered only

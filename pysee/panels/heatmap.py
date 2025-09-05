@@ -80,7 +80,7 @@ class HeatmapPanel(BasePanel):
         # Check if we have expression data
         try:
             expression_matrix = self._data_wrapper.get_expression_data()
-            return expression_matrix.size > 0
+            return bool(expression_matrix.size > 0)
         except Exception:
             return False
 

@@ -7,20 +7,21 @@ even with limited system memory (e.g., 16 GB RAM).
 
 import sys
 from pathlib import Path
-import numpy as np
+from typing import Any, Dict, Optional
+
 import anndata as ad
+import numpy as np
 import scanpy as sc
-from typing import Dict, Any, Optional
 
 # Add project root to path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 from pysee import PySEE
-from pysee.panels.umap import UMAPPanel
-from pysee.panels.violin import ViolinPanel
 from pysee.panels.heatmap import HeatmapPanel
 from pysee.panels.qc import QCPanel
+from pysee.panels.umap import UMAPPanel
+from pysee.panels.violin import ViolinPanel
 from pysee.utils.system_requirements import SystemRequirementsChecker
 
 
@@ -135,8 +136,8 @@ class MemoryEfficientTester:
         print("   Simulating backed/on-disk mode with memory mapping...")
 
         # Create a temporary file for backed mode
-        import tempfile
         import os
+        import tempfile
 
         # Generate dataset and save to disk
         n_cells = 100000
