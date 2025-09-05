@@ -196,7 +196,7 @@ class DotPlotPanel(BasePanel):
             DataFrame with columns: gene, group, mean_expr, pct_expr
         """
         # Get gene indices
-        gene_indices = [gene_names.get_loc(gene) for gene in genes if gene in gene_names]
+        gene_indices = [gene_names.index(gene) for gene in genes if gene in gene_names]
 
         # Initialize results
         results = []
@@ -263,7 +263,7 @@ class DotPlotPanel(BasePanel):
         if sort_genes:
             genes = sorted(genes)
         if sort_groups:
-            groups = sorted(groups)
+            groups = np.array(sorted(groups))
 
         # Create figure
         fig = go.Figure()
