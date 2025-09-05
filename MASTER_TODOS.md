@@ -371,12 +371,12 @@ Interactive, Reproducible Bioinformatics Visualization for Python - bringing iSE
    - **Impact**: High - standard visualization for marker genes
    - **Status**: ✅ **COMPLETED** - Ready for release!
 
-4. **Jupyter Widget Integration** 🔥 **HIGH PRIORITY**
-   - **Branch**: `feature/jupyter-widgets`
-   - **Effort**: 3-4 days
-   - **Impact**: **HIGH** - Critical for scientific users
-   - **Status**: 🔄 **READY TO START** - Plan documented
-   - **Why First**: Most users work in Jupyter, better adoption
+4. **Publication-Quality Export System** 📊 **HIGH PRIORITY**
+   - **Branch**: `feature/publication-export`
+   - **Effort**: 2-3 days
+   - **Impact**: **HIGH** - Essential for scientific publications
+   - **Status**: 🔄 **READY TO START** - Critical for paper writing
+   - **Why First**: Users need publication-ready figures immediately
 
 5. **Data Processing Integration** 🔥 **HIGH PRIORITY**
    - **Branch**: `feature/scanpy-integration`
@@ -385,26 +385,26 @@ Interactive, Reproducible Bioinformatics Visualization for Python - bringing iSE
    - **Status**: 🔄 **READY TO START** - Inspired by single-cell course
    - **Why Second**: Essential for complete workflow, follows course structure
 
-6. **Publication-Quality Export System** 📊 **HIGH PRIORITY**
-   - **Branch**: `feature/publication-export`
-   - **Effort**: 2-3 days
-   - **Impact**: **HIGH** - Essential for scientific publications
-   - **Status**: 🔄 **READY TO START** - Critical for paper writing
-   - **Why Third**: Publication-ready outputs, scientific workflow
+6. **Jupyter Widget Integration** 🔥 **HIGH PRIORITY**
+   - **Branch**: `feature/jupyter-widgets`
+   - **Effort**: 3-4 days
+   - **Impact**: **HIGH** - Critical for scientific users
+   - **Status**: 🔄 **READY TO START** - Plan documented
+   - **Why Third**: Enhanced notebook experience, but basic functionality works
 
-7. **Educational Workflow Templates** 🔥 **HIGH PRIORITY**
+7. **Educational Workflow Templates** 📚 **MEDIUM PRIORITY**
    - **Branch**: `feature/educational-workflows`
    - **Effort**: 2-3 days
-   - **Impact**: **HIGH** - Reduces learning curve
+   - **Impact**: **MEDIUM** - Reduces learning curve
    - **Status**: 🔄 **READY TO START** - Course-inspired
-   - **Why Fourth**: Educational value, user onboarding
+   - **Why Fourth**: Nice to have, not essential for core functionality
 
 8. **Advanced Selection Tools** 🎯 **MEDIUM PRIORITY**
    - **Branch**: `feature/advanced-selection`
    - **Effort**: 1-2 days
    - **Impact**: Medium - improves UX
    - **Status**: 🔄 Ready to start
-   - **Why Fifth**: UX improvement, less critical than publication features
+   - **Why Fifth**: UX improvement, less critical than core features
 
 ---
 
@@ -621,7 +621,7 @@ Interactive, Reproducible Bioinformatics Visualization for Python - bringing iSE
 - **Git Workflow**: Professional branch-based development process
 - **Branch Protection**: Active with CODEOWNERS and comprehensive rules ✅
 - **Ready for**: v0.2.0 release with all visualization panels
-- **Next Priority**: Jupyter Widget Integration (HIGH PRIORITY)
+- **Next Priority**: Publication-Quality Export System (HIGH PRIORITY)
 - **Strategic Focus**: Educational workflows and complete analysis pipeline
 - **Competitive Position**: "iSEE for Python" - interactive single-cell exploration
 - **GPU Analysis**: ✅ COMPLETED - CuPy integration and GPU vs CPU analysis
