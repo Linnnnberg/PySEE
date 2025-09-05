@@ -162,7 +162,7 @@ class BasePanel(ABC):
         dpi: Optional[int] = None,
         title: Optional[str] = None,
         caption: Optional[str] = None,
-        config_overrides: Optional[Dict[str, Any]] = None
+        config_overrides: Optional[Dict[str, Any]] = None,
     ) -> str:
         """
         Export the panel visualization in publication-ready format.
@@ -198,16 +198,14 @@ class BasePanel(ABC):
 
         # Render the figure
         figure = self.render()
-        
+
         # Use panel title if no title provided
         if title is None:
             title = self.title
-            
+
         # Export using PublicationExporter
         exporter = PublicationExporter(template)
-        return exporter.export_panel(
-            figure, output_path, format, width, height, dpi, title, caption, config_overrides
-        )
+        return exporter.export_panel(figure, output_path, format, width, height, dpi, title, caption, config_overrides)
 
     def export_as_bytes(
         self,
@@ -215,7 +213,7 @@ class BasePanel(ABC):
         template: str = "custom",
         width: Optional[int] = None,
         height: Optional[int] = None,
-        dpi: Optional[int] = None
+        dpi: Optional[int] = None,
     ) -> bytes:
         """
         Export the panel visualization as bytes.
@@ -243,17 +241,12 @@ class BasePanel(ABC):
 
         # Render the figure
         figure = self.render()
-        
+
         # Export using PublicationExporter
         exporter = PublicationExporter(template)
         return exporter.get_figure_as_bytes(figure, format, width, height, dpi)
 
-    def export_as_base64(
-        self,
-        format: str = "png",
-        template: str = "custom",
-        **kwargs
-    ) -> str:
+    def export_as_base64(self, format: str = "png", template: str = "custom", **kwargs) -> str:
         """
         Export the panel visualization as base64 string.
 
@@ -276,26 +269,23 @@ class BasePanel(ABC):
 
         # Render the figure
         figure = self.render()
-        
+
         # Export using PublicationExporter
         exporter = PublicationExporter(template)
         return exporter.get_figure_as_base64(figure, format, **kwargs)
 
-    def configure_for_export(
-        self,
-        config_overrides: Dict[str, Any]
-    ) -> "BasePanel":
+    def configure_for_export(self, config_overrides: Dict[str, Any]) -> "BasePanel":
         """
         Configure panel for export with temporary overrides.
-        
+
         This method creates a copy of the panel with modified configuration
         for export purposes without affecting the original panel.
-        
+
         Parameters
         ----------
         config_overrides : dict
             Configuration overrides to apply
-        
+
         Returns
         -------
         BasePanel
@@ -303,17 +293,18 @@ class BasePanel(ABC):
         """
         # Create a copy of the panel
         import copy
+
         panel_copy = copy.deepcopy(self)
-        
+
         # Apply configuration overrides
         panel_copy.update_config(config_overrides)
-        
+
         return panel_copy
 
     def get_export_config(self) -> Dict[str, Any]:
         """
         Get current export configuration.
-        
+
         Returns
         -------
         dict
@@ -326,7 +317,7 @@ class BasePanel(ABC):
             "default_dpi": 300,
             "default_width_mm": 180,
             "default_height_mm": 120,
-            "current_template_config": PublicationExporter().config
+            "current_template_config": PublicationExporter().config,
         }
 
     def get_publication_info(self) -> Dict[str, Any]:
@@ -348,7 +339,7 @@ class BasePanel(ABC):
             "recommended_formats": ["png", "svg", "pdf", "html"],
             "default_dpi": 300,
             "default_width_mm": 180,
-            "default_height_mm": 120
+            "default_height_mm": 120,
         }
 
     def get_panel_info(self) -> Dict[str, Any]:

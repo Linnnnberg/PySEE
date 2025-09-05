@@ -154,9 +154,7 @@ class DotPlotPanel(BasePanel):
                 unique_groups = ["All"]
 
             # Calculate statistics for each gene-group combination
-            dot_data = self._calculate_dot_plot_data(
-                expression_matrix, gene_names, genes, groups, unique_groups
-            )
+            dot_data = self._calculate_dot_plot_data(expression_matrix, gene_names, genes, groups, unique_groups)
 
             # Create the dot plot
             fig = self._create_dot_plot_figure(
@@ -224,9 +222,7 @@ class DotPlotPanel(BasePanel):
                 mean_expr = np.mean(group_expr)
                 pct_expr = np.mean(group_expr > 0)  # Percentage of cells expressing
 
-                results.append(
-                    {"gene": gene, "group": group, "mean_expr": mean_expr, "pct_expr": pct_expr}
-                )
+                results.append({"gene": gene, "group": group, "mean_expr": mean_expr, "pct_expr": pct_expr})
 
         return pd.DataFrame(results)
 

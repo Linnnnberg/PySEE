@@ -347,9 +347,7 @@ class PySEE:
             "panel_order": self._panel_order,
             "panels": panel_info,
             "has_global_selection": self._global_selection is not None,
-            "n_selected_cells": (
-                np.sum(self._global_selection) if self._global_selection is not None else 0
-            ),
+            "n_selected_cells": (np.sum(self._global_selection) if self._global_selection is not None else 0),
             "data_summary": self._data_wrapper.get_summary_stats(),
         }
 
@@ -362,9 +360,7 @@ class PySEE:
         """
         print(f"PySEE Dashboard: {self._title}")
         print(f"Number of panels: {len(self._panels)}")
-        print(
-            f"Data: {self._data_wrapper.adata.n_obs} cells, {self._data_wrapper.adata.n_vars} genes"
-        )
+        print(f"Data: {self._data_wrapper.adata.n_obs} cells, {self._data_wrapper.adata.n_vars} genes")
 
         if self._global_selection is not None:
             n_selected = np.sum(self._global_selection)
@@ -376,12 +372,7 @@ class PySEE:
             print(f"  - {panel_id}: {panel.__class__.__name__} - {panel.title}")
 
     def export_panel(
-        self,
-        panel_id: str,
-        output_path: Union[str, Path],
-        format: str = "png",
-        template: str = "custom",
-        **kwargs
+        self, panel_id: str, output_path: Union[str, Path], format: str = "png", template: str = "custom", **kwargs
     ) -> str:
         """
         Export a specific panel in publication-ready format.
@@ -411,12 +402,7 @@ class PySEE:
         return panel.export(output_path, format, template, **kwargs)
 
     def export_all_panels(
-        self,
-        output_dir: Union[str, Path],
-        format: str = "png",
-        template: str = "custom",
-        prefix: str = "panel",
-        **kwargs
+        self, output_dir: Union[str, Path], format: str = "png", template: str = "custom", prefix: str = "panel", **kwargs
     ) -> List[str]:
         """
         Export all panels in batch.
@@ -462,7 +448,7 @@ class PySEE:
         format: str = "html",
         template: str = "custom",
         include_panels: bool = True,
-        **kwargs
+        **kwargs,
     ) -> str:
         """
         Export a dashboard summary with all panels.
@@ -490,14 +476,14 @@ class PySEE:
 
         # Create HTML summary
         html_content = self._generate_html_summary(template, include_panels)
-        
+
         # Write to file
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        
-        with open(output_path, 'w', encoding='utf-8') as f:
+
+        with open(output_path, "w", encoding="utf-8") as f:
             f.write(html_content)
-            
+
         return str(output_path)
 
     def get_export_info(self) -> Dict[str, Any]:
@@ -510,25 +496,18 @@ class PySEE:
             Dictionary containing export information
         """
         exporter = PublicationExporter()
-        
+
         return {
             "available_templates": exporter.get_available_templates(),
             "supported_formats": ["png", "svg", "pdf", "html"],
             "n_panels": len(self._panels),
-            "exportable_panels": [
-                panel_id for panel_id, panel in self._panels.items()
-                if panel.validate_data()
-            ],
+            "exportable_panels": [panel_id for panel_id, panel in self._panels.items() if panel.validate_data()],
             "default_dpi": 300,
             "default_width_mm": 180,
-            "default_height_mm": 120
+            "default_height_mm": 120,
         }
 
-    def _generate_html_summary(
-        self,
-        template: str = "custom",
-        include_panels: bool = True
-    ) -> str:
+    def _generate_html_summary(self, template: str = "custom", include_panels: bool = True) -> str:
         """
         Generate HTML summary of the dashboard.
 
@@ -546,7 +525,7 @@ class PySEE:
         """
         exporter = PublicationExporter(template)
         config = exporter.config
-        
+
         html_parts = [
             "<!DOCTYPE html>",
             "<html>",
@@ -575,12 +554,14 @@ class PySEE:
         # Add panels
         for panel_id in self._panel_order:
             panel = self._panels[panel_id]
-            
-            html_parts.extend([
-                f"<div class='panel'>",
-                f"<div class='panel-title'>{panel.title}</div>",
-                f"<div class='panel-info'>Type: {panel.__class__.__name__} | ID: {panel_id}</div>"
-            ])
+
+            html_parts.extend(
+                [
+                    f"<div class='panel'>",
+                    f"<div class='panel-title'>{panel.title}</div>",
+                    f"<div class='panel-info'>Type: {panel.__class__.__name__} | ID: {panel_id}</div>",
+                ]
+            )
 
             if include_panels and panel.validate_data():
                 try:
@@ -595,10 +576,7 @@ class PySEE:
 
             html_parts.append("</div>")
 
-        html_parts.extend([
-            "</body>",
-            "</html>"
-        ])
+        html_parts.extend(["</body>", "</html>"])
 
         return "\n".join(html_parts)
 

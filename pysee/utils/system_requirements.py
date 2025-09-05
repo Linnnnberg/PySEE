@@ -32,9 +32,7 @@ class SystemRequirementsChecker:
             "platform": os.name,
         }
 
-    def check_dataset_compatibility(
-        self, dataset_size: str, dataset_memory_mb: float
-    ) -> Dict[str, Any]:
+    def check_dataset_compatibility(self, dataset_size: str, dataset_memory_mb: float) -> Dict[str, Any]:
         """Check if a dataset is compatible with current system."""
         # System requirements by dataset size
         requirements = {
@@ -65,14 +63,10 @@ class SystemRequirementsChecker:
             "memory_usage_percent": memory_usage_percent,
             "min_required_gb": req["min_ram_gb"],
             "recommended_gb": req["recommended_ram_gb"],
-            "warnings": self._generate_warnings(
-                compatible, recommended, memory_usage_percent, dataset_size
-            ),
+            "warnings": self._generate_warnings(compatible, recommended, memory_usage_percent, dataset_size),
         }
 
-    def _generate_warnings(
-        self, compatible: bool, recommended: bool, memory_usage_percent: float, dataset_size: str
-    ) -> list:
+    def _generate_warnings(self, compatible: bool, recommended: bool, memory_usage_percent: float, dataset_size: str) -> list:
         """Generate appropriate warnings based on system capabilities."""
         warnings_list = []
 
@@ -151,12 +145,8 @@ class SystemRequirementsChecker:
             print(f"CPU Frequency: {info['cpu_freq_mhz']:.0f} MHz")
 
         print(f"\n📊 Dataset Recommendations:")
-        print(
-            f"✅ Safe to use: {', '.join(recommendations['safe']) if recommendations['safe'] else 'None'}"
-        )
-        print(
-            f"⚠️ Use with caution: {', '.join(recommendations['caution']) if recommendations['caution'] else 'None'}"
-        )
+        print(f"✅ Safe to use: {', '.join(recommendations['safe']) if recommendations['safe'] else 'None'}")
+        print(f"⚠️ Use with caution: {', '.join(recommendations['caution']) if recommendations['caution'] else 'None'}")
         print(
             f"❌ Not recommended: {', '.join(recommendations['not_recommended']) if recommendations['not_recommended'] else 'None'}"
         )
