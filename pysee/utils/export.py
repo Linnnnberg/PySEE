@@ -240,9 +240,9 @@ class PublicationExporter:
 
         # Convert to bytes
         if format.lower() == "png":
-            return to_image(styled_figure, format="png", width=width, height=height, scale=dpi / 72)  # type: ignore[return-value]
+            return to_image(styled_figure, format="png", width=width, height=height, scale=dpi / 72)  # type: ignore[no-any-return]
         elif format.lower() == "svg":
-            return to_image(styled_figure, format="svg", width=width, height=height)  # type: ignore[return-value]
+            return to_image(styled_figure, format="svg", width=width, height=height)  # type: ignore[no-any-return]
         else:
             raise ValueError(f"Unsupported format for bytes: {format}")
 
