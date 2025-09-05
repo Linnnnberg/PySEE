@@ -6,9 +6,11 @@ This module defines the abstract base class that all PySEE panels must inherit f
 
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional, Union
+from pathlib import Path
 import numpy as np
 import pandas as pd
 from ..core.data import AnnDataWrapper
+from ..utils.export import PublicationExporter
 
 
 class BasePanel(ABC):
@@ -149,6 +151,205 @@ class BasePanel(ABC):
             True if requirements are met, False otherwise
         """
         pass
+
+    def export(
+        self,
+        output_path: Union[str, Path],
+        format: str = "png",
+        template: str = "custom",
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+        dpi: Optional[int] = None,
+        title: Optional[str] = None,
+        caption: Optional[str] = None,
+        config_overrides: Optional[Dict[str, Any]] = None
+    ) -> str:
+        """
+        Export the panel visualization in publication-ready format.
+
+        Parameters
+        ----------
+        output_path : str or Path
+            Output file path
+        format : str, default 'png'
+            Export format ('png', 'svg', 'pdf', 'html')
+        template : str, default 'custom'
+            Journal template ('nature', 'science', 'cell', 'custom')
+        width : int, optional
+            Width in pixels (overrides template)
+        height : int, optional
+            Height in pixels (overrides template)
+        dpi : int, optional
+            DPI for raster formats (overrides template)
+        title : str, optional
+            Figure title (uses panel title if None)
+        caption : str, optional
+            Figure caption
+        config_overrides : dict, optional
+            Configuration overrides for styling
+
+        Returns
+        -------
+        str
+            Path to the exported file
+        """
+        if not self.validate_data():
+            raise ValueError("Panel data requirements not met")
+
+        # Render the figure
+        figure = self.render()
+        
+        # Use panel title if no title provided
+        if title is None:
+            title = self.title
+            
+        # Export using PublicationExporter
+        exporter = PublicationExporter(template)
+        return exporter.export_panel(
+            figure, output_path, format, width, height, dpi, title, caption, config_overrides
+        )
+
+    def export_as_bytes(
+        self,
+        format: str = "png",
+        template: str = "custom",
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+        dpi: Optional[int] = None
+    ) -> bytes:
+        """
+        Export the panel visualization as bytes.
+
+        Parameters
+        ----------
+        format : str, default 'png'
+            Export format ('png', 'svg')
+        template : str, default 'custom'
+            Journal template
+        width : int, optional
+            Width in pixels
+        height : int, optional
+            Height in pixels
+        dpi : int, optional
+            DPI for raster formats
+
+        Returns
+        -------
+        bytes
+            Figure as bytes
+        """
+        if not self.validate_data():
+            raise ValueError("Panel data requirements not met")
+
+        # Render the figure
+        figure = self.render()
+        
+        # Export using PublicationExporter
+        exporter = PublicationExporter(template)
+        return exporter.get_figure_as_bytes(figure, format, width, height, dpi)
+
+    def export_as_base64(
+        self,
+        format: str = "png",
+        template: str = "custom",
+        **kwargs
+    ) -> str:
+        """
+        Export the panel visualization as base64 string.
+
+        Parameters
+        ----------
+        format : str, default 'png'
+            Export format
+        template : str, default 'custom'
+            Journal template
+        **kwargs
+            Additional arguments passed to get_figure_as_bytes
+
+        Returns
+        -------
+        str
+            Base64 encoded figure
+        """
+        if not self.validate_data():
+            raise ValueError("Panel data requirements not met")
+
+        # Render the figure
+        figure = self.render()
+        
+        # Export using PublicationExporter
+        exporter = PublicationExporter(template)
+        return exporter.get_figure_as_base64(figure, format, **kwargs)
+
+    def configure_for_export(
+        self,
+        config_overrides: Dict[str, Any]
+    ) -> "BasePanel":
+        """
+        Configure panel for export with temporary overrides.
+        
+        This method creates a copy of the panel with modified configuration
+        for export purposes without affecting the original panel.
+        
+        Parameters
+        ----------
+        config_overrides : dict
+            Configuration overrides to apply
+        
+        Returns
+        -------
+        BasePanel
+            New panel instance with overridden configuration
+        """
+        # Create a copy of the panel
+        import copy
+        panel_copy = copy.deepcopy(self)
+        
+        # Apply configuration overrides
+        panel_copy.update_config(config_overrides)
+        
+        return panel_copy
+
+    def get_export_config(self) -> Dict[str, Any]:
+        """
+        Get current export configuration.
+        
+        Returns
+        -------
+        dict
+            Current export configuration
+        """
+        return {
+            "panel_config": self._config.copy(),
+            "available_templates": PublicationExporter().get_available_templates(),
+            "recommended_formats": ["png", "svg", "pdf", "html"],
+            "default_dpi": 300,
+            "default_width_mm": 180,
+            "default_height_mm": 120,
+            "current_template_config": PublicationExporter().config
+        }
+
+    def get_publication_info(self) -> Dict[str, Any]:
+        """
+        Get publication-ready information about this panel.
+
+        Returns
+        -------
+        dict
+            Dictionary containing publication information
+        """
+        return {
+            "panel_id": self.panel_id,
+            "title": self.title,
+            "panel_type": self.__class__.__name__,
+            "has_data": self._data_wrapper is not None,
+            "has_selection": self._selection is not None,
+            "available_templates": PublicationExporter().get_available_templates(),
+            "recommended_formats": ["png", "svg", "pdf", "html"],
+            "default_dpi": 300,
+            "default_width_mm": 180,
+            "default_height_mm": 120
+        }
 
     def get_panel_info(self) -> Dict[str, Any]:
         """
