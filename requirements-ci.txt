@@ -13,6 +13,7 @@ scanpy>=1.9.0
 # Visualization (minimal for CI)
 matplotlib>=3.5.0
 plotly>=5.0.0
+shapely>=1.8.0
 
 # Clustering dependencies
 python-igraph>=0.10.0
