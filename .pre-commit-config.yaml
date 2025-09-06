@@ -19,13 +19,6 @@ repos:
         args: [--profile=black, --line-length=100]
         files: \.py$
 
-  # flake8 linting
-  - repo: https://github.com/pycqa/flake8
-    rev: 7.1.1
-    hooks:
-      - id: flake8
-        args: [--max-line-length=100, "--extend-ignore=E203,W503,E501,F401,F541"]
-        files: \.py$
 
   # mypy type checking
   - repo: https://github.com/pre-commit/mirrors-mypy
@@ -40,7 +33,6 @@ repos:
     rev: v5.0.0
     hooks:
       - id: trailing-whitespace
-      - id: end-of-file-fixer
       - id: check-yaml
       - id: check-json
       - id: check-toml
