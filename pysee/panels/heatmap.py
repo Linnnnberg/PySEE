@@ -17,6 +17,8 @@ from scipy.spatial.distance import pdist
 
 from ..core.data import AnnDataWrapper
 from .base import BasePanel
+from .plotly_selection import PlotlySelectionTools
+from .advanced_selection import AdvancedSelectionManager
 
 
 class HeatmapPanel(BasePanel):
@@ -64,6 +66,8 @@ class HeatmapPanel(BasePanel):
         self.set_config("cell_labels", True)
         self.set_config("max_genes", 100)
         self.set_config("max_cells", 500)
+        self.set_config("width", 1000)
+        self.set_config("height", 800)
 
     def _check_data_requirements(self) -> bool:
         """
@@ -342,7 +346,10 @@ class HeatmapPanel(BasePanel):
 
         # Update layout
         fig.update_layout(
-            title=self.title or "Gene Expression Heatmap", height=600, showlegend=False
+            title=self.title or "Gene Expression Heatmap", 
+            height=self.get_config("height", 800), 
+            width=self.get_config("width", 1000),
+            showlegend=False
         )
 
         # Update axes
@@ -357,6 +364,17 @@ class HeatmapPanel(BasePanel):
         # Update main heatmap axes
         fig.update_xaxes(title="Cells", tickangle=45, row=heatmap_row, col=heatmap_col)
         fig.update_yaxes(title="Genes", row=heatmap_row, col=heatmap_col)
+
+        # Add advanced selection tools if enabled
+        if self._advanced_selection_enabled and self._selection_manager is not None:
+            # Add selection UI elements
+            PlotlySelectionTools.add_selection_buttons(fig)
+            PlotlySelectionTools.add_selection_mode_buttons(fig)
+            PlotlySelectionTools.add_undo_redo_buttons(fig)
+            PlotlySelectionTools.add_interactive_descriptions(fig)
+            
+            # Configure selection events
+            PlotlySelectionTools.configure_selection_events(fig, self._on_plotly_selection)
 
         return fig
 
@@ -425,3 +443,54 @@ class HeatmapPanel(BasePanel):
         """Toggle display of dendrograms."""
         if show is not None:
             self.set_config("show_dendrograms", show)
+
+    def _on_plotly_selection(self, selection_data: dict) -> None:
+        """Handle Plotly selection events for advanced selection tools."""
+        if not self._advanced_selection_enabled or self._selection_manager is None:
+            return
+
+        try:
+            # For heatmaps, we'll use rectangular selection to select cells
+            bounds = selection_data.get("range", {})
+            if "x" in bounds and "y" in bounds:
+                # Get cell names from the heatmap
+                _, _, cell_names = self._get_expression_data()
+                
+                # Convert bounds to cell indices
+                x_range = bounds["x"]
+                y_range = bounds["y"]
+                
+                # Find cells within the selection bounds
+                selected_cells = []
+                for i, cell in enumerate(cell_names):
+                    # This is a simplified approach - in practice, you'd need to map
+                    # the heatmap coordinates back to cell indices
+                    if x_range[0] <= i <= x_range[1]:
+                        selected_cells.append(i)
+                
+                if selected_cells:
+                    self._selection_manager.create_point_selection(selected_cells)
+                    
+                    # Update the panel's selection
+                    if self._selection_manager.get_current_selection() is not None:
+                        self._selection = self._selection_manager.get_current_selection()
+                        self._on_selection_changed()
+                
+        except Exception as e:
+            print(f"Error handling selection: {e}")
+
+    def enable_advanced_selection(self) -> None:
+        """Enable advanced selection tools for this panel."""
+        self._advanced_selection_enabled = True
+        if self._data_wrapper is not None:
+            self._selection_manager = AdvancedSelectionManager(self._data_wrapper)
+
+    def disable_advanced_selection(self) -> None:
+        """Disable advanced selection tools for this panel."""
+        self._advanced_selection_enabled = False
+        self._selection_manager = None
+
+    def set_size(self, width: int, height: int) -> None:
+        """Set the size of the heatmap."""
+        self.set_config("width", width)
+        self.set_config("height", height)

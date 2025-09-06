@@ -249,7 +249,9 @@ class PlotlySelectionTools:
             Modified figure with selection events configured
         """
         # Enable selection events
+        # Configure traces for selection (only for scatter traces)
         fig.update_traces(
+            selector=dict(type="scatter"),
             selected=dict(marker=dict(opacity=1.0, size=8)),
             unselected=dict(marker=dict(opacity=0.3, size=4)),
             selectedpoints=[]
@@ -258,7 +260,7 @@ class PlotlySelectionTools:
         # Configure layout for selection
         fig.update_layout(
             clickmode='event+select',
-            selectdirection='diagonal',
+            selectdirection='any',
             dragmode='select'
         )
         

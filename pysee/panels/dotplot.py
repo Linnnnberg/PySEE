@@ -15,6 +15,8 @@ from plotly.subplots import make_subplots
 
 from ..core.data import AnnDataWrapper
 from .base import BasePanel
+from .plotly_selection import PlotlySelectionTools
+from .advanced_selection import AdvancedSelectionManager
 
 
 class DotPlotPanel(BasePanel):
@@ -202,14 +204,14 @@ class DotPlotPanel(BasePanel):
         pd.DataFrame
             DataFrame with columns: gene, group, mean_expr, pct_expr
         """
-        # Get gene indices
-        gene_indices = [gene_names.index(gene) for gene in genes if gene in gene_names]
+        # Get gene indices and create mapping
+        gene_to_idx = {gene: gene_names.index(gene) for gene in genes if gene in gene_names}
+        gene_indices = list(gene_to_idx.values())
 
         # Initialize results
         results = []
 
-        for i, gene_idx in enumerate(gene_indices):
-            gene = genes[i]
+        for gene, gene_idx in gene_to_idx.items():
             gene_expr = expression_matrix[:, gene_idx]
 
             for group in unique_groups:
@@ -321,6 +323,8 @@ class DotPlotPanel(BasePanel):
                     line=dict(width=1, color="white"),
                     sizemode="diameter",
                     sizemin=dot_size_range[0],
+                    cmin=min(colors) if colors else 0,  # Set color range
+                    cmax=max(colors) if colors else 1,
                 ),
                 name="Gene Expression",
                 showlegend=False,
@@ -355,6 +359,17 @@ class DotPlotPanel(BasePanel):
         if show_axes:
             fig.update_xaxes(categoryorder="array", categoryarray=groups, tickangle=45)
             fig.update_yaxes(categoryorder="array", categoryarray=genes)
+
+        # Add advanced selection tools if enabled
+        if self._advanced_selection_enabled and self._selection_manager is not None:
+            # Add selection UI elements
+            PlotlySelectionTools.add_selection_buttons(fig)
+            PlotlySelectionTools.add_selection_mode_buttons(fig)
+            PlotlySelectionTools.add_undo_redo_buttons(fig)
+            PlotlySelectionTools.add_interactive_descriptions(fig)
+            
+            # Configure selection events
+            PlotlySelectionTools.configure_selection_events(fig, self._on_plotly_selection)
 
         return fig
 
@@ -430,3 +445,35 @@ class DotPlotPanel(BasePanel):
         """Called when the configuration changes."""
         # Update visualization if needed
         pass
+
+    def _on_plotly_selection(self, selection_data: dict) -> None:
+        """Handle Plotly selection events for advanced selection tools."""
+        if not self._advanced_selection_enabled or self._selection_manager is None:
+            return
+
+        try:
+            # For dot plots, we'll use point selection to select cells based on gene expression
+            point_indices = selection_data.get("points", [])
+            indices = [p.get("pointIndex", 0) for p in point_indices if "pointIndex" in p]
+            
+            if indices:
+                self._selection_manager.create_point_selection(indices)
+                
+                # Update the panel's selection
+                if self._selection_manager.get_current_selection() is not None:
+                    self._selection = self._selection_manager.get_current_selection()
+                    self._on_selection_changed()
+                
+        except Exception as e:
+            print(f"Error handling selection: {e}")
+
+    def enable_advanced_selection(self) -> None:
+        """Enable advanced selection tools for this panel."""
+        self._advanced_selection_enabled = True
+        if self._data_wrapper is not None:
+            self._selection_manager = AdvancedSelectionManager(self._data_wrapper)
+
+    def disable_advanced_selection(self) -> None:
+        """Disable advanced selection tools for this panel."""
+        self._advanced_selection_enabled = False
+        self._selection_manager = None
