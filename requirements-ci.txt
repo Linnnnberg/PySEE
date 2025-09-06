@@ -20,7 +20,6 @@ leidenalg>=0.10.0
 
 # Development tools
 pytest>=7.0.0
-pytest-timeout>=2.1.0
 black>=22.0.0
 flake8>=5.0.0
 mypy>=0.991

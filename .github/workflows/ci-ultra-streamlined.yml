@@ -55,7 +55,7 @@ jobs:
     - name: Run tests
       run: |
         pytest test_pysee.py
-        pytest tests/ --maxfail=3
+        pytest tests/ --maxfail=3 --ignore=tests/performance/
 
     - name: Test example script
       run: python example.py

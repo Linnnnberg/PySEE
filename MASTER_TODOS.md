@@ -892,6 +892,35 @@ Interactive, Reproducible Bioinformatics Visualization for Python - bringing iSE
    - **Effort**: 1-2 days
    - **Impact**: Medium - improves UX
 
+## Future Plans (Medium Priority)
+
+### 11. Performance Testing & Optimization
+**Priority: MEDIUM | Effort: 2-3 days | Status: 📋 PLANNED**
+
+#### 11.1 Performance Test Suite
+- **Description**: Comprehensive performance testing for large datasets
+- **Tasks**:
+  - Create performance test framework
+  - Add memory usage monitoring
+  - Implement benchmark tests for large datasets (16GB+)
+  - Add performance regression detection
+  - Create performance CI pipeline (separate from main CI)
+- **Why Important**: Ensures PySEE scales to real-world datasets
+- **Dependencies**: 1.1, 2.1, 2.2
+- **Implementation**: Separate performance test suite, not part of main CI
+
+#### 11.2 Performance Optimization
+- **Description**: Optimize PySEE for large-scale data
+- **Tasks**:
+  - Profile memory usage patterns
+  - Optimize data loading and processing
+  - Implement lazy loading for large datasets
+  - Add GPU acceleration options (CuPy)
+  - Create performance benchmarks
+- **Why Important**: Real-world usability with large datasets
+- **Dependencies**: 11.1
+- **Implementation**: Performance-focused optimizations
+
 ## 🔄 Development Workflow
 
 1. **Feature Branch Workflow**: Each task gets its own branch
