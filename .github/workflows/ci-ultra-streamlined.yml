@@ -52,9 +52,17 @@ jobs:
         pip install -r requirements-ci.txt
         pip install -e .
 
+    - name: Verify package installation
+      run: |
+        python -c "import pysee; print('PySEE import successful')"
+        python -c "from pysee import PySEE, UMAPPanel, ViolinPanel; print('All imports successful')"
+
     - name: Run tests
       run: |
-        pytest test_pysee.py
+        # Run main test file
+        python test_pysee.py
+        # Run pytest on test files
+        pytest test_*.py -v
         # Only run tests if non-performance tests exist
         if [ -d "tests" ] && [ "$(find tests -name "test_*.py" -not -path "tests/performance/*" | wc -l)" -gt 0 ]; then
           pytest tests/ --maxfail=3 --ignore=tests/performance/
