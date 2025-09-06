@@ -2,8 +2,8 @@
 Script to display information about the generated PySEE charts.
 """
 
-import os
 import glob
+import os
 from datetime import datetime
 
 

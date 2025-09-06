@@ -7,7 +7,9 @@ This module provides a simple CLI for running PySEE dashboards.
 import argparse
 import sys
 from pathlib import Path
+
 import scanpy as sc
+
 from ..core.dashboard import PySEE
 from ..panels.umap import UMAPPanel
 from ..panels.violin import ViolinPanel

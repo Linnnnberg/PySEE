@@ -5,16 +5,17 @@ This script downloads real bioinformatics datasets for comprehensive
 performance testing of PySEE components, following the curated dataset plan.
 """
 
+import gzip
 import os
 import sys
-import requests
-import gzip
 import tempfile
 from pathlib import Path
-from typing import Optional, Dict, Any
+from typing import Any, Dict, Optional
+
 import anndata as ad
-import pandas as pd
 import numpy as np
+import pandas as pd
+import requests
 import scanpy as sc
 
 # Add project root to path
@@ -94,14 +95,18 @@ class DatasetDownloader:
             print(f"❌ Failed to download Human Cell Atlas: {e}")
             return None
 
-    def generate_large_synthetic_dataset(self, n_cells: int = 100000, n_genes: int = 15000) -> ad.AnnData:
+    def generate_large_synthetic_dataset(
+        self, n_cells: int = 100000, n_genes: int = 15000
+    ) -> ad.AnnData:
         """Generate a large synthetic dataset for stress testing."""
         print(f"🔬 Generating large synthetic dataset: {n_cells:,} cells, {n_genes:,} genes...")
 
         np.random.seed(42)
 
         # Create expression matrix with realistic structure
-        expression_matrix = np.random.negative_binomial(4, 0.35, size=(n_cells, n_genes)).astype(np.float32)
+        expression_matrix = np.random.negative_binomial(4, 0.35, size=(n_cells, n_genes)).astype(
+            np.float32
+        )
 
         # Add some highly variable genes
         n_hvg = int(0.1 * n_genes)
@@ -124,7 +129,17 @@ class DatasetDownloader:
         # Create cell metadata
         obs_data = {
             "cell_type": np.random.choice(
-                ["T_cell", "B_cell", "NK_cell", "Monocyte", "Dendritic", "Neutrophil", "Eosinophil", "Basophil", "Mast_cell"],
+                [
+                    "T_cell",
+                    "B_cell",
+                    "NK_cell",
+                    "Monocyte",
+                    "Dendritic",
+                    "Neutrophil",
+                    "Eosinophil",
+                    "Basophil",
+                    "Mast_cell",
+                ],
                 n_cells,
             ),
             "batch": np.random.choice(["Batch_1", "Batch_2", "Batch_3", "Batch_4"], n_cells),
@@ -144,7 +159,9 @@ class DatasetDownloader:
 
         # Create AnnData
         adata = ad.AnnData(
-            X=expression_matrix, obs=pd.DataFrame(obs_data, index=cell_names), var=pd.DataFrame(index=gene_names)
+            X=expression_matrix,
+            obs=pd.DataFrame(obs_data, index=cell_names),
+            var=pd.DataFrame(index=gene_names),
         )
 
         # Add UMAP coordinates
@@ -209,7 +226,9 @@ class DatasetDownloader:
 
         for name, adata in datasets.items():
             info = self.get_dataset_info(adata)
-            print(f"{name:20} | {info['n_cells']:8,} cells | {info['n_genes']:6,} genes | {info['memory_usage_mb']:6.1f} MB")
+            print(
+                f"{name:20} | {info['n_cells']:8,} cells | {info['n_genes']:6,} genes | {info['memory_usage_mb']:6.1f} MB"
+            )
 
         return datasets
 

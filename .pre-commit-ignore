@@ -1,0 +1,91 @@
+# Pre-commit ignore file
+# Files to skip during pre-commit hook execution
+
+# Large data files
+*.h5ad
+*.h5
+*.zarr
+*.loom
+*.mtx
+data/
+datasets/
+
+# Generated outputs (these are created by our code)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.pdf
+*.eps
+*.tiff
+*.bmp
+*.html
+results/
+outputs/
+exports/
+configuration_exports/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# Cache directories
+.cache/
+.mypy_cache/
+.pytest_cache/
+__pycache__/
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Log files
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Performance test results
+tests/performance/results/
+*.json
+
+# Security reports
+bandit-report.json
+safety-report.json
+
+# Documentation builds
+docs/_build/
+docs/build/
+site/
+
+# Large test files (skip formatting on these)
+test_*.py
+*_test.py
+debug_*.py
+*_debug.py
+
+# Configuration files that shouldn't be formatted
+*.yml
+*.yaml
+*.json
+*.toml
+*.cfg
+*.ini

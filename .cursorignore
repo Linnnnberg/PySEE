@@ -1,0 +1,84 @@
+# Cursor IDE ignore file
+# Files and directories to exclude from Cursor's indexing and search
+
+# Large data files
+*.h5ad
+*.h5
+*.zarr
+*.loom
+*.mtx
+data/
+datasets/
+
+# Generated outputs
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.pdf
+*.eps
+*.tiff
+*.bmp
+*.html
+results/
+outputs/
+exports/
+configuration_exports/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# Cache directories
+.cache/
+.mypy_cache/
+.pytest_cache/
+__pycache__/
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Log files
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Performance test results
+tests/performance/results/
+*.json
+
+# Security reports
+bandit-report.json
+safety-report.json
+
+# Documentation builds
+docs/_build/
+docs/build/
+site/
+
+# Large test files
+test_*.py
+*_test.py
+debug_*.py
+*_debug.py

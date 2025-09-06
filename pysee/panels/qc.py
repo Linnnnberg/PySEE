@@ -6,13 +6,15 @@ including mitochondrial gene percentages, gene counts, and cell filtering.
 """
 
 from typing import Any, Dict, List, Optional, Union
+
 import numpy as np
 import pandas as pd
-import plotly.graph_objects as go
 import plotly.express as px
+import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-from .base import BasePanel
+
 from ..core.data import AnnDataWrapper
+from .base import BasePanel
 
 
 class QCPanel(BasePanel):

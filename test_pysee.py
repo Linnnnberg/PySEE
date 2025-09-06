@@ -7,6 +7,7 @@ This script tests the basic functionality of PySEE with sample data.
 import numpy as np
 import pandas as pd
 import scanpy as sc
+
 from pysee import PySEE, UMAPPanel, ViolinPanel
 
 

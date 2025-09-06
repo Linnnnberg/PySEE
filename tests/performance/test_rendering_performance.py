@@ -5,14 +5,16 @@ This module tests the rendering performance of different PySEE panels
 across various dataset sizes.
 """
 
-import pytest
 import time
-from typing import Dict, Any
+from typing import Any, Dict
+
+import pytest
+
 from pysee import PySEE
-from pysee.panels.umap import UMAPPanel
-from pysee.panels.violin import ViolinPanel
 from pysee.panels.heatmap import HeatmapPanel
 from pysee.panels.qc import QCPanel
+from pysee.panels.umap import UMAPPanel
+from pysee.panels.violin import ViolinPanel
 
 from .fixtures.dataset_fixtures import DatasetFixtures
 from .utils.performance_utils import PerformanceBenchmark, PerformanceTargets
@@ -163,8 +165,12 @@ class TestRenderingPerformance:
 
             # Check performance targets (allow more time for multi-panel)
             dataset_size = self._get_dataset_size_category(dataset_info[name]["n_cells"])
-            target_time = PerformanceTargets.get_rendering_target(dataset_size) * 2  # 2x for multi-panel
-            assert result["mean_time"] <= target_time, f"Multi-panel rendering too slow for {name}: {result['mean_time']:.3f}s"
+            target_time = (
+                PerformanceTargets.get_rendering_target(dataset_size) * 2
+            )  # 2x for multi-panel
+            assert (
+                result["mean_time"] <= target_time
+            ), f"Multi-panel rendering too slow for {name}: {result['mean_time']:.3f}s"
 
     def _get_dataset_size_category(self, n_cells: int) -> str:
         """Get dataset size category based on number of cells."""

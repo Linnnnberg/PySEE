@@ -9,9 +9,10 @@ and reproducible code export capabilities.
 __version__ = "0.1.0"
 __author__ = "PySEE Contributors"
 
+from .core.dashboard import PySEE
+
 # Core imports
 from .core.data import AnnDataWrapper
-from .core.dashboard import PySEE
 
 # Panel imports
 from .panels.base import BasePanel

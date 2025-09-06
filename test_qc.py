@@ -4,9 +4,10 @@ Test script for the QC Metrics Panel implementation.
 This script tests the QCPanel functionality with sample data.
 """
 
+import anndata as ad
 import numpy as np
 import pandas as pd
-import anndata as ad
+
 from pysee import PySEE
 from pysee.panels.qc import QCPanel
 
@@ -130,9 +131,9 @@ def test_qc_with_other_panels():
     app = PySEE(adata)
 
     # Create multiple panels
+    from pysee.panels.heatmap import HeatmapPanel
     from pysee.panels.umap import UMAPPanel
     from pysee.panels.violin import ViolinPanel
-    from pysee.panels.heatmap import HeatmapPanel
 
     umap_panel = UMAPPanel("umap", title="UMAP Visualization")
     violin_panel = ViolinPanel("violin", gene="Gene_0001", title="Gene Expression")

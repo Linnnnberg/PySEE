@@ -5,14 +5,16 @@ This module tests memory consumption patterns across different PySEE
 components and dataset sizes.
 """
 
-import pytest
 import gc
-from typing import Dict, Any
+from typing import Any, Dict
+
+import pytest
+
 from pysee import PySEE
-from pysee.panels.umap import UMAPPanel
-from pysee.panels.violin import ViolinPanel
 from pysee.panels.heatmap import HeatmapPanel
 from pysee.panels.qc import QCPanel
+from pysee.panels.umap import UMAPPanel
+from pysee.panels.violin import ViolinPanel
 
 from .fixtures.dataset_fixtures import DatasetFixtures
 from .utils.performance_utils import PerformanceProfiler, PerformanceTargets
@@ -77,13 +79,17 @@ class TestMemoryUsage:
 
                 # Check memory targets (allow some overhead for panel creation)
                 dataset_size = self._get_dataset_size_category(dataset_info[name]["n_cells"])
-                target_memory = PerformanceTargets.get_memory_target(dataset_size) * 0.1  # 10% of total
+                target_memory = (
+                    PerformanceTargets.get_memory_target(dataset_size) * 0.1
+                )  # 10% of total
 
                 assert (
                     metrics["memory_delta_mb"] <= target_memory
                 ), f"Panel creation memory too high for {name}/{panel_name}: {metrics['memory_delta_mb']:.1f}MB"
 
-                print(f"Panel creation memory for {name}/{panel_name}: {metrics['memory_delta_mb']:.1f}MB")
+                print(
+                    f"Panel creation memory for {name}/{panel_name}: {metrics['memory_delta_mb']:.1f}MB"
+                )
 
     def test_rendering_memory(self, datasets, dataset_info):
         """Test memory usage during panel rendering."""
@@ -119,13 +125,17 @@ class TestMemoryUsage:
 
                 # Check memory targets (allow some overhead for rendering)
                 dataset_size = self._get_dataset_size_category(dataset_info[name]["n_cells"])
-                target_memory = PerformanceTargets.get_memory_target(dataset_size) * 0.2  # 20% of total
+                target_memory = (
+                    PerformanceTargets.get_memory_target(dataset_size) * 0.2
+                )  # 20% of total
 
                 assert (
                     metrics["memory_delta_mb"] <= target_memory
                 ), f"Rendering memory too high for {name}/{panel_name}: {metrics['memory_delta_mb']:.1f}MB"
 
-                print(f"Rendering memory for {name}/{panel_name}: {metrics['memory_delta_mb']:.1f}MB")
+                print(
+                    f"Rendering memory for {name}/{panel_name}: {metrics['memory_delta_mb']:.1f}MB"
+                )
 
     def test_memory_scaling(self, datasets, dataset_info):
         """Test memory scaling with dataset size."""
@@ -174,7 +184,9 @@ class TestMemoryUsage:
         print("-" * 60)
 
         for name, usage in memory_usage.items():
-            print(f"{name:15}\t{usage['n_cells']:8,}\t{usage['memory_mb']:8.1f}\t{usage['peak_memory_mb']:8.1f}")
+            print(
+                f"{name:15}\t{usage['n_cells']:8,}\t{usage['memory_mb']:8.1f}\t{usage['peak_memory_mb']:8.1f}"
+            )
 
         # Verify reasonable scaling
         small_memory = memory_usage.get("synthetic_small", {}).get("memory_mb", 0)
@@ -182,7 +194,10 @@ class TestMemoryUsage:
 
         if small_memory > 0 and large_memory > 0:
             scaling_factor = large_memory / small_memory
-            cell_scaling_factor = memory_usage["synthetic_large"]["n_cells"] / memory_usage["synthetic_small"]["n_cells"]
+            cell_scaling_factor = (
+                memory_usage["synthetic_large"]["n_cells"]
+                / memory_usage["synthetic_small"]["n_cells"]
+            )
 
             # Memory should scale sub-linearly with cell count
             assert (

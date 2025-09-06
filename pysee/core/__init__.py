@@ -2,7 +2,7 @@
 Core PySEE modules for data handling and dashboard management.
 """
 
-from .data import AnnDataWrapper
 from .dashboard import PySEE
+from .data import AnnDataWrapper
 
 __all__ = ["AnnDataWrapper", "PySEE"]

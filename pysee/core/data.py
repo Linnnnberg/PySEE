@@ -6,10 +6,11 @@ with proper validation, preprocessing, and metadata extraction.
 """
 
 import warnings
-from typing import Optional, Union, List, Dict, Any, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
+
+import anndata as ad
 import numpy as np
 import pandas as pd
-import anndata as ad
 from scipy import sparse
 
 

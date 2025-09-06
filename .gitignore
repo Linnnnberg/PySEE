@@ -138,7 +138,94 @@ dmypy.json
 .DS_Store
 Thumbs.db
 
-# Project specific
+# PySEE Project Specific
+# =====================
+
+# Data files (large binary files)
 *.h5ad
 *.h5
 *.zarr
+*.loom
+*.mtx
+*.tsv
+*.csv
+data/
+datasets/
+
+# Generated images and outputs
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.pdf
+*.eps
+*.tiff
+*.bmp
+
+# Generated HTML reports
+*.html
+results/
+outputs/
+exports/
+
+# Configuration exports
+configuration_exports/
+configs/
+
+# Performance test results
+tests/performance/results/
+*.json
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Log files
+*.log
+logs/
+
+# Cache directories
+.cache/
+cache/
+
+# Pre-commit cache
+.pre-commit-cache/
+
+# Security reports
+bandit-report.json
+safety-report.json
+
+# Local development files
+local_config.py
+local_settings.py
+debug_*.py
+test_*.py
+*_debug.py
+*_test.py
+
+# Generated documentation
+docs/_build/
+docs/build/
+
+# IDE specific
+.vscode/
+.idea/
+*.sublime-*
+
+# OS specific
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Windows specific
+*.lnk
+
+# Linux specific
+*~
+
+# macOS specific
+.AppleDouble
+.LSOverride

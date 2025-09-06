@@ -5,10 +5,11 @@ This module provides utilities to check system resources and warn users
 about potential memory limitations when working with large datasets.
 """
 
-import psutil
 import os
-from typing import Dict, Any, List, Optional, Tuple
 import warnings
+from typing import Any, Dict, List, Optional, Tuple
+
+import psutil
 
 
 class SystemRequirementsChecker:
@@ -150,7 +151,7 @@ class SystemRequirementsChecker:
         if info["cpu_freq_mhz"]:
             print(f"CPU Frequency: {info['cpu_freq_mhz']:.0f} MHz")
 
-        print(f"\n📊 Dataset Recommendations:")
+        print("\n📊 Dataset Recommendations:")
         print(
             f"✅ Safe to use: {', '.join(recommendations['safe']) if recommendations['safe'] else 'None'}"
         )

@@ -5,14 +5,15 @@ This module provides a registry system for managing curated datasets
 with metadata, checksums, and performance targets.
 """
 
-import yaml
+import hashlib
 import os
 from pathlib import Path
-from typing import Dict, Any, Optional, List
+from typing import Any, Dict, List, Optional
+
 import anndata as ad
-import scanpy as sc
-import hashlib
 import requests
+import scanpy as sc
+import yaml
 
 # Import will be handled at runtime
 
@@ -81,7 +82,11 @@ class DatasetRegistry:
         """Validate file checksum."""
         if not expected_checksum or expected_checksum.startswith("sha256:"):
             # Extract hash from sha256:hash format
-            expected_hash = expected_checksum.split(":", 1)[1] if ":" in expected_checksum else expected_checksum
+            expected_hash = (
+                expected_checksum.split(":", 1)[1]
+                if ":" in expected_checksum
+                else expected_checksum
+            )
 
             # Calculate file hash
             sha256_hash = hashlib.sha256()
@@ -184,7 +189,9 @@ class DatasetRegistry:
 
         return file_path
 
-    def load_dataset(self, dataset_id: str, backed: bool = False, check_requirements: bool = True) -> ad.AnnData:
+    def load_dataset(
+        self, dataset_id: str, backed: bool = False, check_requirements: bool = True
+    ) -> ad.AnnData:
         """Load a dataset from cache or download if needed."""
         info = self.get_dataset_info(dataset_id)
 
@@ -256,7 +263,9 @@ class DatasetRegistry:
         else:
             raise ValueError(f"Unknown synthetic dataset: {dataset_id}")
 
-    def get_all_datasets(self, size_categories: Optional[List[str]] = None) -> Dict[str, ad.AnnData]:
+    def get_all_datasets(
+        self, size_categories: Optional[List[str]] = None
+    ) -> Dict[str, ad.AnnData]:
         """Get all datasets, optionally filtered by size categories."""
         datasets = {}
 
@@ -287,7 +296,9 @@ class DatasetRegistry:
             print(f"\n{category.upper()} Datasets:")
             for dataset_id in dataset_ids:
                 info = self.get_dataset_info(dataset_id)
-                print(f"  {dataset_id:20} | {info['cells']:8,} cells | {info['genes']:6,} genes | {info['memory_mb']:6.0f} MB")
+                print(
+                    f"  {dataset_id:20} | {info['cells']:8,} cells | {info['genes']:6,} genes | {info['memory_mb']:6.0f} MB"
+                )
 
         print(f"\nTotal datasets: {len(self.config['datasets'])}")
         print(f"Data directory: {self.data_dir.absolute()}")

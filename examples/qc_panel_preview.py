@@ -2,9 +2,10 @@
 Quick preview of QC panel functionality and statistics.
 """
 
+import anndata as ad
 import numpy as np
 import pandas as pd
-import anndata as ad
+
 from pysee import PySEE
 from pysee.panels.qc import QCPanel
 
@@ -46,7 +47,11 @@ def create_preview_data():
     }
 
     # Create AnnData
-    adata = ad.AnnData(X=expression_matrix, obs=pd.DataFrame(obs_data, index=cell_names), var=pd.DataFrame(index=gene_names))
+    adata = ad.AnnData(
+        X=expression_matrix,
+        obs=pd.DataFrame(obs_data, index=cell_names),
+        var=pd.DataFrame(index=gene_names),
+    )
 
     return adata
 
@@ -99,8 +104,12 @@ def show_qc_preview():
     # Show filtering thresholds
     print("🎯 Current Filtering Thresholds:")
     print(f"   Mitochondrial %: < {qc_panel.get_config('mito_threshold')}%")
-    print(f"   Total counts: {qc_panel.get_config('min_counts')} - {qc_panel.get_config('max_counts')}")
-    print(f"   Detected genes: {qc_panel.get_config('min_genes')} - {qc_panel.get_config('max_genes')}")
+    print(
+        f"   Total counts: {qc_panel.get_config('min_counts')} - {qc_panel.get_config('max_counts')}"
+    )
+    print(
+        f"   Detected genes: {qc_panel.get_config('min_genes')} - {qc_panel.get_config('max_genes')}"
+    )
     print()
 
     # Show code export preview
