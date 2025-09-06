@@ -13,6 +13,8 @@ import pandas as pd
 
 from ..core.data import AnnDataWrapper
 from ..utils.export import PublicationExporter
+from .selection_types import SelectionType, SelectionMode, SelectionHistory
+from .advanced_selection import AdvancedSelectionManager
 
 
 class BasePanel(ABC):
@@ -39,6 +41,8 @@ class BasePanel(ABC):
         self._selection: Optional[np.ndarray] = None
         self._linked_panels: List[str] = []
         self._config: Dict[str, Any] = {}
+        self._selection_manager: Optional[AdvancedSelectionManager] = None
+        self._advanced_selection_enabled = False
 
     @property
     def data_wrapper(self) -> Optional[AnnDataWrapper]:
@@ -49,6 +53,9 @@ class BasePanel(ABC):
     def data_wrapper(self, wrapper: AnnDataWrapper) -> None:
         """Set the data wrapper for this panel."""
         self._data_wrapper = wrapper
+        # Initialize selection manager if advanced selection is enabled
+        if self._advanced_selection_enabled and wrapper is not None:
+            self._selection_manager = AdvancedSelectionManager(wrapper)
         self._on_data_changed()
 
     @property
@@ -126,6 +133,77 @@ class BasePanel(ABC):
     def _on_config_changed(self) -> None:
         """Called when the configuration changes. Override in subclasses."""
         pass
+
+    def enable_advanced_selection(self) -> None:
+        """Enable advanced selection tools for this panel."""
+        self._advanced_selection_enabled = True
+        if self._data_wrapper is not None:
+            self._selection_manager = AdvancedSelectionManager(self._data_wrapper)
+            # Set up callback to sync with panel selection
+            self._selection_manager.add_callback(self._on_advanced_selection_changed)
+
+    def disable_advanced_selection(self) -> None:
+        """Disable advanced selection tools for this panel."""
+        self._advanced_selection_enabled = False
+        self._selection_manager = None
+
+    def is_advanced_selection_enabled(self) -> bool:
+        """Check if advanced selection is enabled."""
+        return self._advanced_selection_enabled and self._selection_manager is not None
+
+    def set_selection_type(self, selection_type: SelectionType) -> None:
+        """Set the selection tool type."""
+        if self._selection_manager is not None:
+            self._selection_manager.set_selection_type(selection_type)
+
+    def set_selection_mode(self, mode: SelectionMode) -> None:
+        """Set the selection mode."""
+        if self._selection_manager is not None:
+            self._selection_manager.set_selection_mode(mode)
+
+    def undo_selection(self) -> bool:
+        """Undo last selection. Returns True if successful."""
+        if self._selection_manager is not None:
+            return self._selection_manager.undo_selection()
+        return False
+
+    def redo_selection(self) -> bool:
+        """Redo next selection. Returns True if successful."""
+        if self._selection_manager is not None:
+            return self._selection_manager.redo_selection()
+        return False
+
+    def clear_selection(self) -> None:
+        """Clear current selection."""
+        if self._selection_manager is not None:
+            self._selection_manager.clear_selection()
+        else:
+            self._selection = None
+
+    def select_all(self) -> None:
+        """Select all points."""
+        if self._selection_manager is not None:
+            self._selection_manager.select_all()
+
+    def invert_selection(self) -> None:
+        """Invert current selection."""
+        if self._selection_manager is not None:
+            self._selection_manager.invert_selection()
+
+    def get_selection_statistics(self) -> Dict[str, Any]:
+        """Get selection statistics."""
+        if self._selection_manager is not None:
+            return self._selection_manager.get_selection_statistics()
+        elif self._selection is not None:
+            from .selection_types import SelectionStatistics
+            return SelectionStatistics.calculate_stats(self._selection, len(self._selection))
+        else:
+            return {"error": "No selection available"}
+
+    def _on_advanced_selection_changed(self, selection: np.ndarray) -> None:
+        """Callback for when advanced selection changes."""
+        self._selection = selection
+        self._on_selection_changed()
 
     def validate_data(self) -> bool:
         """

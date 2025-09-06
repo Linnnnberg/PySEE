@@ -15,6 +15,8 @@ from plotly.subplots import make_subplots
 
 from ..core.data import AnnDataWrapper
 from .base import BasePanel
+from .plotly_selection import PlotlySelectionTools
+from .advanced_selection import AdvancedSelectionManager
 
 
 class QCPanel(BasePanel):
@@ -195,6 +197,17 @@ class QCPanel(BasePanel):
             showlegend=False,
             margin=dict(l=50, r=50, t=50, b=50),
         )
+
+        # Add advanced selection tools if enabled
+        if self._advanced_selection_enabled and self._selection_manager is not None:
+            # Add selection UI elements
+            PlotlySelectionTools.add_selection_buttons(fig)
+            PlotlySelectionTools.add_selection_mode_buttons(fig)
+            PlotlySelectionTools.add_undo_redo_buttons(fig)
+            PlotlySelectionTools.add_interactive_descriptions(fig)
+            
+            # Configure selection events
+            PlotlySelectionTools.configure_selection_events(fig, self._on_plotly_selection)
 
         return fig
 
@@ -433,3 +446,51 @@ class QCPanel(BasePanel):
         self.set_config("show_mito", show_mito)
         self.set_config("show_gene_counts", show_gene_counts)
         self.set_config("show_detected_genes", show_detected_genes)
+
+    def _on_plotly_selection(self, selection_data: dict) -> None:
+        """Handle Plotly selection events for advanced selection tools."""
+        if not self._advanced_selection_enabled or self._selection_manager is None:
+            return
+
+        try:
+            # For QC plots, we'll use rectangular selection to select cells based on QC metrics
+            bounds = selection_data.get("range", {})
+            if "x" in bounds and "y" in bounds:
+                # Get QC metrics
+                metrics = self._calculate_qc_metrics()
+                
+                # Determine which metric is being selected based on the subplot
+                # This is a simplified approach - in practice, you'd need to track which subplot
+                # the selection is coming from
+                x_range = bounds["x"]
+                y_range = bounds["y"]
+                
+                # Find cells within the selection bounds based on QC values
+                selected_cells = []
+                if "mito_percent" in metrics:
+                    mito_values = metrics["mito_percent"]
+                    for i, value in enumerate(mito_values):
+                        if x_range[0] <= value <= x_range[1]:
+                            selected_cells.append(i)
+                
+                if selected_cells:
+                    self._selection_manager.create_point_selection(selected_cells)
+                    
+                    # Update the panel's selection
+                    if self._selection_manager.get_current_selection() is not None:
+                        self._selection = self._selection_manager.get_current_selection()
+                        self._on_selection_changed()
+                
+        except Exception as e:
+            print(f"Error handling selection: {e}")
+
+    def enable_advanced_selection(self) -> None:
+        """Enable advanced selection tools for this panel."""
+        self._advanced_selection_enabled = True
+        if self._data_wrapper is not None:
+            self._selection_manager = AdvancedSelectionManager(self._data_wrapper)
+
+    def disable_advanced_selection(self) -> None:
+        """Disable advanced selection tools for this panel."""
+        self._advanced_selection_enabled = False
+        self._selection_manager = None

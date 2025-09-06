@@ -15,6 +15,8 @@ from plotly.subplots import make_subplots
 
 from ..core.data import AnnDataWrapper
 from .base import BasePanel
+from .plotly_selection import PlotlySelectionTools
+from .advanced_selection import AdvancedSelectionManager
 
 
 class ViolinPanel(BasePanel):
@@ -130,6 +132,7 @@ class ViolinPanel(BasePanel):
                 if plot_type == "violin":
                     fig.add_trace(
                         go.Violin(
+                            x=[str(group)] * len(group_data["expression"]),
                             y=group_data["expression"],
                             name=str(group),
                             box_visible=show_box,
@@ -195,6 +198,7 @@ class ViolinPanel(BasePanel):
             if plot_type == "violin":
                 fig.add_trace(
                     go.Violin(
+                        x=["All"] * len(plot_data["expression"]),
                         y=plot_data["expression"],
                         name="All",
                         box_visible=show_box,
@@ -280,6 +284,17 @@ class ViolinPanel(BasePanel):
             hovermode="closest",
         )
 
+        # Add advanced selection tools if enabled
+        if self._advanced_selection_enabled and self._selection_manager is not None:
+            # Add selection UI elements
+            PlotlySelectionTools.add_selection_buttons(fig)
+            PlotlySelectionTools.add_selection_mode_buttons(fig)
+            PlotlySelectionTools.add_undo_redo_buttons(fig)
+            PlotlySelectionTools.add_interactive_descriptions(fig)
+            
+            # Configure selection events
+            PlotlySelectionTools.configure_selection_events(fig, self._on_plotly_selection)
+
         return fig
 
     def get_selection_code(self) -> str:
@@ -356,6 +371,38 @@ class ViolinPanel(BasePanel):
         """Called when the configuration changes."""
         # This could be used to update the visualization
         pass
+
+    def _on_plotly_selection(self, selection_data: dict) -> None:
+        """Handle Plotly selection events for advanced selection tools."""
+        if not self._advanced_selection_enabled or self._selection_manager is None:
+            return
+
+        try:
+            # For violin plots, we'll use point selection based on expression values
+            point_indices = selection_data.get("points", [])
+            indices = [p.get("pointIndex", 0) for p in point_indices if "pointIndex" in p]
+            
+            if indices:
+                self._selection_manager.create_point_selection(indices)
+                
+                # Update the panel's selection
+                if self._selection_manager.get_current_selection() is not None:
+                    self._selection = self._selection_manager.get_current_selection()
+                    self._on_selection_changed()
+                
+        except Exception as e:
+            print(f"Error handling selection: {e}")
+
+    def enable_advanced_selection(self) -> None:
+        """Enable advanced selection tools for this panel."""
+        self._advanced_selection_enabled = True
+        if self._data_wrapper is not None:
+            self._selection_manager = AdvancedSelectionManager(self._data_wrapper)
+
+    def disable_advanced_selection(self) -> None:
+        """Disable advanced selection tools for this panel."""
+        self._advanced_selection_enabled = False
+        self._selection_manager = None
 
     def set_gene(self, gene: str) -> None:
         """
