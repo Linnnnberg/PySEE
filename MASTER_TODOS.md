@@ -221,7 +221,7 @@ Interactive, Reproducible Bioinformatics Visualization for Python - bringing iSE
 - **Dependencies**: 6.1 (Advanced Selection Tools - completed)
 - **Effort**: 1-2 days
 - **Status**: 🔄 **READY TO START** - Next immediate task
-- **Priority Rationale**: 
+- **Priority Rationale**:
   - **User Impact**: High - Users expect coordinated selection across panels
   - **System Completeness**: Critical - Completes the selection system
   - **Quick Win**: Easy integration with existing infrastructure

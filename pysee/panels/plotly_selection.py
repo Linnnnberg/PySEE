@@ -424,25 +424,25 @@ class PlotlySelectionTools:
         # Create comprehensive description text
         desc_text = f"""
         <b>{title}</b><br><br>
-        
+
         <b>🔧 Selection Tools:</b><br>
         • <b>👆 Point Select</b>: Click individual points to select them<br>
         • <b>▭ Box Select</b>: Drag to draw a rectangle and select points inside<br>
         • <b>⚬ Lasso Select</b>: Draw a freeform shape to select points inside<br>
         • <b>◇ Pan</b>: Click and drag to move around the plot<br>
         • <b>🔍 Zoom</b>: Drag to zoom into a specific area<br><br>
-        
+
         <b>🎯 Selection Modes:</b><br>
         • <b>🔄 Replace</b>: New selection replaces the current selection<br>
         • <b>➕ Add</b>: Add new points to the current selection (union)<br>
         • <b>➖ Subtract</b>: Remove points from the current selection<br>
         • <b>∩ Intersect</b>: Keep only points in both selections<br><br>
-        
+
         <b>📚 History Controls:</b><br>
         • <b>↶ Undo</b>: Go back to previous selection state<br>
         • <b>↷ Redo</b>: Go forward to next selection state<br>
         • <b>🗑️ Clear</b>: Remove all selections<br><br>
-        
+
         <b>💡 Tips:</b><br>
         • Hover over points to see details<br>
         • Use keyboard shortcuts: Ctrl+Z (undo), Ctrl+Y (redo)<br>

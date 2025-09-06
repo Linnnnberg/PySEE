@@ -3,7 +3,7 @@
 
 ## Generated Files:
 - demo_umap_advanced_selection.html
-- demo_violin_advanced_selection.html  
+- demo_violin_advanced_selection.html
 - demo_heatmap_advanced_selection.html
 - demo_qc_advanced_selection.html
 - demo_dotplot_advanced_selection.html

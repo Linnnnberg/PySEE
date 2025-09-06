@@ -382,7 +382,7 @@ This document provides a comprehensive comparison between iSEE (Interactive Summ
 
 ---
 
-*Document Version: 1.0*  
-*Last Updated: 2025-01-04*  
-*Author: PySEE Development Team*  
+*Document Version: 1.0*
+*Last Updated: 2025-01-04*
+*Author: PySEE Development Team*
 *Status: Research Complete - Implementation Validated*
