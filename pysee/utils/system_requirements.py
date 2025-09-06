@@ -151,7 +151,7 @@ class SystemRequirementsChecker:
         if info["cpu_freq_mhz"]:
             print(f"CPU Frequency: {info['cpu_freq_mhz']:.0f} MHz")
 
-        print(f"\n📊 Dataset Recommendations:")
+        print("\n📊 Dataset Recommendations:")
         print(
             f"✅ Safe to use: {', '.join(recommendations['safe']) if recommendations['safe'] else 'None'}"
         )

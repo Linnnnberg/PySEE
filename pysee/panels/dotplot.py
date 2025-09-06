@@ -122,11 +122,6 @@ class DotPlotPanel(BasePanel):
             # Get configuration
             genes = self.get_config("genes")
             group_by = self.get_config("group_by")
-            n_top_genes = self.get_config("n_top_genes")
-            min_pct = self.get_config("min_pct")
-            max_pct = self.get_config("max_pct")
-            min_expr = self.get_config("min_expr")
-            max_expr = self.get_config("max_expr")
             dot_size_range = self.get_config("dot_size_range")
             color_scale = self.get_config("color_scale")
             show_legend = self.get_config("show_legend")
@@ -412,11 +407,11 @@ class DotPlotPanel(BasePanel):
             "selected_adata = adata[selected_cells]",
             "",
             "# Create dot plot for selected cells",
-            f"import pysee",
+            "import pysee",
             f"dot_panel = pysee.DotPlotPanel('dotplot', genes={genes}, group_by='{group_by}')",
-            f"dot_panel.data_wrapper = pysee.AnnDataWrapper(selected_adata)",
-            f"fig = dot_panel.render()",
-            f"fig.show()",
+            "dot_panel.data_wrapper = pysee.AnnDataWrapper(selected_adata)",
+            "fig = dot_panel.render()",
+            "fig.show()",
         ]
 
         return "\n".join(code_lines)

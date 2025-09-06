@@ -542,14 +542,13 @@ class PySEE:
             HTML content
         """
         exporter = PublicationExporter(template)
-        config = exporter.config
 
         html_parts = [
             "<!DOCTYPE html>",
             "<html>",
             "<head>",
             f"<title>{self._title}</title>",
-            f"<style>",
+            "<style>",
             "body { font-family: Arial, sans-serif; margin: 20px; }",
             ".panel { margin: 20px 0; border: 1px solid #ccc; padding: 10px; }",
             ".panel-title { font-weight: bold; font-size: 16px; margin-bottom: 10px; }",
@@ -575,7 +574,7 @@ class PySEE:
 
             html_parts.extend(
                 [
-                    f"<div class='panel'>",
+                    "<div class='panel'>",
                     f"<div class='panel-title'>{panel.title}</div>",
                     f"<div class='panel-info'>Type: {panel.__class__.__name__} | ID: {panel_id}</div>",
                 ]

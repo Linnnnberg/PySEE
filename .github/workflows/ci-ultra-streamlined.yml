@@ -1,4 +1,4 @@
-name: CI Ultra-Streamlined
+﻿name: CI Ultra-Streamlined
 
 on:
   push:
@@ -183,3 +183,4 @@ jobs:
         echo "Build: ${{ needs.build.result }}"
         echo "Security: ${{ needs.security.result }}"
         echo "::endgroup::"
+
