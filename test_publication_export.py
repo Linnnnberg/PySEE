@@ -88,9 +88,7 @@ def test_export_functionality():
     # Add panels
     print("Adding visualization panels...")
     app.add_panel("umap", UMAPPanel("umap", color="leiden", title="UMAP Plot"))
-    app.add_panel(
-        "violin", ViolinPanel("violin", gene="CD3D", title="T Cell Markers")
-    )
+    app.add_panel("violin", ViolinPanel("violin", gene="CD3D", title="T Cell Markers"))
     app.add_panel("qc", QCPanel("qc", title="Quality Control"))
 
     # Test individual panel export
