@@ -297,13 +297,13 @@ class AdvancedSelectionManager:
 
         if self._selection_mode == SelectionMode.ADD:
             result = existing_selection | new_selection
-            return result.astype(bool)
+            return np.array(result, dtype=bool)
         elif self._selection_mode == SelectionMode.SUBTRACT:
             result = existing_selection & ~new_selection
-            return result.astype(bool)
+            return np.array(result, dtype=bool)
         elif self._selection_mode == SelectionMode.INTERSECT:
             result = existing_selection & new_selection
-            return result.astype(bool)
+            return np.array(result, dtype=bool)
         else:
             return new_selection.copy()
 
