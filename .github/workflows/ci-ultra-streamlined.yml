@@ -55,7 +55,12 @@ jobs:
     - name: Run tests
       run: |
         pytest test_pysee.py
-        pytest tests/ --maxfail=3 --ignore=tests/performance/
+        # Only run tests if non-performance tests exist
+        if [ -d "tests" ] && [ "$(find tests -name "test_*.py" -not -path "tests/performance/*" | wc -l)" -gt 0 ]; then
+          pytest tests/ --maxfail=3 --ignore=tests/performance/
+        else
+          echo "No non-performance tests found, skipping tests/ directory"
+        fi
 
     - name: Test example script
       run: python example.py
