@@ -13,8 +13,8 @@ import pandas as pd
 
 from ..core.data import AnnDataWrapper
 from ..utils.export import PublicationExporter
-from .selection_types import SelectionType, SelectionMode, SelectionHistory
 from .advanced_selection import AdvancedSelectionManager
+from .selection_types import SelectionHistory, SelectionMode, SelectionType
 
 
 class BasePanel(ABC):
@@ -196,6 +196,7 @@ class BasePanel(ABC):
             return self._selection_manager.get_selection_statistics()
         elif self._selection is not None:
             from .selection_types import SelectionStatistics
+
             return SelectionStatistics.calculate_stats(self._selection, len(self._selection))
         else:
             return {"error": "No selection available"}

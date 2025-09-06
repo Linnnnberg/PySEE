@@ -14,9 +14,9 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 from ..core.data import AnnDataWrapper
+from .advanced_selection import AdvancedSelectionManager
 from .base import BasePanel
 from .plotly_selection import PlotlySelectionTools
-from .advanced_selection import AdvancedSelectionManager
 
 
 class UMAPPanel(BasePanel):
@@ -230,7 +230,7 @@ class UMAPPanel(BasePanel):
             PlotlySelectionTools.add_selection_mode_buttons(fig)
             PlotlySelectionTools.add_undo_redo_buttons(fig)
             PlotlySelectionTools.add_interactive_descriptions(fig)
-            
+
             # Configure selection events
             PlotlySelectionTools.configure_selection_events(fig, self._on_plotly_selection)
 
@@ -304,17 +304,17 @@ class UMAPPanel(BasePanel):
         try:
             # Get coordinates for selection
             coords = self._data_wrapper.get_embedding_data(self.get_config("embedding"))
-            
+
             # Handle different selection types
             selection_type = selection_data.get("type", "point")
-            
+
             if selection_type == "point":
                 # Point selection
                 point_indices = selection_data.get("points", [])
                 indices = [p.get("pointIndex", 0) for p in point_indices if "pointIndex" in p]
                 if indices:
                     self._selection_manager.create_point_selection(indices)
-                    
+
             elif selection_type == "rectangular":
                 # Rectangular selection
                 bounds = selection_data.get("range", {})
@@ -323,19 +323,19 @@ class UMAPPanel(BasePanel):
                     y_range = bounds["y"]
                     bounds_tuple = (x_range[0], y_range[0], x_range[1], y_range[1])
                     self._selection_manager.create_rectangular_selection(bounds_tuple, coords)
-                    
+
             elif selection_type == "lasso":
                 # Lasso selection
                 path = selection_data.get("path", [])
                 if path:
                     path_coords = [(p.get("x", 0), p.get("y", 0)) for p in path]
                     self._selection_manager.create_lasso_selection(path_coords, coords)
-                    
+
             # Update the panel's selection
-            if self._selection_manager.get_current_selection() is not None:
-                self._selection = self._selection_manager.get_current_selection()
+            if self._selection_manager.current_selection is not None:
+                self._selection = self._selection_manager.current_selection
                 self._on_selection_changed()
-                
+
         except Exception as e:
             print(f"Error handling selection: {e}")
 

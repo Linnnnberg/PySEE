@@ -16,9 +16,9 @@ from scipy.cluster.hierarchy import dendrogram, fcluster, linkage
 from scipy.spatial.distance import pdist
 
 from ..core.data import AnnDataWrapper
+from .advanced_selection import AdvancedSelectionManager
 from .base import BasePanel
 from .plotly_selection import PlotlySelectionTools
-from .advanced_selection import AdvancedSelectionManager
 
 
 class HeatmapPanel(BasePanel):
@@ -346,10 +346,10 @@ class HeatmapPanel(BasePanel):
 
         # Update layout
         fig.update_layout(
-            title=self.title or "Gene Expression Heatmap", 
-            height=self.get_config("height", 800), 
+            title=self.title or "Gene Expression Heatmap",
+            height=self.get_config("height", 800),
             width=self.get_config("width", 1000),
-            showlegend=False
+            showlegend=False,
         )
 
         # Update axes
@@ -372,7 +372,7 @@ class HeatmapPanel(BasePanel):
             PlotlySelectionTools.add_selection_mode_buttons(fig)
             PlotlySelectionTools.add_undo_redo_buttons(fig)
             PlotlySelectionTools.add_interactive_descriptions(fig)
-            
+
             # Configure selection events
             PlotlySelectionTools.configure_selection_events(fig, self._on_plotly_selection)
 
@@ -455,11 +455,11 @@ class HeatmapPanel(BasePanel):
             if "x" in bounds and "y" in bounds:
                 # Get cell names from the heatmap
                 _, _, cell_names = self._get_expression_data()
-                
+
                 # Convert bounds to cell indices
                 x_range = bounds["x"]
                 y_range = bounds["y"]
-                
+
                 # Find cells within the selection bounds
                 selected_cells = []
                 for i, cell in enumerate(cell_names):
@@ -467,15 +467,15 @@ class HeatmapPanel(BasePanel):
                     # the heatmap coordinates back to cell indices
                     if x_range[0] <= i <= x_range[1]:
                         selected_cells.append(i)
-                
+
                 if selected_cells:
                     self._selection_manager.create_point_selection(selected_cells)
-                    
+
                     # Update the panel's selection
-                    if self._selection_manager.get_current_selection() is not None:
-                        self._selection = self._selection_manager.get_current_selection()
+                    if self._selection_manager.current_selection is not None:
+                        self._selection = self._selection_manager.current_selection
                         self._on_selection_changed()
-                
+
         except Exception as e:
             print(f"Error handling selection: {e}")
 

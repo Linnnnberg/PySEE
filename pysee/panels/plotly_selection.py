@@ -6,24 +6,25 @@ with Plotly figures, including selection buttons, event handling, and
 visual feedback.
 """
 
-from typing import Dict, Any, List, Tuple, Callable, Optional
+from typing import Any, Callable, Dict, List, Optional, Tuple
+
+import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-import numpy as np
 
-from .selection_types import SelectionType, SelectionMode
+from .selection_types import SelectionMode, SelectionType
 
 
 class PlotlySelectionTools:
     """Utilities for adding advanced selection tools to Plotly figures."""
-    
+
     @staticmethod
-    def add_selection_buttons(fig: go.Figure, 
-                            position: str = "top",
-                            show_labels: bool = True) -> go.Figure:
+    def add_selection_buttons(
+        fig: go.Figure, position: str = "top", show_labels: bool = True
+    ) -> go.Figure:
         """
         Add selection tool buttons to plotly figure.
-        
+
         Parameters
         ----------
         fig : go.Figure
@@ -32,7 +33,7 @@ class PlotlySelectionTools:
             Button position ("top", "bottom", "left", "right")
         show_labels : bool
             Whether to show button labels
-            
+
         Returns
         -------
         go.Figure
@@ -46,38 +47,38 @@ class PlotlySelectionTools:
                 "args": [{"dragmode": "select"}],
                 "args2": [{"dragmode": "pan"}],
                 "name": "point_select",
-                "visible": True
+                "visible": True,
             },
             {
                 "label": "▭ Box Select" if show_labels else "▭",
-                "method": "restyle", 
+                "method": "restyle",
                 "args": [{"dragmode": "select"}],
                 "name": "box_select",
-                "visible": True
+                "visible": True,
             },
             {
                 "label": "⚬ Lasso Select" if show_labels else "⚬",
                 "method": "restyle",
                 "args": [{"dragmode": "lasso"}],
-                "name": "lasso_select", 
-                "visible": True
+                "name": "lasso_select",
+                "visible": True,
             },
             {
                 "label": "◇ Pan" if show_labels else "◇",
                 "method": "restyle",
                 "args": [{"dragmode": "pan"}],
                 "name": "pan_tool",
-                "visible": True
+                "visible": True,
             },
             {
                 "label": "🔍 Zoom" if show_labels else "🔍",
                 "method": "restyle",
                 "args": [{"dragmode": "zoom"}],
                 "name": "zoom_tool",
-                "visible": True
-            }
+                "visible": True,
+            },
         ]
-        
+
         # Add buttons to figure
         fig.update_layout(
             updatemenus=[
@@ -86,26 +87,30 @@ class PlotlySelectionTools:
                     "direction": "left" if position in ["top", "bottom"] else "down",
                     "x": 0.0 if position == "left" else (1.0 if position == "right" else 0.5),
                     "y": 1.02 if position == "top" else (-0.1 if position == "bottom" else 0.5),
-                    "xanchor": "left" if position == "left" else ("right" if position == "right" else "center"),
+                    "xanchor": (
+                        "left"
+                        if position == "left"
+                        else ("right" if position == "right" else "center")
+                    ),
                     "yanchor": "bottom" if position in ["top", "bottom"] else "middle",
                     "buttons": buttons,
                     "bgcolor": "rgba(255,255,255,0.8)",
                     "bordercolor": "rgba(0,0,0,0.2)",
                     "borderwidth": 1,
-                    "font": {"size": 10}
+                    "font": {"size": 10},
                 }
             ]
         )
-        
+
         return fig
-    
+
     @staticmethod
-    def add_selection_mode_buttons(fig: go.Figure,
-                                 position: str = "topright",
-                                 show_labels: bool = True) -> go.Figure:
+    def add_selection_mode_buttons(
+        fig: go.Figure, position: str = "topright", show_labels: bool = True
+    ) -> go.Figure:
         """
         Add selection mode buttons (replace, add, subtract, intersect).
-        
+
         Parameters
         ----------
         fig : go.Figure
@@ -114,7 +119,7 @@ class PlotlySelectionTools:
             Button position
         show_labels : bool
             Whether to show button labels
-            
+
         Returns
         -------
         go.Figure
@@ -127,31 +132,31 @@ class PlotlySelectionTools:
                 "method": "restyle",
                 "args": [{"selectedpoints": None}],  # Clear selection
                 "args2": [{"selectedpoints": None}],
-                "name": "replace_mode"
+                "name": "replace_mode",
             },
             {
                 "label": "➕ Add" if show_labels else "➕",
                 "method": "restyle",
                 "args": [{}],  # Placeholder - actual logic handled in callbacks
-                "name": "add_mode"
+                "name": "add_mode",
             },
             {
-                "label": "➖ Subtract" if show_labels else "➖", 
+                "label": "➖ Subtract" if show_labels else "➖",
                 "method": "restyle",
                 "args": [{}],  # Placeholder
-                "name": "subtract_mode"
+                "name": "subtract_mode",
             },
             {
                 "label": "∩ Intersect" if show_labels else "∩",
-                "method": "restyle", 
+                "method": "restyle",
                 "args": [{}],  # Placeholder
-                "name": "intersect_mode"
-            }
+                "name": "intersect_mode",
+            },
         ]
-        
+
         # Get existing updatemenus or create new list
         existing_menus = list(fig.layout.updatemenus or [])
-        
+
         # Add mode buttons
         new_menu = {
             "type": "buttons",
@@ -159,31 +164,30 @@ class PlotlySelectionTools:
             "x": 1.02,
             "y": 1.0,
             "xanchor": "left",
-            "yanchor": "top", 
+            "yanchor": "top",
             "buttons": mode_buttons,
             "bgcolor": "rgba(240,240,240,0.8)",
             "bordercolor": "rgba(0,0,0,0.2)",
             "borderwidth": 1,
-            "font": {"size": 9}
+            "font": {"size": 9},
         }
-        
+
         fig.update_layout(updatemenus=existing_menus + [new_menu])
-        
+
         return fig
-    
+
     @staticmethod
-    def add_undo_redo_buttons(fig: go.Figure,
-                            position: str = "bottomright") -> go.Figure:
+    def add_undo_redo_buttons(fig: go.Figure, position: str = "bottomright") -> go.Figure:
         """
         Add undo/redo buttons.
-        
+
         Parameters
         ----------
         fig : go.Figure
             Plotly figure to modify
         position : str
             Button position
-            
+
         Returns
         -------
         go.Figure
@@ -194,26 +198,18 @@ class PlotlySelectionTools:
             {
                 "label": "↶ Undo",
                 "method": "restyle",
-                "args": [{}]  # Placeholder - handled in callbacks
+                "args": [{}],  # Placeholder - handled in callbacks
             },
-            {
-                "label": "↷ Redo",
-                "method": "restyle",
-                "args": [{}]  # Placeholder
-            },
-            {
-                "label": "🗑️ Clear",
-                "method": "restyle",
-                "args": [{"selectedpoints": None}]
-            }
+            {"label": "↷ Redo", "method": "restyle", "args": [{}]},  # Placeholder
+            {"label": "🗑️ Clear", "method": "restyle", "args": [{"selectedpoints": None}]},
         ]
-        
+
         # Get existing updatemenus
         existing_menus = list(fig.layout.updatemenus or [])
-        
+
         # Add history buttons
         new_menu = {
-            "type": "buttons", 
+            "type": "buttons",
             "direction": "left",
             "x": 1.0,
             "y": -0.1,
@@ -223,26 +219,27 @@ class PlotlySelectionTools:
             "bgcolor": "rgba(255,255,255,0.8)",
             "bordercolor": "rgba(0,0,0,0.2)",
             "borderwidth": 1,
-            "font": {"size": 9}
+            "font": {"size": 9},
         }
-        
+
         fig.update_layout(updatemenus=existing_menus + [new_menu])
-        
+
         return fig
-    
+
     @staticmethod
-    def configure_selection_events(fig: go.Figure,
-                                 selection_callback: Optional[Callable] = None) -> go.Figure:
+    def configure_selection_events(
+        fig: go.Figure, selection_callback: Optional[Callable] = None
+    ) -> go.Figure:
         """
         Configure plotly selection events and callbacks.
-        
+
         Parameters
         ----------
         fig : go.Figure
             Plotly figure to modify
         selection_callback : Callable, optional
             Function to call when selection changes
-            
+
         Returns
         -------
         go.Figure
@@ -254,25 +251,21 @@ class PlotlySelectionTools:
             selector=dict(type="scatter"),
             selected=dict(marker=dict(opacity=1.0, size=8)),
             unselected=dict(marker=dict(opacity=0.3, size=4)),
-            selectedpoints=[]
+            selectedpoints=[],
         )
-        
+
         # Configure layout for selection
-        fig.update_layout(
-            clickmode='event+select',
-            selectdirection='any',
-            dragmode='select'
-        )
-        
+        fig.update_layout(clickmode="event+select", selectdirection="any", dragmode="select")
+
         return fig
-    
+
     @staticmethod
-    def add_selection_info_box(fig: go.Figure,
-                             selection_stats: Dict[str, Any],
-                             position: str = "topleft") -> go.Figure:
+    def add_selection_info_box(
+        fig: go.Figure, selection_stats: Dict[str, Any], position: str = "topleft"
+    ) -> go.Figure:
         """
         Add information box showing selection statistics.
-        
+
         Parameters
         ----------
         fig : go.Figure
@@ -281,7 +274,7 @@ class PlotlySelectionTools:
             Selection statistics to display
         position : str
             Position of info box
-            
+
         Returns
         -------
         go.Figure
@@ -293,19 +286,19 @@ class PlotlySelectionTools:
             n_selected = selection_stats.get("n_selected", 0)
             n_total = selection_stats.get("n_total", 0)
             percentage = selection_stats.get("selection_percentage", 0)
-            
+
             info_text = f"Selected: {n_selected:,} / {n_total:,} ({percentage:.1f}%)"
-        
+
         # Position mapping
         pos_map = {
             "topleft": {"x": 0.02, "y": 0.98, "xanchor": "left", "yanchor": "top"},
             "topright": {"x": 0.98, "y": 0.98, "xanchor": "right", "yanchor": "top"},
             "bottomleft": {"x": 0.02, "y": 0.02, "xanchor": "left", "yanchor": "bottom"},
-            "bottomright": {"x": 0.98, "y": 0.02, "xanchor": "right", "yanchor": "bottom"}
+            "bottomright": {"x": 0.98, "y": 0.02, "xanchor": "right", "yanchor": "bottom"},
         }
-        
+
         pos = pos_map.get(position, pos_map["topleft"])
-        
+
         # Add annotation for info box
         fig.add_annotation(
             text=info_text,
@@ -318,18 +311,18 @@ class PlotlySelectionTools:
             bgcolor="rgba(255,255,255,0.9)",
             bordercolor="rgba(0,0,0,0.3)",
             borderwidth=1,
-            font=dict(size=10, color="black")
+            font=dict(size=10, color="black"),
         )
-        
+
         return fig
-    
+
     @staticmethod
-    def highlight_selection(fig: go.Figure,
-                          selection_mask: np.ndarray,
-                          trace_index: int = 0) -> go.Figure:
+    def highlight_selection(
+        fig: go.Figure, selection_mask: np.ndarray, trace_index: int = 0
+    ) -> go.Figure:
         """
         Highlight selected points in the figure.
-        
+
         Parameters
         ----------
         fig : go.Figure
@@ -338,7 +331,7 @@ class PlotlySelectionTools:
             Boolean mask of selected points
         trace_index : int
             Index of trace to update
-            
+
         Returns
         -------
         go.Figure
@@ -346,22 +339,22 @@ class PlotlySelectionTools:
         """
         if trace_index >= len(fig.data):
             return fig
-        
+
         # Get selected indices
         selected_indices = np.where(selection_mask)[0].tolist()
-        
+
         # Update trace with selection
         fig.data[trace_index].selectedpoints = selected_indices
-        
+
         return fig
-    
+
     @staticmethod
-    def create_selection_overlay(coords: np.ndarray,
-                               selection_path: List[Tuple[float, float]],
-                               selection_type: SelectionType) -> go.Scatter:
+    def create_selection_overlay(
+        coords: np.ndarray, selection_path: List[Tuple[float, float]], selection_type: SelectionType
+    ) -> go.Scatter:
         """
         Create overlay showing selection area.
-        
+
         Parameters
         ----------
         coords : np.ndarray
@@ -370,39 +363,43 @@ class PlotlySelectionTools:
             Path defining selection area
         selection_type : SelectionType
             Type of selection
-            
+
         Returns
         -------
         go.Scatter
             Scatter trace for selection overlay
         """
         if not selection_path:
-            return go.Scatter(x=[], y=[], mode='lines', showlegend=False)
-        
-        x_coords, y_coords = zip(*selection_path)
-        
+            return go.Scatter(x=[], y=[], mode="lines", showlegend=False)
+
+        x_coords: List[float] = []
+        y_coords: List[float] = []
+        for coord in selection_path:
+            x_coords.append(coord[0])
+            y_coords.append(coord[1])
+
         # Close the path for polygon/lasso
         if selection_type in [SelectionType.LASSO, SelectionType.POLYGON]:
-            x_coords = list(x_coords) + [x_coords[0]]
-            y_coords = list(y_coords) + [y_coords[0]]
-        
+            x_coords.append(x_coords[0])
+            y_coords.append(y_coords[0])
+
         return go.Scatter(
             x=x_coords,
             y=y_coords,
-            mode='lines',
-            line=dict(color='red', width=2, dash='dash'),
-            name=f'{selection_type.value.title()} Selection',
+            mode="lines",
+            line=dict(color="red", width=2, dash="dash"),
+            name=f"{selection_type.value.title()} Selection",
             showlegend=False,
-            hoverinfo='skip'
+            hoverinfo="skip",
         )
-    
+
     @staticmethod
-    def add_interactive_descriptions(fig: go.Figure, 
-                                   title: str = "",
-                                   descriptions: Optional[Dict[str, str]] = None) -> go.Figure:
+    def add_interactive_descriptions(
+        fig: go.Figure, title: str = "", descriptions: Optional[Dict[str, str]] = None
+    ) -> go.Figure:
         """
         Add interactive descriptions and tooltips to the figure.
-        
+
         Parameters
         ----------
         fig : go.Figure
@@ -411,7 +408,7 @@ class PlotlySelectionTools:
             Main title for the chart
         descriptions : Dict[str, str], optional
             Dictionary of descriptions for various elements
-            
+
         Returns
         -------
         go.Figure
@@ -421,9 +418,9 @@ class PlotlySelectionTools:
             descriptions = {
                 "selection_tools": "Use selection tools to interact with data points",
                 "selection_modes": "Choose how new selections combine with existing ones",
-                "navigation": "Pan and zoom to explore the data"
+                "navigation": "Pan and zoom to explore the data",
             }
-        
+
         # Create comprehensive description text
         desc_text = f"""
         <b>{title}</b><br><br>
@@ -452,7 +449,7 @@ class PlotlySelectionTools:
         • Double-click to reset zoom<br>
         • Hold Shift while selecting to add to selection
         """
-        
+
         # Add detailed help (initially hidden) - positioned below the help button
         fig.add_annotation(
             text=desc_text,
@@ -470,12 +467,12 @@ class PlotlySelectionTools:
             showarrow=False,
             width=400,
             visible=False,  # Initially hidden
-            name="help_overlay"
+            name="help_overlay",
         )
-        
+
         # Get help annotation index
         help_index = len(fig.layout.annotations) - 1
-        
+
         # Add single toggle button outside the chart area
         help_button = {
             "type": "buttons",
@@ -489,32 +486,32 @@ class PlotlySelectionTools:
                     "label": "❓ Show Help",
                     "method": "relayout",
                     "args": [{f"annotations[{help_index}].visible": True}],
-                    "args2": [{f"annotations[{help_index}].visible": False}]
+                    "args2": [{f"annotations[{help_index}].visible": False}],
                 }
             ],
             "bgcolor": "rgba(135,206,250,0.9)",
             "bordercolor": "rgba(0,0,0,0.3)",
             "borderwidth": 1,
             "font": {"size": 11, "color": "black"},
-            "pad": {"r": 10, "t": 10}
+            "pad": {"r": 10, "t": 10},
         }
-        
+
         # Get existing updatemenus
         existing_menus = list(fig.layout.updatemenus or [])
         fig.update_layout(updatemenus=existing_menus + [help_button])
-        
+
         return fig
-    
+
     @staticmethod
     def add_keyboard_shortcuts_info(fig: go.Figure) -> go.Figure:
         """
         Add keyboard shortcuts information to the figure.
-        
+
         Parameters
         ----------
         fig : go.Figure
             Plotly figure to modify
-            
+
         Returns
         -------
         go.Figure
@@ -530,7 +527,7 @@ class PlotlySelectionTools:
         • <b>Double Click</b>: Reset zoom<br>
         • <b>Mouse Wheel</b>: Zoom in/out
         """
-        
+
         fig.add_annotation(
             text=shortcuts_text,
             x=0.98,
@@ -545,7 +542,7 @@ class PlotlySelectionTools:
             font=dict(size=9, color="black", family="Arial"),
             align="left",
             showarrow=False,
-            visible=True
+            visible=True,
         )
-        
+
         return fig

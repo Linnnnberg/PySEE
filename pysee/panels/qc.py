@@ -14,9 +14,9 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 from ..core.data import AnnDataWrapper
+from .advanced_selection import AdvancedSelectionManager
 from .base import BasePanel
 from .plotly_selection import PlotlySelectionTools
-from .advanced_selection import AdvancedSelectionManager
 
 
 class QCPanel(BasePanel):
@@ -205,7 +205,7 @@ class QCPanel(BasePanel):
             PlotlySelectionTools.add_selection_mode_buttons(fig)
             PlotlySelectionTools.add_undo_redo_buttons(fig)
             PlotlySelectionTools.add_interactive_descriptions(fig)
-            
+
             # Configure selection events
             PlotlySelectionTools.configure_selection_events(fig, self._on_plotly_selection)
 
@@ -458,13 +458,13 @@ class QCPanel(BasePanel):
             if "x" in bounds and "y" in bounds:
                 # Get QC metrics
                 metrics = self._calculate_qc_metrics()
-                
+
                 # Determine which metric is being selected based on the subplot
                 # This is a simplified approach - in practice, you'd need to track which subplot
                 # the selection is coming from
                 x_range = bounds["x"]
                 y_range = bounds["y"]
-                
+
                 # Find cells within the selection bounds based on QC values
                 selected_cells = []
                 if "mito_percent" in metrics:
@@ -472,15 +472,15 @@ class QCPanel(BasePanel):
                     for i, value in enumerate(mito_values):
                         if x_range[0] <= value <= x_range[1]:
                             selected_cells.append(i)
-                
+
                 if selected_cells:
                     self._selection_manager.create_point_selection(selected_cells)
-                    
+
                     # Update the panel's selection
-                    if self._selection_manager.get_current_selection() is not None:
-                        self._selection = self._selection_manager.get_current_selection()
+                    if self._selection_manager.current_selection is not None:
+                        self._selection = self._selection_manager.current_selection
                         self._on_selection_changed()
-                
+
         except Exception as e:
             print(f"Error handling selection: {e}")
 

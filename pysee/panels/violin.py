@@ -14,9 +14,9 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 from ..core.data import AnnDataWrapper
+from .advanced_selection import AdvancedSelectionManager
 from .base import BasePanel
 from .plotly_selection import PlotlySelectionTools
-from .advanced_selection import AdvancedSelectionManager
 
 
 class ViolinPanel(BasePanel):
@@ -291,7 +291,7 @@ class ViolinPanel(BasePanel):
             PlotlySelectionTools.add_selection_mode_buttons(fig)
             PlotlySelectionTools.add_undo_redo_buttons(fig)
             PlotlySelectionTools.add_interactive_descriptions(fig)
-            
+
             # Configure selection events
             PlotlySelectionTools.configure_selection_events(fig, self._on_plotly_selection)
 
@@ -381,15 +381,15 @@ class ViolinPanel(BasePanel):
             # For violin plots, we'll use point selection based on expression values
             point_indices = selection_data.get("points", [])
             indices = [p.get("pointIndex", 0) for p in point_indices if "pointIndex" in p]
-            
+
             if indices:
                 self._selection_manager.create_point_selection(indices)
-                
+
                 # Update the panel's selection
-                if self._selection_manager.get_current_selection() is not None:
-                    self._selection = self._selection_manager.get_current_selection()
+                if self._selection_manager.current_selection is not None:
+                    self._selection = self._selection_manager.current_selection
                     self._on_selection_changed()
-                
+
         except Exception as e:
             print(f"Error handling selection: {e}")
 
